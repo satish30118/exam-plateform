@@ -1,26 +1,22 @@
-'use client'
- 
-import { useState, useEffect } from 'react'
- 
-export default function Posts() {
-  const [posts, setPosts] = useState(null)
- 
-  useEffect(() => {
-    async function fetchPosts() {
-      let res = await fetch('https://api.vercel.app/blog')
-      let data = await res.json()
-      setPosts(data)
-    }
-    fetchPosts()
-  }, [])
- 
-  if (!posts) return <div>Loading...</div>
- 
+"use client"
+import { useSession, signIn, signOut } from "next-auth/react"
+
+export default function Login() {
+  const { data: session } = useSession()
+  if (session) {
+    return (
+      <>
+        <p style={{color:"red"}}>Signed in as {session.user.email} </p><br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    )
+  }
   return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.id}>{post.title}</li>
-      ))}
-    </ul>
+    <>
+      Not signed in <br />
+      <button onClick={() => signIn('github')}>Sign in with github</button>
+      <button onClick={() => signIn('github')}>Sign in with google</button>
+
+    </>
   )
 }
