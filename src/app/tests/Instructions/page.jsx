@@ -27,7 +27,7 @@ const Instructions = () => {
                     <ol className="ml-14 list-decimal space-y-4">
                         <li>The clock will be set at the server. The countdown timer will display the remaining time. When it reaches zero, the exam will end automatically.</li>
                         <li>
-                            The Questions Palette will show the status of each question:
+                        The Questions Palette displayed on the right side of screen will show the status of each question using one of the following symbols:
                             <ol className="ml-6 space-y-2 mt-2">
                                 <li className="flex space-x-2"><img src="/img/QuizIcons/Logo1.png" alt="Logo1" /> <span>You have not visited the question yet.</span></li>
                                 <li className="flex space-x-2"><img src="/img/QuizIcons/Logo2.png" alt="Logo2" /> <span>You have not answered the question.</span></li>
@@ -36,8 +36,9 @@ const Instructions = () => {
                                 <li className="flex space-x-2"><img src="/img/QuizIcons/Logo5.png" alt="Logo5" /> <span>Questions "Answered and Marked for Review" will be evaluated.</span></li>
                             </ol>
                         </li>
-                        <li>You can hide the question palette by clicking the "&gt;" arrow and show it again by clicking the "&lt;" arrow.</li>
-                        <li>You can change the exam language by clicking your profile image in the top-right corner.</li>
+                        <li>You can click on the &gt; arrow which apperes to the left of question palette to collapse the question palette thereby maximizing the question window. To view the question palette again, you can click on &lt; which appears on the right side of question window.</li>
+                        <li>You can click on your "Profile" image on top right corner of your screen to change the language during the exam for entire question paper. On clicking of Profile image you will get a drop-down to change the question content to the desired language.
+                        </li>
                         <li>Use <img src="/img/QuizIcons/down.png" className="inline mx-2" alt="Down" /> to scroll down and <img src="/img/QuizIcons/up.png" className="inline mx-2" alt="Up" /> to scroll up without manual scrolling.</li>
                     </ol>
                 </section>
@@ -62,28 +63,31 @@ const Instructions = () => {
                         <li>
                             For multiple-choice questions:
                             <ol className="ml-14 list-[lower-alpha] space-y-1">
-                                <li>Click the button next to the answer to select it.</li>
+                                <li>To select you answer, click on the button of one of the options.</li>
                                 <li>To deselect, click the button again or click <strong>Clear Response</strong>.</li>
-                                <li>Click <strong>Save & Next</strong> to save your answer.</li>
+                                <li>To change your chosen answer, click on the button of another option</li>
+                                <li>You <strong>MUST</strong> click <strong>Save & Next</strong> to save your answer.</li>
                                 <li>Click <strong>Mark for Review & Next</strong> to save and mark for review.</li>
                             </ol>
                         </li>
+                        <li>To change your answer to a question that has already been answered, first select that question for answering and then follow the procedure for answering that type of question.</li>
                     </ol>
                 </section>
 
                 <section className="mt-5">
                     <h4 className="mb-3 font-bold text-xl underline">Navigating through Sections:</h4>
                     <ol className="ml-14 list-decimal space-y-2">
-                        <li>Sections are displayed at the top of the screen. Click on a section name to view its questions.</li>
+                        <li>Sections in this question paper are displayed on the top bar of the screen. Questions in a section can be viewed by click on the section name. The section you are currently viewing is highlighted.</li>
                         <li>After clicking <strong>Save & Next</strong> on the last question of a section, you will be taken to the next section.</li>
-                        <li>You can navigate between sections at any time during the exam.</li>
+                        <li>You can shuffle between sections and questions anything during the examination as per your convenience only during the time stipulated.</li>
+                        <li>Candidate can view the corresponding section summery as part of the legend that appears in every section above the question palette.</li>
                     </ol>
                 </section>
 
                 <hr className="my-5" />
 
                 <label className="text-red-600 pl-3">
-                    <input type="checkbox" id="1_ch" className="mr-2" /> I have read and understood the instructions. I declare that I am not in possession of any prohibited gadget or material.
+                    <input type="checkbox" id="1_ch" className="mr-2" /> I have read and understood the instructions. All computer hardware allotted to me are in proper working condition. I declare that I am not in possession of / not wearing / not carrying any prohibited gadget like mobile phone, bluetooth devices etc. /any prohibited material with me into the Examination Hall.I agree that in case of not adhering to the instructions, I shall be liable to be debarred from this Test and/or to disciplinary action, which may include ban from future Tests / Examinations.
                 </label>
 
                 <hr className="my-5" />
