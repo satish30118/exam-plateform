@@ -51,16 +51,16 @@ const Footer = () => {
             <h4 className="text-xl font-semibold text-white">Contact Us</h4>
             <ul className="mt-4">
               <li>
-                <p className="text-gray-400">123 Mock Street, Exam City, India</p>
+                <p className="text-gray-400">Rajediha Bazar, Sant Kabir Nagar, Khalilabad, Uttar Pradesh, India, 272152</p>
               </li>
               <li>
-                <a href="mailto:contact@mockapp.com" className="hover:text-white">
-                  contact@mockapp.com
+                <a href="mailto:akriticomputer.official@gmail.com" className="hover:text-white">
+                  akriticomputer.official@gmail.com
                 </a>
               </li>
               <li>
-                <a href="tel:+911234567890" className="hover:text-white">
-                  +91 123 456 7890
+                <a href="tel:+917985017186" className="hover:text-white">
+                  +91 7985017186
                 </a>
               </li>
             </ul>

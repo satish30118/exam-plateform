@@ -70,7 +70,7 @@ const WebDesigningPage = () => {
                     <h3 className="text-lg text-center font-bold  ml-2 text-yellow-600">{test.title}</h3>
                   </div>
                   <p className="text-gray-400">{test.description}</p>
-                  <Link href={test.link} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                  <Link href={`/tests/Login?testId=${index}&testName=${test.title}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                     Take Test
                   </Link>
                 </div>
