@@ -2,6 +2,7 @@
 
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { generateUserId } from '@/utils/generateUserId';
 
 const UserSchema = new mongoose.Schema({
   userId: { type: String, unique: true },
@@ -9,12 +10,16 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String }, // Optional for Google users
   image: { type: String }, // URL to the user's image
+  role: { type: String, default:"Student" }, // URL to the user's image
+
 });
 
 // Generate a unique 4-digit userId
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save',async function (next) {
   if (!this.userId) {
-    this.userId = Math.floor(1000 + Math.random() * 9000).toString();
+    const id = await generateUserId()
+    this.userId = id;
+    this.password = id;
   }
   next();
 });

@@ -1,11 +1,13 @@
 // components/Instructions.js
 "use client";
 
-import {useSearchParams } from "next/navigation";
+import {useSearchParams,useRouter } from "next/navigation";
 
 const Instructions = () => {
     const searchParams = useSearchParams();
-    const testId = searchParams.get('testId');
+    const router = useRouter()
+    const examId = searchParams.get('examId');
+    const examTitle = searchParams.get('examTitle');
 
     const checkInstruction = (id) => {
         const checkbox = document.getElementById(`${id}_ch`);
@@ -14,7 +16,7 @@ const Instructions = () => {
             return;
         }
         // Proceed to the next step
-        console.log(testId)
+        router.push(`/ExamPortal/MCQPortal?examId=${examId}&examTitle=${examTitle}`)
     };
 
     return (

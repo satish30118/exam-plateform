@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaDesktop, FaUserCircle } from 'react-icons/fa'
 
-const TestHeader = () => {
+const ExamHeader = ({time}) => {
   return (
     <div>{/* Header Section */}
     <header className="bg-white py-4 shadow-md">
@@ -12,6 +12,9 @@ const TestHeader = () => {
             <h1 className="text-lg font-bold text-blue-900">System Name: <span className="text-orange-600">[C0001]</span></h1>
             <p className="text-gray-600">Excellence in Assessment</p>
           </div>
+        </div>
+        <div className='flex items-center text-blue-900 font-bold text-xl'>
+         <span>Time Remaining- <span className="text-orange-600">{time}:00 min</span></span> 
         </div>
         <div className="flex items-center space-x-4 ">
           <div className="flex items-center border-2 p-2 border-blue-800">
@@ -27,4 +30,4 @@ const TestHeader = () => {
   )
 }
 
-export default TestHeader
+export default ExamHeader

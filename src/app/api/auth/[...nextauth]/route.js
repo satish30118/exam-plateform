@@ -1,76 +1,83 @@
 import User from "@/models/User";
 import connectDB from "@/utils/db";
-import NextAuth from "next-auth"
-import GithubProvider from "next-auth/providers/github"
+import NextAuth from "next-auth";
+import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { generateUserId } from "@/utils/generateUserId";
-
 
 const authOptions = {
-  // Configure one or more authentication providers
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         await connectDB();
         const user = await User.findOne({ email: credentials.email });
 
-        if (user && user.comparePassword(credentials.password)) {
-          return user;
+        if (user && (await user.comparePassword(credentials.password))) {
+          // Return necessary user data, including userId
+          return { 
+            id: user._id,
+            name:user.name,
+            email: user.email,
+            userId: user.userId, 
+            image: user.image,
+            role: user.role
+          };
         } else {
           return null;
         }
       },
     }),
-    
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
-      // If it's a Google login
+    async jwt({ token, account, profile, user }) {
+      // console.log(token, account, profile, user)
+      // Handle Google login
       if (account && profile) {
         await connectDB();
-  
-        // Check if the user exists in the database
-        let user = await User.findOne({ email: profile.email });
-  
-        // If the user does not exist, create a new user in the database
-        if (!user) {
-          user = await User.create({
+        let dbUser = await User.findOne({ email: profile.email });
+
+        if (!dbUser) {
+          dbUser = await User.create({
             name: profile.name,
             email: profile.email,
             image: profile.picture,
-            password: "", // No password since Google login is being used
-            userId: generateUserId(), // Your function for generating unique 4-digit userId
+            password: "",
+            userId: "",
           });
         }
-  
-        // Attach necessary user data to the JWT token
-        token.userId = user.userId;
-        token.image = user.image;
+
+        token.userId = dbUser.userId;
+        token.role = dbUser.role;
       }
-  
+
+      // Handle Credentials login
+      if (!profile && user) {
+        token.userId = user.userId;
+        token.role = user.role;
+      }
+
       return token;
     },
     async session({ session, token }) {
       session.userId = token.userId;
-      session.image = token.image;
+      session.role = token.role;
       return session;
     },
-  }
-  
-}
-const handler = NextAuth(authOptions)
-export {handler as GET, handler as POST}
+  },
+};
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

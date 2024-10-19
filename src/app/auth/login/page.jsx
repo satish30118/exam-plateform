@@ -4,10 +4,13 @@
 import { FaGoogle } from 'react-icons/fa';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,15 +21,16 @@ export default function Login() {
     });
 
     if (result.error) {
-      alert(result.error);
+      toast.error("Invalid credentials")
     } else {
       // Redirect or handle successful login
-      alert('Login successful!');
+      toast.success('Login successful!');
+      // router.push("/dashboard")
     }
   };
 
   return (
-    <div className='bg-gray-800 min-h-screen flex justify-center items-center pb-7'>
+    <div className='bg-gray-800 min-h-screen flex justify-center items-center pb-7 pt-4'>
       <div className="container mx-auto flex flex-col items-center justify-center flex-grow px-4">
         <div className="bg-gray-900 rounded-lg shadow-lg p-8 max-w-md w-full pb-8">
           <h2 className="text-3xl font-semibold text-center text-blue-500 mb-6">Account Login</h2>
@@ -74,14 +78,14 @@ export default function Login() {
 
           <button
             onClick={() => signIn('google')}
-            className='mt-5 w-full py-2 px-5 my-2 rounded-lg flex items-center justify-center bg-red-600 hover:bg-red-700 transition duration-200 text-white'
+            className='mt-5 w-full py-2 px-5 my-1 rounded-lg flex items-center justify-center bg-red-600 hover:bg-red-700 transition duration-200 text-white'
           >
             <FaGoogle className="mr-2" />
             Login with Google
           </button>
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center mt-8">
             <hr className="flex-grow border-gray-600" />
-            <span className="text-gray-400 mx-4">Not Registered</span>
+            <span className="text-gray-400 mx-4">Have not Registered ?</span>
             <hr className="flex-grow border-gray-600" />
           </div>
           <button
