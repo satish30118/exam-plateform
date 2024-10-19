@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
+  const {data:session } = useSession()
 
   const handleNavToggle = () => {
     setNavOpen(!navOpen);
@@ -41,13 +43,20 @@ const Navbar = () => {
         </div>
 
         {/* Login Button */}
-        <div className="hidden md:flex items-center space-x-4">
-          <Link href="/login" passHref>
+        {!session ? <div className="hidden md:flex items-center space-x-4">
+          <Link href="/auth/login" passHref>
             <p className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
               Login
             </p>
           </Link>
-        </div>
+        </div> : <div className="hidden md:flex items-center space-x-4">
+          <Link href="/auth/login" passHref>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={()=> signOut()}>
+              Logout
+            </button>
+          </Link>
+        </div> }
+        
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">

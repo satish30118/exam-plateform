@@ -23,9 +23,13 @@ const TestPortal = () => {
             <button className="bg-gray-200 text-black px-4 py-2 rounded">Clear Response</button>
             <button className="bg-green-600 text-white px-4 py-2 rounded">Save & Next</button>
           </div>
-          <div className=" p-4 flex justify-center">
-            <button className="bg-gray-200 text-black px-8 py-2 rounded">Back</button>
-            <button className="bg-gray-500 text-white px-6 py-2 rounded"> Next</button>
+          <div className=" p-4 flex justify-between">
+            <button className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+            <div>
+              <button className="bg-gray-200 text-black px-6 py-2 rounded ">&lt;&lt; Back</button>
+              <button className="bg-gray-500 text-white px-6 py-2 rounded"> Next &gt;&gt; </button>
+            </div>
+
           </div>
         </div>
 
