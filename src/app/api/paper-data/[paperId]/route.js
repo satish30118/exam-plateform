@@ -4,12 +4,12 @@ import connectDB from '@/utils/db';
 import { NextResponse } from 'next/server';
 
 export async function GET(request, { params }) {
-  const { id } = params; // Destructure id from params
+  const { paperId } = params; // Destructure id from params
 
   await connectDB(); // Connect to MongoDB
 
   try {
-    let examPaper = await ExamPaper.findById(id)
+    let examPaper = await ExamPaper.findById(paperId)
     if (!examPaper) {
       return new NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }

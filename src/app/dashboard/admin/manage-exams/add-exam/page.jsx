@@ -1,11 +1,12 @@
 "use client"
 import axios from 'axios';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AddExam = () => {
     const [title, setTitle] = useState('FullSyllabus');
     const [course, setCourse] = useState('olevel');
-    const [subject, setSubject] = useState('');
+    const [subject, setSubject] = useState('m1');
     const [type, setType] = useState('theoretical');
     const [chapter, setChapter] = useState('');
     const [questions, setQuestions] = useState([]);
@@ -39,10 +40,10 @@ const AddExam = () => {
                 },
             });
 
-            if (response.status === 200) {
-                alert('Exam added successfully!');
+            if (response.status === 201) {
+                toast.success('Exam added successfully!');
             } else {
-                alert('Failed to add exam.');
+                toast.alert('Failed to add exam.');
             }
         } catch (error) {
             console.error('Error adding exam:', error);
@@ -63,8 +64,8 @@ const AddExam = () => {
                             className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
                         >
-                            <option value="FullSyllabus">Full Syllabus</option>
-                            <option value="ChapterWise">Chapter Wise</option>
+                            <option value="Full Syllabus">Full Syllabus</option>
+                            <option value="Chapter Wise">Chapter Wise</option>
                         </select>
                     </div>
                     <div>
@@ -85,13 +86,19 @@ const AddExam = () => {
                     </div>
                     <div>
                         <label className="block mb-1">Subject:</label>
-                        <input
-                            type="text"
-                            value={subject}
+                        <select
+                            value={type}
                             onChange={(e) => setSubject(e.target.value)}
-                            className="p-2 w-full rounded bg-gray-700 text-gray-200"
+                            className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
-                        />
+                        >
+                            <option value="m2">Web Design</option>
+                            <option value="m3">Python</option>
+                            <option value="m4">IoT</option>
+                            <option value="m1">IT Tools</option>
+                            <option value="other">Other</option>
+
+                        </select>
                     </div>
                     <div>
                         <label className="block mb-1">Chapter:</label>
