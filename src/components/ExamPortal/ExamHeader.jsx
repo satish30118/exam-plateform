@@ -1,9 +1,14 @@
 import { useSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import { FaDesktop, FaUserCircle } from 'react-icons/fa';
 
 const ExamHeader = ({ time }) => {
   const { data: session } = useSession()
+  const searchParams = useSearchParams()
+  const exam = searchParams.get('exam');
+  const paperCode = searchParams.get('paperCode');
+
   return (
     <header className="bg-white py-4 shadow-md">
       <div className="container mx-auto flex items-center justify-center sm:justify-between px-4">
@@ -35,15 +40,15 @@ const ExamHeader = ({ time }) => {
         {/* Right Section: Student Info (Visible on medium screens and up) */}
         <div className="hidden sm:flex items-center space-x-4 ">
           <div className="flex items-center border-2 p-1 border-blue-800 rounded">
-            {session ? <img src={session.user.image} alt='user' className='h-9 lg:h-10 rounded' /> : <FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" />}
+            {session ? <img src={session?.image} alt='user' className='h-9 lg:h-10 rounded' /> : <FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" />}
 
           </div>
           <div>
             <h1 className="text-sm md:text-base lg:text-lg font-bold text-blue-900">
-              Student Name: <span className="text-orange-600">Satish Maurya</span>
+              Student Name: <span className="text-orange-600 lg:text-base">{session?.user?.name}</span>
             </h1>
             <h1 className="text-sm md:text-base lg:text-lg font-bold text-blue-900">
-              Course: <span className="text-orange-600">M2-R5</span>
+              Course: <span className="text-orange-600 lg:text-base">{exam.toUpperCase()} ({paperCode.toUpperCase()})</span>
             </h1>
           </div>
         </div>

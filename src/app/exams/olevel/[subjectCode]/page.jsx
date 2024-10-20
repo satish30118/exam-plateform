@@ -72,15 +72,15 @@ const WebDesigningPage = ({params}) => {
               <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
                 {tests.filter(test => test.type === 'theoretical').map((test, index) => (
                   <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
-                    <div className="flex items-center justify-center text-center pb-1">
-                      <FaClipboardList className="text-blue-500" />
+                    <div className="flex justify-center text-center pb-1">
+                      <FaClipboardList className="text-blue-500 mt-1 text-xl" />
                       <h3 className="text-lg text-center font-bold ml-2 text-yellow-600">{test.title}</h3>
                     </div>
                     <p className="text-pink-600 text-lg">{test.chapter}</p>
                     <p className="text-gray-400 text-xs">Marks: {test.totalMarks}</p>
                     <p className="text-gray-400 text-xs">Duration: {test.duration}mins</p>
 
-                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&paperCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                       Take Test
                     </Link>
                   </div>

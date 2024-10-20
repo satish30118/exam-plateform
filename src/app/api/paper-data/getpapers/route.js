@@ -5,11 +5,13 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   const { searchParams } = request.nextUrl;
-  // console.log(searchParams)
+  const course = searchParams.get('course');
+  const subject = searchParams.get('subject');
+
   await connectDB(); // Connect to MongoDB
 
   try {
-    let examPaper = await ExamPaper.find({course : searchParams.course, subject : searchParams.subject }).select({questions:0}).sort({updatedAt: -1})
+    let examPaper = await ExamPaper.find({course, subject }).select({questions:0}).sort({updatedAt: -1})
     if (!examPaper) {
       return new NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }

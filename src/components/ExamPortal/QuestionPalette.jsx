@@ -64,7 +64,7 @@ const QuestionPalette = ({ data, selectQuestion, setIndex, responses, setRespons
             onClick={() => handleSelect(d, index)}
           >
             <img src={getStatusIcon(responses[d._id]?.answerType)} alt='status-logo' className='h-9' />
-            <p className='absolute top-0 left-0 w-10 h-10 rounded-full flex items-center justify-center'>{index + 1}</p>
+            <p className='absolute top-0 right-1 w-10 h-10 rounded-full flex items-center justify-center'>{index + 1}</p>
           </button>
         ))}
       </div>

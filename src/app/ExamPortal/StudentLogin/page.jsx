@@ -10,6 +10,9 @@ export default function LoginPage() {
   const  router = useRouter();
   const examId = searchParams.get('examId');
   const examTitle = searchParams.get('examTitle');
+  const exam = searchParams.get('exam');
+  const paperCode = searchParams.get('paperCode');
+
 
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -28,7 +31,7 @@ export default function LoginPage() {
       alert("Invalid credentials")
     } else {
       // Redirect or handle successful login
-      router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}`)
+      router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&paperCode=${paperCode}`)
     }
   };
   return (

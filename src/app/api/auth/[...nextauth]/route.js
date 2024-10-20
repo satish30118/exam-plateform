@@ -67,6 +67,7 @@ const authOptions = {
         }
 
         token.userId = dbUser.userId;
+        token.image = dbUser.image;
         token.role = dbUser.role;
       }
 
@@ -74,6 +75,8 @@ const authOptions = {
       if (!profile && user) {
         token.userId = user.userId;
         token.role = user.role;
+        token.image = user.image;
+
       }
 
       return token;

@@ -8,6 +8,8 @@ const Instructions = () => {
     const router = useRouter()
     const examId = searchParams.get('examId');
     const examTitle = searchParams.get('examTitle');
+    const exam = searchParams.get('exam');
+    const paperCode = searchParams.get('paperCode');
 
     const checkInstruction = (id) => {
         const checkbox = document.getElementById(`${id}_ch`);
@@ -16,7 +18,7 @@ const Instructions = () => {
             return;
         }
         // Proceed to the next step
-        router.push(`/ExamPortal/MCQPortal?examId=${examId}&examTitle=${examTitle}`)
+        router.push(`/ExamPortal/MCQPortal?examId=${examId}&examTitle=${examTitle}&exam=${exam}&paperCode=${paperCode}`)
     };
 
     return (
