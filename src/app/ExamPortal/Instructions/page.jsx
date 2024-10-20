@@ -2,6 +2,7 @@
 "use client";
 
 import {useSearchParams,useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Instructions = () => {
     const searchParams = useSearchParams();
@@ -14,7 +15,7 @@ const Instructions = () => {
     const checkInstruction = (id) => {
         const checkbox = document.getElementById(`${id}_ch`);
         if (!checkbox.checked) {
-            alert("Please confirm that you have read the instructions.");
+            toast.warn("Please confirm that you have read the instructions.");
             return;
         }
         // Proceed to the next step
@@ -22,7 +23,7 @@ const Instructions = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 text-gray-800">
+        <div className="container bg-gray-100 mx-auto p-4 h-full overflow-y-auto text-gray-800">
             <div className="w-full lg:w-10/12 mx-auto">
                 <h4 className="text-center font-extrabold text-xl pb-4">Please read the instructions carefully</h4>
 

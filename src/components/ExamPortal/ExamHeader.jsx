@@ -10,7 +10,7 @@ const ExamHeader = ({ time }) => {
   const paperCode = searchParams.get('paperCode');
 
   return (
-    <header className="bg-white py-4 shadow-md">
+    <header className="bg-white h-5/6 flex py-4 shadow-md sticky top-0">
       <div className="container mx-auto flex items-center justify-center sm:justify-between px-4">
         {/* Left Section: System Info (Visible on medium screens and up) */}
         <div className="hidden sm:flex items-center space-x-4">

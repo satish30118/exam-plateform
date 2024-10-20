@@ -4,6 +4,7 @@ import StudentLogin from '@/components/ExamPortal/StudentLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -28,14 +29,20 @@ export default function LoginPage() {
 
     if (result.error) {
       // console.log(result)
-      alert("Invalid credentials")
+      toast.error("Invalid credentials")
     } else {
       // Redirect or handle successful login
+       // Here, check for Google Password Manager warnings
+       const breachWarning = result?.warning; // Check how Google returns this info
+
+       if (breachWarning) {
+         toast.warning("The password you just used has been found in a data breach. Please consider changing it.");
+       }
       router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&paperCode=${paperCode}`)
     }
   };
   return (
-    <div className="min-h-screen bg-gray-800 flex flex-col">
+    <div className="h-full bg-gray-800 flex flex-col">
       {/* Login Section */}
       <div className="mt-20">
       <StudentLogin handleLogin={handleLogin} userId={userId} 

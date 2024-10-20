@@ -84,6 +84,7 @@ const authOptions = {
     async session({ session, token }) {
       session.userId = token.userId;
       session.role = token.role;
+      session.image = token.image;
       return session;
     },
   },

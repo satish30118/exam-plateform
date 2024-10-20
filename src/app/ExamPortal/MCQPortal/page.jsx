@@ -135,9 +135,9 @@ const MCQPortal = () => {
   if (loading) return <Loading />
 
   return (
-    <div className="h-screen bg-gray-100 text-gray-900">
+    <div className="h-full bg-gray-100 text-gray-900">
       {/* Main Content */}
-      <div className="flex p-4 h-4/5">
+      <div className="flex p-4 h-5/6">
         {/* Left Section: Question Display */}
         <div className='w-9/12 static'>
           <div className="h-5/6 overflow-y-auto bg-white p-4 rounded shadow-md">
