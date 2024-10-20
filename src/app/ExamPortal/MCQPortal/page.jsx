@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useTimer } from '../layout';
 import axios from 'axios';
+import Loading from '@/components/Loader';
 
 const MCQPortal = () => {
   const { setTimeRemaining, studentResponse, setStudentResponse } = useTimer();
@@ -130,6 +131,8 @@ const MCQPortal = () => {
 
     fetchPaperData();
   }, [setTimeRemaining]);
+
+  if (loading) return <Loading />
 
   return (
     <div className="h-screen bg-gray-100 text-gray-900">
