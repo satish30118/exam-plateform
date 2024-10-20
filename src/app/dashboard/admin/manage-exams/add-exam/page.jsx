@@ -1,22 +1,25 @@
 "use client"
+import axios from 'axios';
 import React, { useState } from 'react';
 
 const AddExam = () => {
-    const [title, setTitle] = useState('');
-    const [course, setCourse] = useState('');
+    const [title, setTitle] = useState('FullSyllabus');
+    const [course, setCourse] = useState('olevel');
     const [subject, setSubject] = useState('');
     const [type, setType] = useState('theoretical');
     const [chapter, setChapter] = useState('');
     const [questions, setQuestions] = useState([]);
-    const [duration, setDuration] = useState(0);
-    const [totalMarks, setTotalMarks] = useState(0);
+    const [duration, setDuration] = useState();
+    const [totalMarks, setTotalMarks] = useState();
 
     const handleAddQuestion = () => {
         setQuestions([...questions, { questionText: '', options: ['', ''], correctAnswer: '', marks: 1 }]);
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const examData = {
             title,
             subject,
@@ -25,20 +28,25 @@ const AddExam = () => {
             questions,
             duration,
             totalMarks,
+            course
         };
 
-        const response = await fetch('/api/exams', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(examData),
-        });
+        try {
+            // Use Axios to send a POST request
+            const response = await axios.post('/api/paper-data', examData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-        if (response.ok) {
-            alert('Exam added successfully!');
-        } else {
-            alert('Failed to add exam.');
+            if (response.status === 200) {
+                alert('Exam added successfully!');
+            } else {
+                alert('Failed to add exam.');
+            }
+        } catch (error) {
+            console.error('Error adding exam:', error);
+            alert('Failed to add exam. Please try again.');
         }
     };
 
@@ -92,7 +100,7 @@ const AddExam = () => {
                             value={chapter}
                             onChange={(e) => setChapter(e.target.value)}
                             className="p-2 w-full rounded bg-gray-700 text-gray-200"
-                            required
+                            
                         />
                     </div>
                     <div>
@@ -209,7 +217,7 @@ const AddExam = () => {
                 >
                     Add Question
                 </button>
-<hr />
+                <hr />
                 <button
                     type="submit"
                     className="bg-blue-600 float-right my-5 text-white py-2 px-4 rounded"
@@ -217,6 +225,8 @@ const AddExam = () => {
                     Submit Exam
                 </button>
             </form>
+            <br />
+            <br />
         </div>
     );
 };

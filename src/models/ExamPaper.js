@@ -21,6 +21,7 @@ const examPaperSchema = new mongoose.Schema({
   chapter: {  // Chapter associated with the exam
     type: String,
     required: true,
+    default:"FullType"
   },
   questions: [
     {
@@ -40,6 +41,10 @@ const examPaperSchema = new mongoose.Schema({
       marks: {
         type: Number,
         default: 1,
+      },
+      negative: {
+        type: Number,
+        default: 0.25,
       },
     }
   ],
