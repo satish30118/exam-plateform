@@ -60,7 +60,7 @@ export default function ClientWrapper({ children }) {
         document.removeEventListener("fullscreenchange", handleFullscreenChange);
       }
     };
-  }, [examMode, hideHeaderFooter]);
+  }, [examMode]);
 
   return (
     <>

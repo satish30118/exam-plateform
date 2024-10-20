@@ -8,14 +8,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Mock-App */}
           <div>
-            <h4 className="text-xl font-semibold text-white">Mock-App</h4>
+            <div className="flex items-center justify-center"><img src="/img/logo.png" alt="" className='h-12 rounded-full w-12 rotate-180' />
+              <h1 className="text-2xl font-bold text-green-600">Exam Point</h1></div>
             <p className="mt-4 text-gray-400">
               Mock-App is your one-stop solution for mock test papers for O Level, CCC, ADCA, DCA, A Level, and other competitive exams. Prepare better, perform best!
             </p>
           </div>
 
           {/* Important Links */}
-          <div className="ml-6 "> 
+          <div className="ml-6 ">
             <h4 className="text-xl font-semibold text-white">Important Links</h4>
             <ul className="mt-4 text-gray-400">
               <li>

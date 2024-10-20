@@ -6,7 +6,7 @@ const Home = () => {
     <div className="bg-gray-800 min-h-screen flex flex-col">
       {/* Hero Section */}
       <header className=" text-white py-20 text-center">
-        <h1 className="text-6xl font-bold text-pink-700">Welcome to Mock-App!</h1>
+        <h1 className="text-6xl font-bold text-pink-700">Welcome to <span className="text-green-600">Exam Point</span></h1>
         <p className="mt-4 text-xl text-orange-600">Your one-stop solution for mock test papers.</p>
       </header>
 

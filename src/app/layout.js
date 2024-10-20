@@ -3,7 +3,7 @@ import { SessionWrapper } from "@/components/SessionWrapper";
 import "./globals.css"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ClientWrapper from "@/components/ClientWrapper";
+import ClientWrapper from "@/components/ExamPortal/ClientWrapper";
 
 export const metadata = {
   title: "Mock Test",
