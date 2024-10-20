@@ -141,13 +141,13 @@ const MCQPortal = () => {
             {/* Pass the fetched paper data to the Question component */}
             <Question data={selectedQuestion} selectOption={handleOptionSelect} index={selectedQuestionIndex} chosenOption={responses[selectedQuestion._id]?.selectedOption} />
           </div>
-          <div className="bg-white p-4 flex justify-between">
+          <div className="bg-white p-4 flex justify-between text-xs lg:text-base">
             <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("MarkAndNext")}>Mark for Review</button>
             <button className="bg-orange-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("SaveMarkAndNext")}>Save & Mark for Review</button>
             <button className="bg-gray-200 text-black px-4 py-2 rounded" onClick={handleClearResponse}>Clear Response</button>
             <button className="bg-green-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("SaveAndNext")}>Save & Next</button>
           </div>
-          <div className="p-4 flex justify-between">
+          <div className="p-4 flex justify-between text-xs lg:text-base">
             <button className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
             <div>
               <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={handleBackBtn}>&lt;&lt; Back</button>

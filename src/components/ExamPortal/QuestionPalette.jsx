@@ -31,7 +31,7 @@ const QuestionPalette = ({ data, selectQuestion, setIndex, responses, setRespons
 
   return (
     <div>
-      <ol className="space-y-2">
+      <ol className="space-y-2 text-xs lg:text-base">
         <div>
           <li className="inline-flex space-x-2 items-center mr-3">
             <img src="/img/QuizIcons/Logo1.png" alt="Logo1" className='h-8' /> <span>Not Visited</span>

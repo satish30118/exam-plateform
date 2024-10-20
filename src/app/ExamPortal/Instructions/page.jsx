@@ -21,7 +21,7 @@ const Instructions = () => {
 
     return (
         <div className="container mx-auto p-4 text-gray-800">
-            <div className="w-10/12 mx-auto">
+            <div className="w-full lg:w-10/12 mx-auto">
                 <h4 className="text-center font-extrabold text-xl pb-4">Please read the instructions carefully</h4>
 
                 <section>

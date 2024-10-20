@@ -6,15 +6,15 @@ const Question = ({ data, selectOption, index, chosenOption }) => {
   // Reset selected option when `data` or `chosenOption` changes
   useEffect(() => {
     setSelectedOption(chosenOption); // Update the selected option when the chosen option changes
-  }, [data]); 
+  }, [data, chosenOption]); // Also include chosenOption in dependency array
 
   return (
-    <div>
-      <h2 className="text-xl font-bold">Question {index + 1}:</h2>
+    <div className="p-4 bg-white">
+      <h2 className="text-lg md:text-xl font-bold">Question {index + 1}:</h2>
       <hr className="my-4" />
       <div className="ml-3 flex flex-col justify-between">
         <div>
-          <p className="text-lg mb-4">{data?.questionText}</p>
+          <p className="text-base md:text-lg mb-4">{data?.questionText}</p>
           <div className="space-y-2">
             {data?.options?.map((opt, idx) => (
               <label className="block" key={idx}>
@@ -28,7 +28,7 @@ const Question = ({ data, selectOption, index, chosenOption }) => {
                     selectOption(data?._id, opt); // Trigger parent function
                   }}
                 />
-                {opt}
+                <span className="text-sm md:text-base">{opt}</span> {/* Responsive text size for options */}
               </label>
             ))}
           </div>
