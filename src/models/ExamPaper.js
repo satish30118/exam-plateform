@@ -5,6 +5,10 @@ const examPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  course: {
+    type: String,
+    required: true,
+  },
   subject: {
     type: String,
     required: true,
