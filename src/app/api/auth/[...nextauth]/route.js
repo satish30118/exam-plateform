@@ -18,12 +18,19 @@ const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: "email", type: "email" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
+        // console.log(credentials)
         await connectDB();
-        const user = await User.findOne({ email: credentials.email });
+        let user;
+        if(credentials?.userId){
+          user = await User.findOne({ userId: credentials.userId });
+        }else{
+          user = await User.findOne({ email: credentials.email });
+        }
+         
 
         if (user && (await user.comparePassword(credentials.password))) {
           // Return necessary user data, including userId

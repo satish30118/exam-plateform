@@ -1,6 +1,6 @@
 import React from 'react'
 
-const QuestionPalette = () => {
+const QuestionPalette = ({ data, selectQuestion, setIndex }) => {
     return (
         <div><ol className="space-y-2">
             <div ><li className="inline-flex space-x-2 items-center mr-3 "><img src="/img/QuizIcons/Logo1.png" alt="Logo1" className='h-8' /> <span>Not Visited</span></li>
@@ -13,12 +13,13 @@ const QuestionPalette = () => {
             <h2 className="font-bold my-4">Question Palette</h2>
             <div className="grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-3 gap-2 mb-4">
                 {/* Map question numbers and their statuses */}
-                {Array.from({ length: 100 }, (_, i) => (
+                {data?.map((d, index) => (
                     <button
-                        key={i}
+                        key={index}
                         className="w-10 h-10 rounded-full bg-gray-300 text-black"
+                        onClick={()=>{d.index = index; selectQuestion(d); setIndex(index)}}
                     >
-                        {i + 1}
+                        {index + 1}
                     </button>
                 ))}
             </div></div>

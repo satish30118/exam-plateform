@@ -4,76 +4,57 @@ import QuestionPalette from '@/components/ExamPortal/QuestionPalette';
 import ExamHeader from '@/components/ExamPortal/ExamHeader';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useTimer } from '../layout';
+import axios from 'axios';
 
 const MCQPortal = () => {
-  const [timeRemaining, setTimeRemaining] = useState(4); // Total time in seconds
-  const [isTimerActive, setIsTimerActive] = useState(true); // Control the timer state
+  const { setTimeRemaining, studentResponse, setStudentResponse } = useTimer();
+  const [paperData, setPaperData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedQuestion, setSelectedQuestion] = useState("")
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0)
+
+  const [responses, setResponses] = useState({});
+
+  const handleOptionSelect = (questionId, selectedOption) => {
+    setResponses({
+        ...responses,
+        [questionId]: selectedOption, // Store the selected option for each question
+    });
+    console.log(responses);
+};
 
   useEffect(() => {
-    // Disable right-click context menu
-    const handleContextMenu = (e) => {
-      e.preventDefault();
-    };
-
-    // Disable F12 and Ctrl + Shift + I
-    const handleKeyDown = (e) => {
-      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-        e.preventDefault();
+   
+    // Fetch paper data from backend
+    const fetchPaperData = async () => {
+      try {
+        const {data} = await axios.get('/api/paper-data/67142862344b8a9d1f9c235d'); // Adjust the endpoint as needed
+        setPaperData(data.questions); 
+        setSelectedQuestion(data?.questions[0])
+        setTimeRemaining(data?.duration *60)
+      } catch (err) {
+        console.error(err);
+        setError('Failed to fetch paper data.');
+        toast.error('Failed to fetch paper data.');
+      } finally {
+        setLoading(false); // Set loading to false when done
       }
     };
 
-    // Add event listeners
-    document.addEventListener('contextmenu', handleContextMenu);
-    document.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup the event listeners on component unmount
-    return () => {
-      document.removeEventListener('contextmenu', handleContextMenu);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-  // Timer effect
-  useEffect(() => {
-    let timer;
-
-    if (timeRemaining > 0) {
-      timer = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            // handleSubmit(); // Auto-submit when time is up
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000); // Update every second
-    } else if (timeRemaining === 0) {
-      handleSubmit(); // Auto-submit if time is zero
-    }
-
-    // Cleanup timer on component unmount
-    return () => clearInterval(timer);
-  }, [timeRemaining]);
-
-  // Handle test submission
-  const handleSubmit = () => {
-    // Implement your submit logic here
-    toast.success("Test submitted!");
-    setIsTimerActive(false); // Stop the timer
-  };
+    fetchPaperData();
+  }, [setTimeRemaining]);
 
   return (
     <div className="h-screen bg-gray-100 text-gray-900">
-      {/* Top Header Bar */}
-      <ExamHeader time={timeRemaining} />
-
       {/* Main Content */}
       <div className="flex p-4 h-4/5">
         {/* Left Section: Question Display */}
         <div className='w-9/12 static'>
           <div className="h-5/6 overflow-y-auto bg-white p-4 rounded shadow-md">
-            <Question />
+            {/* Pass the fetched paper data to the Question component */}
+            <Question data={selectedQuestion} selectOption={handleOptionSelect} index={selectedQuestionIndex}/>
           </div>
           <div className="bg-white p-4 flex justify-between">
             <button className="bg-blue-600 text-white px-4 py-2 rounded">Mark for Review</button>
@@ -84,15 +65,15 @@ const MCQPortal = () => {
           <div className="p-4 flex justify-between">
             <button className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
             <div>
-              <button className="bg-gray-200 text-black px-6 py-2 rounded">&lt;&lt; Back</button>
-              <button className="bg-gray-500 text-white px-6 py-2 rounded"> Next &gt;&gt; </button>
+              <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={()=>{setSelectedQuestion(paperData[selectedQuestionIndex-1]); setSelectedQuestionIndex(selectedQuestionIndex-1)}}>&lt;&lt; Back</button>
+              <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={()=>{setSelectedQuestion(paperData[selectedQuestionIndex+1]); setSelectedQuestionIndex(selectedQuestionIndex+1)}}> Next &gt;&gt; </button>
             </div>
           </div>
         </div>
 
         {/* Right Section: Question Palette */}
         <div className="max-h-screen overflow-y-auto w-4/12 bg-white p-4 ml-4 rounded shadow-md">
-          <QuestionPalette />
+          <QuestionPalette data={paperData} selectQuestion={setSelectedQuestion} setIndex={setSelectedQuestionIndex}/>
         </div>
       </div>
     </div>

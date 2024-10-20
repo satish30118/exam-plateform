@@ -39,12 +39,15 @@ const examPaperSchema = new mongoose.Schema({
       },
     }
   ],
+  duration:{
+    type:Number
+  },
   totalMarks: {
     type: Number,
     required: true,
   },
   }, {timestamps:true});
 
-const ExamPaper = mongoose.model('ExamPaper', examPaperSchema);
+const ExamPaper = mongoose.models.ExamPaper || mongoose.model('ExamPaper', examPaperSchema);
 
 export default ExamPaper;

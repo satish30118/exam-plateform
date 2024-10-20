@@ -1,25 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Question = () => {
+const Question = ({ data, selectOption, index }) => {
+    const [selectedOption, setSelectedOption] = useState(null); // Track the selected option
+
+    // Reset selected option when data (question) changes
+    useEffect(() => {
+        setSelectedOption(null); // Clear selection when a new question is loaded
+    }, [data]);
+
     return (
-        <div><h2 className="text-xl font-bold">Question 5: </h2>
+        <div><h2 className="text-xl font-bold">Question {index + 1}: </h2>
             <hr className="my-4" />
             <div className='ml-3  flex flex-col justify-between'>
                 <div>
-                    <p className="text-lg mb-4">What is the c Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, fugit, repellat suscipit nulla optio omnis nesciunt cupiditate quis nemo nostrum quae sunt itaque fugiat illo, ullam aperiam rem? Aperiam reprehenderit voluptates repudiandae officia ipsum maxime id, quidem minima tenetur. Earum! Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, ex esse atque inventore, cumque tempora nihil molestias quisquam, facere possimuma hic, quia repellendus unde laboriosam dolor, velit alias mollitia aperiam placeat quam ut magnam eos, culpa dolores molestiae.</p>
+                    <p className="text-lg mb-4">{data?.questionText}</p>
                     <div className="space-y-2">
-                        <label className="block">
-                            <input type="radio" name="question-5" /> New Delhi
-                        </label>
-                        <label className="block">
-                            <input type="radio" name="question-5" /> Mumbai
-                        </label>
-                        <label className="block">
-                            <input type="radio" name="question-5" /> Kolkata
-                        </label>
-                        <label className="block">
-                            <input type="radio" name="question-5" /> Chennai
-                        </label>
+                        {data?.options?.map((opt, index) => (
+                            <label className="block" key={index}>
+                                <input type="radio" name="option" className='mr-2' checked={selectedOption === opt} onChange={() => {setSelectedOption(opt); selectOption(data?._id, opt); }} />{opt}
+                            </label>
+                        ))}
+
                     </div>
                 </div>
             </div></div>
