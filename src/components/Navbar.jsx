@@ -19,7 +19,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" passHref className='flex items-center justify-between space-x-1' >
-          <img src="/img/logo.png" alt=""  className='h-12 rounded-full w-12 rotate-180'/>
+          <img src="/img/logo.png" alt=""  className='h-12 rounded-full w-12'/>
             <h1 className="text-2xl font-bold text-green-600">Exam Point</h1>
           </Link>
         </div>
