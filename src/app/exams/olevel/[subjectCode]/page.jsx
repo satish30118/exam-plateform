@@ -28,7 +28,7 @@ const WebDesigningPage = ({params}) => {
     };
 
     fetchTests();
-  }, []);
+  }, [subjectCode]);
 
   return (
     <div className="bg-gray-800 min-h-screen p-6">

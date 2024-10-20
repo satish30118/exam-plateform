@@ -1,6 +1,6 @@
 "use client"
 import ExamHeader from '@/components/ExamPortal/ExamHeader'
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, Suspense, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 const TimerContext = createContext();
 
@@ -68,10 +68,12 @@ const ExamPortallayout = ({ children }) => {
     return (
         <div>
             <TimerContext.Provider value={{ timeRemaining, setTimeRemaining, studentResponse, setStudentsResponse }}>
-                <div className="h-screen bg-gray-100 ">
-                    <div className="h-1/6 "><ExamHeader time={timeRemaining} /></div>
-                    <div className="h-5/6 bg-gray-100">{children}</div>
-                </div>
+                <Suspense fallback={<div>Suspense Loading...</div>}>
+                    <div className="h-screen bg-gray-100 ">
+                        <div className="h-1/6 "><ExamHeader time={timeRemaining} /></div>
+                        <div className="h-5/6 bg-gray-100">{children}</div>
+                    </div>
+                </Suspense>
 
 
             </TimerContext.Provider>

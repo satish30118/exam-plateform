@@ -33,7 +33,7 @@ const MCQPortal = () => {
 
   useEffect(() => {
     fetchPaperData();
-  }, []);
+  }, [fetchPaperData]);
 
   // General handler for selecting options and setting answer type
   const updateResponse = (questionId, selectedOption = null, answerType = "NotAnswered") => {
