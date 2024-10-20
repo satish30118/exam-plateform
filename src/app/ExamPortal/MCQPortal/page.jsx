@@ -19,21 +19,106 @@ const MCQPortal = () => {
 
   const handleOptionSelect = (questionId, selectedOption) => {
     setResponses({
-        ...responses,
-        [questionId]: selectedOption, // Store the selected option for each question
+      ...responses,
+      [questionId]: {
+        selectedOption,
+        answerType: "NotAnswered"
+      }// Store the selected option for each question
     });
-    console.log(responses);
-};
+    // console.log(responses);
+  };
+
+
+  const handleNextBtn = () => {
+    setResponses({
+      ...responses,
+      [selectedQuestion._id]: {
+        selectedOption: responses[selectedQuestion._id]?.selectedOption || null,
+        answerType: responses[selectedQuestion._id]?.answerType || "NotAnswered"
+      }// Store the selected option for each question
+    });
+    if (selectedQuestionIndex < paperData.length - 1) {
+      setSelectedQuestion(paperData[selectedQuestionIndex + 1]);
+      setSelectedQuestionIndex(selectedQuestionIndex + 1)
+    }
+  }
+
+  const handleBackBtn = () => {
+    setResponses({
+      ...responses,
+      [selectedQuestion._id]: {
+        selectedOption: responses[selectedQuestion._id]?.selectedOption || null,
+        answerType: responses[selectedQuestion._id]?.answerType || "NotAnswered"
+      }// Store the selected option for each question
+    });
+    if (selectedQuestionIndex > 0) {
+      setSelectedQuestion(paperData[selectedQuestionIndex - 1]);
+      setSelectedQuestionIndex(selectedQuestionIndex - 1)
+    }
+  }
+
+  const handleClearResponse = () => {
+    setResponses({
+      ...responses,
+      [selectedQuestion._id]: {
+        selectedOption: "",
+        answerType: "NotAnswered"
+      }// Store the selected option for each question
+
+    });
+    setSelectedQuestion(paperData[selectedQuestionIndex]);
+  }
+
+  const handleAnswerType = (type) => {
+    if (type === "MarkAndNext") {
+      setResponses({
+        ...responses,
+        [selectedQuestion._id]: {
+          selectedOption: null,
+          answerType: type
+        }// Store the selected option for each question
+      });
+      if (selectedQuestionIndex < paperData.length - 1) {
+        setSelectedQuestion(paperData[selectedQuestionIndex + 1]);
+        setSelectedQuestionIndex(selectedQuestionIndex + 1)
+      }
+      return;
+    }
+
+    if (responses[selectedQuestion._id]?.selectedOption) {
+      setResponses({
+        ...responses,
+        [selectedQuestion._id]: {
+          selectedOption: responses[selectedQuestion._id]?.selectedOption || null,
+          answerType: type
+        }// Store the selected option for each question
+      });
+    } else {
+      setResponses({
+        ...responses,
+        [selectedQuestion._id]: {
+          selectedOption: responses[selectedQuestion._id]?.selectedOption || null,
+          answerType: "NotAnswered"
+        }// Store the selected option for each question
+      });
+    }
+    // console.log(responses);
+    if (selectedQuestionIndex < paperData.length - 1) {
+      setSelectedQuestion(paperData[selectedQuestionIndex + 1]);
+      setSelectedQuestionIndex(selectedQuestionIndex + 1)
+    }
+  }
+
+
 
   useEffect(() => {
-   
     // Fetch paper data from backend
     const fetchPaperData = async () => {
       try {
-        const {data} = await axios.get('/api/paper-data/67142862344b8a9d1f9c235d'); // Adjust the endpoint as needed
-        setPaperData(data.questions); 
+        const { data } = await axios.get('/api/paper-data/67142862344b8a9d1f9c235d'); // Adjust the endpoint as needed
+        setPaperData(data.questions);
         setSelectedQuestion(data?.questions[0])
-        setTimeRemaining(data?.duration *60)
+        setTimeRemaining(data?.duration * 60)
       } catch (err) {
         console.error(err);
         setError('Failed to fetch paper data.');
@@ -54,26 +139,26 @@ const MCQPortal = () => {
         <div className='w-9/12 static'>
           <div className="h-5/6 overflow-y-auto bg-white p-4 rounded shadow-md">
             {/* Pass the fetched paper data to the Question component */}
-            <Question data={selectedQuestion} selectOption={handleOptionSelect} index={selectedQuestionIndex}/>
+            <Question data={selectedQuestion} selectOption={handleOptionSelect} index={selectedQuestionIndex} chosenOption={responses[selectedQuestion._id]?.selectedOption} />
           </div>
           <div className="bg-white p-4 flex justify-between">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded">Mark for Review</button>
-            <button className="bg-orange-600 text-white px-4 py-2 rounded">Save & Mark for Review</button>
-            <button className="bg-gray-200 text-black px-4 py-2 rounded">Clear Response</button>
-            <button className="bg-green-600 text-white px-4 py-2 rounded">Save & Next</button>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("MarkAndNext")}>Mark for Review</button>
+            <button className="bg-orange-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("SaveMarkAndNext")}>Save & Mark for Review</button>
+            <button className="bg-gray-200 text-black px-4 py-2 rounded" onClick={handleClearResponse}>Clear Response</button>
+            <button className="bg-green-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("SaveAndNext")}>Save & Next</button>
           </div>
           <div className="p-4 flex justify-between">
             <button className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
             <div>
-              <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={()=>{setSelectedQuestion(paperData[selectedQuestionIndex-1]); setSelectedQuestionIndex(selectedQuestionIndex-1)}}>&lt;&lt; Back</button>
-              <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={()=>{setSelectedQuestion(paperData[selectedQuestionIndex+1]); setSelectedQuestionIndex(selectedQuestionIndex+1)}}> Next &gt;&gt; </button>
+              <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={handleBackBtn}>&lt;&lt; Back</button>
+              <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={handleNextBtn}> Next &gt;&gt; </button>
             </div>
           </div>
         </div>
 
         {/* Right Section: Question Palette */}
         <div className="max-h-screen overflow-y-auto w-4/12 bg-white p-4 ml-4 rounded shadow-md">
-          <QuestionPalette data={paperData} selectQuestion={setSelectedQuestion} setIndex={setSelectedQuestionIndex}/>
+          <QuestionPalette data={paperData} selectQuestion={setSelectedQuestion} setIndex={setSelectedQuestionIndex} responses={responses} setResponses={setResponses} />
         </div>
       </div>
     </div>
