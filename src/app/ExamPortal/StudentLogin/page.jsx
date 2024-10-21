@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 const LoginContent = ({ handleLogin, userId, setUserId, password, setPassword }) => {
   return (
-    <div className="h-full bg-gray-800 flex flex-col">
+    <div className="h-full bg-gray-100 flex flex-col">
       {/* Login Section */}
       <div className="mt-20">
         <StudentLogin
@@ -29,7 +29,8 @@ export default function LoginPage() {
   const examId = searchParams.get('examId');
   const examTitle = searchParams.get('examTitle');
   const exam = searchParams.get('exam');
-  const paperCode = searchParams.get('paperCode');
+  const subjectCode = searchParams.get('subjectCode');
+  const examType = searchParams.get('examType')
 
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -43,7 +44,7 @@ export default function LoginPage() {
     });
 
     if (result.error) {
-      toast.error("Invalid credentials");
+      toast.error("Invalid credentials, If you have not register with us then register first!");
     } else {
       // Check for Google Password Manager warnings
       const breachWarning = result?.warning;
@@ -51,7 +52,7 @@ export default function LoginPage() {
       if (breachWarning) {
         toast.warning("The password you just used has been found in a data breach. Please consider changing it.");
       }
-      router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&paperCode=${paperCode}`);
+      router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`);
     }
   };
 

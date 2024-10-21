@@ -7,7 +7,7 @@ const ExamHeader = ({ time }) => {
   const { data: session } = useSession()
   const searchParams = useSearchParams()
   const exam = searchParams.get('exam');
-  const paperCode = searchParams.get('paperCode');
+  const subjectCode = searchParams.get('subjectCode');
 
   return (
     <header className="bg-white h-5/6 flex py-4 shadow-md sticky top-0">
@@ -48,7 +48,7 @@ const ExamHeader = ({ time }) => {
               Student Name: <span className="text-orange-600 lg:text-base">{session?.user?.name}</span>
             </h1>
             <h1 className="text-sm md:text-base lg:text-lg font-bold text-blue-900">
-              Course: <span className="text-orange-600 lg:text-base">{exam.toUpperCase()} ({paperCode.toUpperCase()})</span>
+              Course: <span className="text-orange-600 lg:text-base">{exam?.toUpperCase()} ({subjectCode?.toUpperCase()})</span>
             </h1>
           </div>
         </div>

@@ -80,7 +80,7 @@ const WebDesigningPage = ({params}) => {
                     <p className="text-gray-400 text-xs">Marks: {test.totalMarks}</p>
                     <p className="text-gray-400 text-xs">Duration: {test.duration}mins</p>
 
-                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&paperCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                       Take Test
                     </Link>
                   </div>
@@ -107,7 +107,7 @@ const WebDesigningPage = ({params}) => {
                     <p className="text-gray-400 text-xs">Marks: {test.totalMarks}</p>
                     <p className="text-gray-400 text-xs">Duration: {test.duration}mins</p>
 
-                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=Practical&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                       Take Test
                     </Link>
                   </div>

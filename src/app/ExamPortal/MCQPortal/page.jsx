@@ -30,7 +30,8 @@ const MCQPortal = () => {
   };
 
 
-  const handleNextBtn = () => {
+  // Move to the next or previous question
+  const navigateQuestion = (direction) => {
     setResponses({
       ...responses,
       [selectedQuestion._id]: {
@@ -38,25 +39,12 @@ const MCQPortal = () => {
         answerType: responses[selectedQuestion._id]?.answerType || "NotAnswered"
       }// Store the selected option for each question
     });
-    if (selectedQuestionIndex < paperData.length - 1) {
-      setSelectedQuestion(paperData[selectedQuestionIndex + 1]);
-      setSelectedQuestionIndex(selectedQuestionIndex + 1)
+    const newIndex = selectedQuestionIndex + direction;
+    if (newIndex >= 0 && newIndex < paperData.length) {
+      setSelectedQuestionIndex(newIndex);
+      setSelectedQuestion(paperData[newIndex]);
     }
-  }
-
-  const handleBackBtn = () => {
-    setResponses({
-      ...responses,
-      [selectedQuestion._id]: {
-        selectedOption: responses[selectedQuestion._id]?.selectedOption || null,
-        answerType: responses[selectedQuestion._id]?.answerType || "NotAnswered"
-      }// Store the selected option for each question
-    });
-    if (selectedQuestionIndex > 0) {
-      setSelectedQuestion(paperData[selectedQuestionIndex - 1]);
-      setSelectedQuestionIndex(selectedQuestionIndex - 1)
-    }
-  }
+  };
 
   const handleClearResponse = () => {
     setResponses({
@@ -154,8 +142,8 @@ const MCQPortal = () => {
             <div className="p-4 flex justify-between text-xs lg:text-base">
               <button className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
               <div>
-                <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={handleBackBtn}>&lt;&lt; Back</button>
-                <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={handleNextBtn}> Next &gt;&gt; </button>
+                <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={()=>navigateQuestion(-1)}>&lt;&lt; Back</button>
+                <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={() => navigateQuestion(1)}> Next &gt;&gt; </button>
               </div>
             </div>
           </div>
