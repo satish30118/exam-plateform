@@ -99,14 +99,14 @@ const ExamPortallayout = ({ children }) => {
 
   const handleFullscreenChange = () => {
     if (!document.fullscreenElement && examMode) {
-      toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam otherwise exam end in 60sec");
+      toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam otherwise exam end in 10sec");
       
       // Start 1 minute timer
       const timeoutId = setTimeout(() => {
         // If user hasn't re-entered fullscreen, submit the test
         toast.error("You didn't return to fullscreen in time.Submitting the exam.");
-        submitTest(); // Call the function to submit the test here
-      }, 60000); // 60 seconds
+        handleExamSubmit(); // Call the function to submit the test here
+      }, 10000); // 60 seconds
 
       setExitTimeout(timeoutId);
     } else if (document.fullscreenElement && exitTimeout) {

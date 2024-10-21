@@ -4,6 +4,7 @@ import "./globals.css"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClientWrapper from "@/components/ExamPortal/ClientWrapper";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Exam Point",
@@ -19,7 +20,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <SessionWrapper>
+        <Suspense fallback={<div>Suspense Loading...</div>}>
           <ClientWrapper>{children}</ClientWrapper>
+          </Suspense>
         </SessionWrapper>
         <ToastContainer />
       </body>
