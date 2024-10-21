@@ -1,16 +1,23 @@
-// src/components/Login.js
-
 'use client';
 import { FaGoogle } from 'react-icons/fa';
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { signIn, useSession, getSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter()
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is already logged in
+    if (session && session.user) {
+      // console.log('Session after login:', session);
+      router.push(`/dashboard/${session?.role?.toLowerCase() || 'student'}`);
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,13 +26,25 @@ export default function Login() {
       password,
       redirect: false,
     });
-
+    
     if (result.error) {
-      toast.error("Invalid credentials")
+      toast.error("Invalid credentials");
     } else {
-      // Redirect or handle successful login
       toast.success('Login successful!');
-      // router.push("/dashboard")
+
+      // Fetch the updated session
+      const updatedSession = await getSession();
+      router.push(`/dashboard/${updatedSession?.role?.toLowerCase() || 'student'}`);
+    }
+  };
+
+  const handleSignIn = async () => {
+    const result = await signIn('google', { redirect: false });    
+    if (result?.ok) {
+      // Fetch updated session after successful Google login
+      const updatedSession = await getSession();
+      // console.log('Updated session after Google login:', updatedSession);
+      router.push(`/dashboard/${updatedSession?.role?.toLowerCase() || 'student'}`);
     }
   };
 
@@ -77,7 +96,7 @@ export default function Login() {
           </div>
 
           <button
-            onClick={() => signIn('google')}
+            onClick={handleSignIn}
             className='mt-5 w-full py-2 px-5 my-1 rounded-lg flex items-center justify-center bg-red-600 hover:bg-red-700 transition duration-200 text-white'
           >
             <FaGoogle className="mr-2" />
@@ -89,7 +108,7 @@ export default function Login() {
             <hr className="flex-grow border-gray-600" />
           </div>
           <button
-            onClick={() => signIn('google')}
+            onClick={handleSignIn}
             className='mt-2 w-full py-2 px-5 rounded-lg flex items-center justify-center bg-green-600 hover:bg-green-700 transition duration-200 text-white'
           >
             <FaGoogle className="mr-2" />

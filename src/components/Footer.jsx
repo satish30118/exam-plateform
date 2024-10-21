@@ -44,6 +44,11 @@ const Footer = () => {
                   A Level Mock Tests
                 </Link>
               </li>
+              <li>
+                <Link href="/exams/cuet" className="hover:text-white">
+                  CUET(UG) Mock Tests
+                </Link>
+              </li>
             </ul>
           </div>
 
