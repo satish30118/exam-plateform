@@ -57,6 +57,6 @@ const examPaperSchema = new mongoose.Schema({
   },
   }, {timestamps:true});
 
-const ExamPaper = mongoose.models.ExamPaper || mongoose.model('ExamPaper', examPaperSchema);
+const MCQExamPaper = mongoose.models.MCQExamPaper || mongoose.model('MCQExamPaper', examPaperSchema);
 
-export default ExamPaper;
+export default MCQExamPaper;

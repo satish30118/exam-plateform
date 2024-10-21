@@ -1,5 +1,5 @@
 // app/api/paper-data/[id]/route.js
-import ExamPaper from '@/models/ExamPaper'; // Adjust the import path according to your project structure
+import MCQExamPaper from '@/models/MCQExamPaper'; // Adjust the import path according to your project structure
 import connectDB from '@/utils/db';
 import { NextResponse } from 'next/server';
 
@@ -9,9 +9,10 @@ export async function GET(request, { params }) {
   await connectDB(); // Connect to MongoDB
 
   try {
-    let examPaper = await ExamPaper.findById(paperId)
+    let examPaper = await MCQExamPaper.findById(paperId)
+    // console.log(paperId)
     if (!examPaper) {
-      return new NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }
 
     examPaper.questions.map((q)=>{

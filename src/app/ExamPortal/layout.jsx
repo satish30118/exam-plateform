@@ -1,6 +1,8 @@
 "use client"
 import ExamHeader from '@/components/ExamPortal/ExamHeader'
-import { usePathname } from 'next/navigation';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { createContext, Suspense, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 const TimerContext = createContext();
@@ -8,11 +10,14 @@ const TimerContext = createContext();
 const ExamPortallayout = ({ children }) => {
     const [timeRemaining, setTimeRemaining] = useState(-1); // Total time in seconds
     const [isTimerActive, setIsTimerActive] = useState(true); // Control the timer state
-    const [studentResponse, setStudentsResponse] = useState({});
+    const [responses, setResponses] = useState({});
     const pathname = usePathname();
     const [exitTimeout, setExitTimeout] = useState(null);
     const examMode = pathname.startsWith("/ExamPortal/MCQPortal");
-
+    const searchParams = useSearchParams()
+    const  router = useRouter()
+    const examId = searchParams.get('examId');
+    const {data:session} = useSession()
 
 
     useEffect(() => {
@@ -55,7 +60,7 @@ const ExamPortallayout = ({ children }) => {
                 });
             }, 1000); // Update every second
         } else if (timeRemaining === 0) {
-            handleSubmit(); // Auto-submit if time is zero
+            handleExamSubmit(); // Auto-submit if time is zero
         }
 
         // Cleanup timer on component unmount
@@ -99,9 +104,9 @@ const ExamPortallayout = ({ children }) => {
       // Start 1 minute timer
       const timeoutId = setTimeout(() => {
         // If user hasn't re-entered fullscreen, submit the test
-        toast.error("You didn't return to fullscreen in time. Submitting the test.");
+        toast.error("You didn't return to fullscreen in time.Submitting the exam.");
         submitTest(); // Call the function to submit the test here
-      }, 3000); // 60 seconds
+      }, 2000); // 60 seconds
 
       setExitTimeout(timeoutId);
     } else if (document.fullscreenElement && exitTimeout) {
@@ -110,13 +115,6 @@ const ExamPortallayout = ({ children }) => {
       setExitTimeout(null);
       toast.success("You returned to fullscreen. Continue your exam.");
     }
-  };
-
-  // Function to submit the test
-  const submitTest = () => {
-    // Your logic to submit the test goes here
-    console.log("Submitting the test due to fullscreen exit.");
-    // Redirect user, send request to submit answers, etc.
   };
 
   useEffect(() => {
@@ -137,15 +135,39 @@ const ExamPortallayout = ({ children }) => {
 
 
     // Handle test submission
-    const handleSubmit = () => {
-        // Implement your submit logic here
-        toast.success("Test submitted!");
+    const handleExamSubmit = async() => {
+        try {
+            // Prepare the data to send
+            const submissionData = {
+              studentId: session.userId,  // Replace with actual student ID
+              examPaperId: examId,  // Replace with actual exam paper ID
+              examPaperType: "MCQExamPaper",  // Adjust if you have multiple types
+              responses: Object.entries(responses).map(([questionId, { selectedOption, answerType }]) => ({
+                questionId,
+                selectedOption,
+                answerType,
+              })),
+            };
+      
+            // Send the data to the backend
+            const { data } = await axios.post('/api/student-response', submissionData); // Adjust the endpoint as needed
+      
+            if (data.success) {
+              toast.success('Responses submitted successfully!');
+              router.push("/ExamPortal")
+            } else {
+              toast.error('Failed to submit responses.');
+            }
+          } catch (error) {
+            console.error(error);
+            toast.error('Error submitting responses: ' + error.message);
+          }
         setIsTimerActive(false); // Stop the timer
     };
 
     return (
         <div>
-            <TimerContext.Provider value={{ timeRemaining, setTimeRemaining, studentResponse, setStudentsResponse }}>
+            <TimerContext.Provider value={{ timeRemaining, setTimeRemaining, responses, setResponses, handleExamSubmit }}>
                 <Suspense fallback={<div>Suspense Loading...</div>}>
                     <div className="h-screen bg-gray-100 ">
                         <div className="h-1/6 "><ExamHeader time={timeRemaining} /></div>

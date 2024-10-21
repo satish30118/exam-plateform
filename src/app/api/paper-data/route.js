@@ -1,4 +1,4 @@
-import ExamPaper from "@/models/ExamPaper";
+import MCQExamPaper from "@/models/MCQExamPaper";
 import connectDB from "@/utils/db";
 import { NextResponse } from "next/server"; // Import NextResponse
 
@@ -9,7 +9,7 @@ export async function POST(request) {
     const body = await request.json(); // Parse the request body
     console.log(body); // Log to check the parsed body
 
-    const exam = new ExamPaper(body); // Create a new exam using the parsed body
+    const exam = new MCQExamPaper(body); // Create a new exam using the parsed body
     await exam.save(); // Save the exam to the database
 
     // Respond with NextResponse and structured response data

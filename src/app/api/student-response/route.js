@@ -1,24 +1,28 @@
 import StudentResponse from '@/models/StudentResponse';
-import ExamPaper from '@/models/ExamPaper';
 import connectDB from '@/utils/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
-  const { studentId, examPaperId, responses } = await request.json();
+  const { studentId, examPaperId, examPaperType, responses } = await request.json();
 
   await connectDB(); // Connect to MongoDB
 
   try {
-    // Check if the exam paper exists
-    const examPaper = await ExamPaper.findById(examPaperId);
-    if (!examPaper) {
-      return new NextResponse(JSON.stringify({ success: false, message: 'Exam paper not found' }), { status: 404 });
+    // Check if a student response already exists
+    let existingResponse = await StudentResponse.findOne({ studentId, examPaperId, examPaperType });
+
+    if (existingResponse) {
+      // Update the existing response
+      existingResponse.responses = responses; // Update the responses
+      const updatedResponse = await existingResponse.save(); // Save the updated response
+      return new NextResponse(JSON.stringify({ success: true, data: updatedResponse }), { status: 200 });
     }
 
     // Create a new student response document
     const newResponse = new StudentResponse({
       studentId,
       examPaperId,
+      examPaperType,
       responses,
     });
 

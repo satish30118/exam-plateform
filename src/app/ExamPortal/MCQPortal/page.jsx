@@ -1,22 +1,22 @@
 "use client";
 import Question from '@/components/ExamPortal/Question';
 import QuestionPalette from '@/components/ExamPortal/QuestionPalette';
-import ExamHeader from '@/components/ExamPortal/ExamHeader';
 import React, { Suspense, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useTimer } from '../layout';
 import axios from 'axios';
 import Loading from '@/components/Loader';
+import { useSearchParams } from 'next/navigation';
 
 const MCQPortal = () => {
-  const { setTimeRemaining, studentResponse, setStudentResponse } = useTimer();
+  const { setTimeRemaining, responses, setResponses, handleExamSubmit } = useTimer();
   const [paperData, setPaperData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState("")
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0)
-
-  const [responses, setResponses] = useState({});
+  const searchParams = useSearchParams()
+    const examId = searchParams.get('examId');
 
   const handleOptionSelect = (questionId, selectedOption) => {
     setResponses({
@@ -32,6 +32,12 @@ const MCQPortal = () => {
 
   // Move to the next or previous question
   const navigateQuestion = (direction) => {
+    const newIndex = selectedQuestionIndex + direction;
+    if (newIndex >= 0 && newIndex < paperData.length) {
+      setSelectedQuestionIndex(newIndex);
+      setSelectedQuestion(paperData[newIndex]);
+    }
+
     setResponses({
       ...responses,
       [selectedQuestion._id]: {
@@ -39,11 +45,17 @@ const MCQPortal = () => {
         answerType: responses[selectedQuestion._id]?.answerType || "NotAnswered"
       }// Store the selected option for each question
     });
-    const newIndex = selectedQuestionIndex + direction;
-    if (newIndex >= 0 && newIndex < paperData.length) {
-      setSelectedQuestionIndex(newIndex);
-      setSelectedQuestion(paperData[newIndex]);
+
+    if(responses[selectedQuestion._id]?.answerType=="NotAnswered"){
+      setResponses({
+        ...responses,
+        [selectedQuestion._id]: {
+          selectedOption: null,
+          answerType: responses[selectedQuestion._id]?.answerType || "NotAnswered"
+        }// Store the selected option for each question
+      });
     }
+    
   };
 
   const handleClearResponse = () => {
@@ -104,10 +116,10 @@ const MCQPortal = () => {
     // Fetch paper data from backend
     const fetchPaperData = async () => {
       try {
-        const { data } = await axios.get('/api/paper-data/67142862344b8a9d1f9c235d'); // Adjust the endpoint as needed
+        const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
         setPaperData(data.questions);
         setSelectedQuestion(data?.questions[0])
-        setTimeRemaining(data?.duration * 60)
+        setTimeRemaining(60)
       } catch (err) {
         console.error(err);
         setError('Failed to fetch paper data.');
@@ -119,6 +131,11 @@ const MCQPortal = () => {
 
     fetchPaperData();
   }, [setTimeRemaining]);
+
+
+  const handleSubmit = async () => {
+    handleExamSubmit()
+  };
 
   if (loading) return <Loading />
 
@@ -140,7 +157,7 @@ const MCQPortal = () => {
               <button className="bg-green-600 text-white px-4 py-2 rounded" onClick={() => handleAnswerType("SaveAndNext")}>Save & Next</button>
             </div>
             <div className="p-4 flex justify-between text-xs lg:text-base">
-              <button className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+              <button className="bg-green-600 text-white px-4 py-2 rounded" onClick={handleSubmit}>Submit</button>
               <div>
                 <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={()=>navigateQuestion(-1)}>&lt;&lt; Back</button>
                 <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={() => navigateQuestion(1)}> Next &gt;&gt; </button>
