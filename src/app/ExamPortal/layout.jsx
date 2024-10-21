@@ -154,7 +154,7 @@ const ExamPortallayout = ({ children }) => {
       
             if (data.success) {
               toast.success('Responses submitted successfully!');
-              router.push("/ExamPortal")
+              router.push(`/ExamFeedback?&studentId=${session.userId}&examId=${examId}`)
             } else {
               toast.error('Failed to submit responses.');
             }

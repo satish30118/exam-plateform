@@ -119,7 +119,7 @@ const MCQPortal = () => {
         const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
         setPaperData(data.questions);
         setSelectedQuestion(data?.questions[0])
-        setTimeRemaining(60)
+        setTimeRemaining(data?.duration *60)
       } catch (err) {
         console.error(err);
         setError('Failed to fetch paper data.');
