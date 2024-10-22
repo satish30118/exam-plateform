@@ -21,28 +21,55 @@ const ExamPortallayout = ({ children }) => {
 
 
     useEffect(() => {
-        // Disable right-click context menu
-        const handleContextMenu = (e) => {
-            e.preventDefault();
-        };
-
-        // Disable F12 and Ctrl + Shift + I
-        const handleKeyDown = (e) => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                e.preventDefault();
-            }
-        };
-
-        // Add event listeners
-        document.addEventListener('contextmenu', handleContextMenu);
-        document.addEventListener('keydown', handleKeyDown);
-
-        // Cleanup the event listeners on component unmount
-        return () => {
-            document.removeEventListener('contextmenu', handleContextMenu);
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
+      // Disable right-click context menu
+      const handleContextMenu = (e) => {
+          e.preventDefault();
+          toast.warn("Inspecting elements is disabled.");
+      };
+  
+      // Disable F12, Ctrl + Shift + I, Ctrl + Shift + C, Ctrl + Shift + J, and Ctrl + U
+      const handleKeyDown = (e) => {
+          if (e.key === 'F12' || 
+              (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+              (e.ctrlKey && e.shiftKey && e.key === 'C') || 
+              (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+              (e.ctrlKey && e.key === 'U')) {
+              e.preventDefault();
+              toast.error("DevTools are disabled for this exam.");
+          }
+      };
+  
+      // Detect window resize to catch DevTools opening via resizing
+      const handleResize = () => {
+          if (window.outerWidth - window.innerWidth < 200 || window.outerHeight - window.innerHeight > 200) {
+              toast.error("DevTools detected. Please close them to continue the exam.");
+              handleExamSubmit(); // Auto-submit or take any other action
+          }
+      };
+  
+      // Handle tab change or page visibility
+      const handleVisibilityChange = () => {
+          if (document.hidden) {
+              toast.error("You left the exam tab. Submitting your responses.");
+              handleExamSubmit(); // Auto-submit when the user leaves the tab
+          }
+      };
+  
+      // Add event listeners
+      document.addEventListener('contextmenu', handleContextMenu);
+      document.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('resize', handleResize);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+      // Cleanup the event listeners on component unmount
+      return () => {
+          document.removeEventListener('contextmenu', handleContextMenu);
+          document.removeEventListener('keydown', handleKeyDown);
+          window.removeEventListener('resize', handleResize);
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
+      };
+  }, []);
+  
 
     // Timer effect
     useEffect(() => {

@@ -1,21 +1,21 @@
 import MCQExamPaper from "@/models/MCQExamPaper";
 import connectDB from "@/utils/db";
-import { NextResponse } from "next/server"; // Import NextResponse
+import { NextResponse } from "next/server"; 
 
 export async function POST(request) {
-  await connectDB(); // Connect to the database
+  await connectDB(); 
 
   try {
-    const body = await request.json(); // Parse the request body
-    console.log(body); // Log to check the parsed body
+    const body = await request.json(); 
+    const totalQuestions = body.questions.length
+    // console.log(totalQuestions); 
 
-    const exam = new MCQExamPaper(body); // Create a new exam using the parsed body
-    await exam.save(); // Save the exam to the database
+    const exam = new MCQExamPaper({...body, totalQuestions}); 
+    await exam.save(); 
 
-    // Respond with NextResponse and structured response data
     return NextResponse.json({ message: 'Exam added successfully!', exam }, { status: 201 });
   } catch (error) {
-    // Respond with an error using NextResponse and status 400
+    console.log(error)
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

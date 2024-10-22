@@ -2,7 +2,7 @@
 import Question from '@/components/ExamPortal/Question';
 import QuestionPalette from '@/components/ExamPortal/QuestionPalette';
 import React, { Suspense, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'; 
 import { useTimer } from '../layout';
 import axios from 'axios';
 import Loading from '@/components/Loader';

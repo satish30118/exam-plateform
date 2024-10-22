@@ -5,23 +5,19 @@ const examPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  syllabus: {
+    type: String,
+    required: true,
+  },
   course: {
     type: String,
     required: true,
   },
   subject: {
     type: String,
-    required: true,
   },
-  type: {  // Type of exam (Theoretical or Practical)
+  chapter: {
     type: String,
-    enum: ['theoretical', 'practical'], // Restrict to specific values
-    required: true,
-  },
-  chapter: {  // Chapter associated with the exam
-    type: String,
-    required: true,
-    default:"FullType"
   },
   questions: [
     {
@@ -44,7 +40,7 @@ const examPaperSchema = new mongoose.Schema({
       },
       negative: {
         type: Number,
-        default: 0.25,
+        default: 0,
       },
     }
   ],
@@ -52,6 +48,10 @@ const examPaperSchema = new mongoose.Schema({
     type:Number
   },
   totalMarks: {
+    type: Number,
+    required: true,
+  },
+  totalQuestions: {
     type: Number,
     required: true,
   },

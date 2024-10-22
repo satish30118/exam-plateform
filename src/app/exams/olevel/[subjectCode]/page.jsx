@@ -5,13 +5,13 @@ import { FaClipboardList, FaCode, FaBook } from 'react-icons/fa';
 import axios from 'axios'; // Import Axios
 import { useSearchParams } from 'next/navigation';
 
-const WebDesigningPage = ({params}) => {
+const OlevelPage = ({ params }) => {
   const [selectedSection, setSelectedSection] = useState('theory');
   const [tests, setTests] = useState([]); // State to hold test data
   const [loading, setLoading] = useState(true); // Loading state
 
   const searchParams = useSearchParams()
-  const {subjectCode} = params;
+  const { subjectCode } = params;
   const subject = searchParams.get('sub');
 
   // Fetch the test data when the component mounts
@@ -49,12 +49,7 @@ const WebDesigningPage = ({params}) => {
           >
             Practical Tests
           </button>
-          <button
-            onClick={() => setSelectedSection('notes')}
-            className={`px-4 py-2 rounded ${selectedSection === 'notes' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300'}`}
-          >
-            Chapter-wise Notes
-          </button>
+
         </div>
       </div>
 
@@ -70,18 +65,21 @@ const WebDesigningPage = ({params}) => {
                 Choose from the following mock tests to enhance your theoretical knowledge.
               </p>
               <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-                {tests.filter(test => test.type === 'theoretical').map((test, index) => (
+                {tests.map((test, index) => (
                   <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
                     <div className="flex justify-center text-center pb-1">
-                      <FaClipboardList className="text-blue-500 mt-1 text-xl" />
-                      <h3 className="text-lg text-center font-bold ml-2 text-yellow-600">{test.title}</h3>
+                      <FaClipboardList className="text-blue-500 mt-1 text-2xl" />
+                      <h3 className="text-3xl text-center font-bold ml-2 text-yellow-600 pb-2">{test.syllabus} {test.title} </h3>
                     </div>
-                    <p className="text-pink-600 text-lg">{test.chapter}</p>
-                    <p className="text-gray-400 text-xs">Marks: {test.totalMarks}</p>
-                    <p className="text-gray-400 text-xs">Duration: {test.duration}mins</p>
+                    <div>{test?.chapter && <div className='text-pink-600 text-lg font-bold pb-3'>Topic - {test.chapter}</div>}</div>
+                    <div className='flex justify-around px-3 pb-3'>
+                      <div>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
+                      <div>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
+                      <div> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
+                    </div>
 
                     <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                      Take Test
+                      Start Exam
                     </Link>
                   </div>
                 ))}
@@ -93,19 +91,22 @@ const WebDesigningPage = ({params}) => {
             <div>
               <h2 className="text-2xl font-semibold text-white">Practical Tests</h2>
               <p className="mt-2 text-gray-400">
-                The Practical Exam includes creating a web page using HTML, CSS, and JavaScript. 
+                The Practical Exam includes creating a web page using HTML, CSS, and JavaScript.
                 Students will be required to demonstrate their skills through coding.
               </p>
               <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-                {tests.filter(test => test.type === 'practical').map((test, index) => (
+                {tests.map((test, index) => (
                   <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
-                    <div className="flex items-center justify-center text-center pb-1">
-                      <FaClipboardList className="text-blue-500" />
-                      <h3 className="text-lg text-center font-bold ml-2 text-yellow-600">{test.title}</h3>
+                    <div className="flex justify-center text-center pb-1">
+                      <FaClipboardList className="text-blue-500 mt-1 text-2xl" />
+                      <h3 className="text-3xl text-center font-bold ml-2 text-yellow-600 pb-2">{test.syllabus} {test.title} </h3>
                     </div>
-                    <p className="text-pink-600 text-lg">{test.chapter}</p>
-                    <p className="text-gray-400 text-xs">Marks: {test.totalMarks}</p>
-                    <p className="text-gray-400 text-xs">Duration: {test.duration}mins</p>
+                    <div>{test?.chapter && <div className='text-pink-600 text-lg font-bold pb-3'>Topic - {test.chapter}</div>}</div>
+                    <div className='flex justify-around px-3 pb-3'>
+                      <div>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
+                      <div>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
+                      <div> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
+                    </div>
 
                     <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=Practical&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                       Take Test
@@ -116,36 +117,11 @@ const WebDesigningPage = ({params}) => {
             </div>
           )}
 
-          {selectedSection === 'notes' && (
-            <div>
-              <h2 className="text-2xl font-semibold text-white">Chapter-wise Notes</h2>
-              <p className="mt-2 text-gray-400">
-                Here are the notes organized by chapter to help you study effectively.
-              </p>
-              <div className="mt-4 space-y-4">
-                <div className="bg-gray-900 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-white">Chapter 1: Introduction to Web Design</h3>
-                  <p className="mt-2 text-gray-400">Overview of web design principles and best practices.</p>
-                </div>
-                <div className="bg-gray-900 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-white">Chapter 2: HTML Basics</h3>
-                  <p className="mt-2 text-gray-400">Understanding HTML structure and elements.</p>
-                </div>
-                <div className="bg-gray-900 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-white">Chapter 3: CSS Styling</h3>
-                  <p className="mt-2 text-gray-400">Applying styles and layouts using CSS.</p>
-                </div>
-                <div className="bg-gray-900 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-white">Chapter 4: JavaScript Basics</h3>
-                  <p className="mt-2 text-gray-400">Introduction to JavaScript and its use in web design.</p>
-                </div>
-              </div>
-            </div>
-          )}
+
         </div>
       )}
     </div>
   );
 };
 
-export default WebDesigningPage;
+export default OlevelPage;

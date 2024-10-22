@@ -6,11 +6,11 @@ const OLevelPage = () => {
     <div className="bg-gray-800 min-h-screen flex flex-col pb-24">
       <header className=" py-20 text-center">
         <h1 className="text-6xl font-bold text-pink-600 ">O Level Courses</h1>
-        <p className="mt-4 text-xl">Select a course to start your preparation!</p>
+        <p className="mt-4 text-xl">Select a subject to start your preparation!</p>
       </header>
 
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h2 className="text-3xl font-semibold text-center mb-6 text-yellow-600">Available Courses</h2>
+        <h2 className="text-3xl font-semibold text-center mb-6 text-yellow-600">Available Subjects</h2>
 
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-center gap-6">

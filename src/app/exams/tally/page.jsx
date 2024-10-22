@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { FaClipboardList, FaCode, FaBook } from 'react-icons/fa';
 import axios from 'axios'; // Import Axios
 
-const DcaPage = ({ params }) => {
+const TallyPage = ({ params }) => {
   const [tests, setTests] = useState([]); // State to hold test data
   const [loading, setLoading] = useState(true); // Loading state
 
@@ -14,7 +14,7 @@ const DcaPage = ({ params }) => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get(`/api/paper-data/getpapers?course=dca`); // Fetch test data from the API
+        const response = await axios.get(`/api/paper-data/getpapers?course=tally`); // Fetch test data from the API
         setTests(response.data); // Set the fetched data to state
         setLoading(false); // Disable loading state
       } catch (error) {
@@ -28,7 +28,7 @@ const DcaPage = ({ params }) => {
 
   return (
     <div className="bg-gray-800 min-h-screen p-6">
-      <h1 className="text-4xl font-bold text-pink-600 text-center">Diploma in Computer Application (DCA)</h1>
+      <h1 className="text-4xl font-bold text-pink-600 text-center">Course on Computer Concepts (CCC)</h1>
 
       {/* Loading State */}
       {loading ? (
@@ -53,7 +53,7 @@ const DcaPage = ({ params }) => {
                     <div> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                   </div>
 
-                  <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=dca&examType=MCQ&subjectCode=""`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                  <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=tally&examType=MCQ&subjectCode=""`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                     Start Exam
                   </Link>
                 </div>
@@ -67,4 +67,4 @@ const DcaPage = ({ params }) => {
   );
 };
 
-export default DcaPage;
+export default TallyPage;

@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const AddExam = () => {
-    const [title, setTitle] = useState('FullSyllabus');
+    const [title, setTitle] = useState('');
+    const [syllabus, setSyllabus] = useState('Full Syllabus');
     const [course, setCourse] = useState('olevel');
     const [subject, setSubject] = useState('m1');
-    const [type, setType] = useState('theoretical');
     const [chapter, setChapter] = useState('');
     const [questions, setQuestions] = useState([]);
     const [duration, setDuration] = useState();
@@ -24,7 +24,7 @@ const AddExam = () => {
         const examData = {
             title,
             subject,
-            type,
+            syllabus,
             chapter,
             questions,
             duration,
@@ -43,29 +43,42 @@ const AddExam = () => {
             if (response.status === 201) {
                 toast.success('Exam added successfully!');
             } else {
-                toast.alert('Failed to add exam.');
+                toast.warn('Failed to add exam.');
             }
         } catch (error) {
             console.error('Error adding exam:', error);
-            alert('Failed to add exam. Please try again.');
+            toast.error('Failed to add exam. Please try again.');
         }
     };
 
     return (
         <div className="container mx-auto p-6 bg-gray-800 text-gray-200">
-            <h2 className="text-2xl font-bold mb-4">Add Exam</h2>
+            <h2 className="text-2xl font-bold mb-4">Add MCQ Exam</h2>
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label className="block mb-1">Title:</label>
-                        <select
+                        <input
+                            type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
+                            className="p-2 w-full rounded bg-gray-700 text-gray-200"
+                            placeholder='eg: Test-1 or Test-2'
+                            required
+                            
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1">Syllabus:</label>
+                        <select
+                            value={syllabus}
+                            onChange={(e) => setSyllabus(e.target.value)}
                             className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
                         >
                             <option value="Full Syllabus">Full Syllabus</option>
                             <option value="Chapter Wise">Chapter Wise</option>
+
                         </select>
                     </div>
                     <div>
@@ -81,13 +94,15 @@ const AddExam = () => {
                             <option value="ccc">CCC</option>
                             <option value="adca">ADCA</option>
                             <option value="dca">DCA</option>
+                            <option value="tally">Tally</option>
+                            <option value="cuet">CUET(UG)</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
                     <div>
                         <label className="block mb-1">Subject:</label>
                         <select
-                            value={type}
+                            value={subject}
                             onChange={(e) => setSubject(e.target.value)}
                             className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
@@ -96,6 +111,10 @@ const AddExam = () => {
                             <option value="m3">Python</option>
                             <option value="m4">IoT</option>
                             <option value="m1">IT Tools</option>
+                            <option value="home-science">Home Science</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="physical-education">Physical Education</option>
+                            <option value="political-Science">Political Science</option>
                             <option value="other">Other</option>
 
                         </select>
@@ -110,19 +129,7 @@ const AddExam = () => {
                             
                         />
                     </div>
-                    <div>
-                        <label className="block mb-1">Type:</label>
-                        <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            className="p-3 w-full rounded bg-gray-700 text-gray-200"
-                            required
-                        >
-                            <option value="theoretical">MCQ</option>
-                            <option value="practical">Practical</option>
-                        </select>
-                    </div>
-
+                    
                     <div>
                         <label className="block mb-1">Duration (minutes):</label>
                         <input
@@ -229,7 +236,7 @@ const AddExam = () => {
                     type="submit"
                     className="bg-blue-600 float-right my-5 text-white py-2 px-4 rounded"
                 >
-                    Submit Exam
+                    Create Exam
                 </button>
             </form>
             <br />

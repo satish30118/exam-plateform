@@ -36,6 +36,9 @@ const Navbar = () => {
           <Link href="/exams/olevel" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-bold">O Level</p>
           </Link>
+          <Link href="/exams/alevel" passHref>
+            <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">A Level</p>
+          </Link>
           <Link href="/exams/ccc" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-bold">CCC</p>
           </Link>
@@ -45,8 +48,8 @@ const Navbar = () => {
           <Link href="/exams/dca" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">DCA</p>
           </Link>
-          <Link href="/exams/alevel" passHref>
-            <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">A Level</p>
+          <Link href="/exams/tally" passHref>
+            <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">Tally</p>
           </Link>
           <Link href="/exams/cuet" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">CUET(UG)</p>
@@ -61,12 +64,16 @@ const Navbar = () => {
                 Login
               </p>
             </Link>
+            
           </div>
         ) : (
           <div className="hidden md:flex items-center space-x-4">
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
               Logout
             </button>
+            <Link href={`/dashboard/${session.role.toLowerCase()}`} passHref>
+            <img src={session?.image} alt="" title='Dashboard' className='h-11 w-11 rounded-full'/>
+          </Link>
           </div>
         )}
 
@@ -85,6 +92,9 @@ const Navbar = () => {
             <Link href="/exams/olevel" passHref>
               <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">O-Level</p>
             </Link>
+            <Link href="/exams/alevel" passHref>
+              <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">A-Level</p>
+            </Link>
             <Link href="/exams/ccc" passHref>
               <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">CCC</p>
             </Link>
@@ -94,9 +104,7 @@ const Navbar = () => {
             <Link href="/exams/dca" passHref>
               <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">DCA</p>
             </Link>
-            <Link href="/exams/alevel" passHref>
-              <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">A-Level</p>
-            </Link>
+
             <Link href="/exams/cuet" passHref>
               <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">CUET(UG)</p>
             </Link>
@@ -109,9 +117,14 @@ const Navbar = () => {
                 </p>
               </Link>
             ) : (
+              <div className="hidden md:flex items-center space-x-4">
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
                 Logout
               </button>
+               <Link href={`/dashboard/${session.role.toLowerCase()}`} passHref>
+               <img src={session?.image} alt="" title='Dashboard' className='h-11 w-11 rounded-full'/>
+             </Link>
+             </div>
             )}
           </div>
         </div>

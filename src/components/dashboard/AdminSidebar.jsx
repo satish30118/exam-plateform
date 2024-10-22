@@ -28,9 +28,9 @@ const AdminSidebar = () => {
             </Link>
           </li>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <Link href="/dashboard/admin/manage-exams/add-exam" className="flex items-center text-gray-200">
+            <Link href="/dashboard/admin/manage-exams/add-mcq-exam" className="flex items-center text-gray-200">
               <FaPlusSquare className="mr-2" />
-              <span>Add Exams</span>
+              <span>Add MCQ Exam</span>
             </Link>
           </li>
         </ul>

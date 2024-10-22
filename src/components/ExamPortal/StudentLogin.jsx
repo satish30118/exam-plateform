@@ -10,7 +10,7 @@ const StudentLogin = ({ handleLogin, userId, setUserId, password, setPassword })
         <div className="mb-6 text-gray-800">
           <label htmlFor="userId" className="block text-sm font-semibold text-gray-900 mb-2">Student ID</label>
           <input 
-            type="text" 
+            type="number" 
             id="userId" 
             name='userId'
             className="bg-white mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"

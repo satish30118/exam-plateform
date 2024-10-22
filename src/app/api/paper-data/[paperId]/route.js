@@ -15,9 +15,10 @@ export async function GET(request, { params }) {
       return NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }
 
-    examPaper.questions.map((q)=>{
-        q.correctAnswer = " "
-    })
+    // examPaper.questions.map((q)=>{
+    //     q.correctAnswer = " "
+    // })
+
     return NextResponse.json(examPaper); // Use NextResponse.json for consistent responses
   } catch (error) {
     console.log(error)
