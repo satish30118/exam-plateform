@@ -5,7 +5,6 @@ const Loading = () => {
     <div className="flex p-4 h-screen justify-center items-center text-black">
       <div className="flex flex-col items-center">
         <div className="loader"></div>
-        <p className="mt-4 text-lg">Question Loading...</p>
       </div>
       <style jsx>{`
         .loader {

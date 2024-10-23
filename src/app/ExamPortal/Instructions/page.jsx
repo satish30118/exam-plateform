@@ -23,7 +23,7 @@ const Instructions = () => {
             return;
         }
         // Proceed to the next step
-        router.push(`/ExamPortal/${examType}Portal?examId=${examId}&examTitle=${examTitle}&exam=${exam}&subjectCode=${subjectCode}`)
+        router.push(`/ExamPortal/${examType}Portal?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
     };
 
     return (

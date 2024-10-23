@@ -1,5 +1,6 @@
 "use client"
 import ExamHeader from '@/components/ExamPortal/ExamHeader'
+import Loading from '@/components/Loader';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -8,93 +9,59 @@ import { toast } from 'react-toastify';
 const TimerContext = createContext();
 
 const ExamPortallayout = ({ children }) => {
-    const [timeRemaining, setTimeRemaining] = useState(-1); // Total time in seconds
-    const [isTimerActive, setIsTimerActive] = useState(true); // Control the timer state
-    const [responses, setResponses] = useState({});
-    const pathname = usePathname();
-    const [exitTimeout, setExitTimeout] = useState(null);
-    const examMode = pathname.startsWith("/ExamPortal/MCQPortal");
-    const searchParams = useSearchParams()
-    const  router = useRouter()
-    const examId = searchParams.get('examId');
-    const {data:session} = useSession()
+  const [timeRemaining, setTimeRemaining] = useState(-1); // Total time in seconds
+  const [isTimerActive, setIsTimerActive] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [responses, setResponses] = useState({});
+  const pathname = usePathname();
+  const [exitTimeout, setExitTimeout] = useState(null);
+  const examMode = pathname.startsWith("/ExamPortal/MCQPortal") || pathname.startsWith("/ExamPortal/PractialPortal");
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const examId = searchParams.get('examId');
+  const examType = searchParams.get('examType');
+  const { data: session } = useSession()
 
 
-    useEffect(() => {
-      // Disable right-click context menu
-      const handleContextMenu = (e) => {
-          e.preventDefault();
-          toast.warn("Inspecting elements is disabled.");
-      };
-  
-      // Disable F12, Ctrl + Shift + I, Ctrl + Shift + C, Ctrl + Shift + J, and Ctrl + U
-      const handleKeyDown = (e) => {
-          if (e.key === 'F12' || 
-              (e.ctrlKey && e.shiftKey && e.key === 'I') || 
-              (e.ctrlKey && e.shiftKey && e.key === 'C') || 
-              (e.ctrlKey && e.shiftKey && e.key === 'J') || 
-              (e.ctrlKey && e.key === 'U')) {
-              e.preventDefault();
-              toast.error("DevTools are disabled for this exam.");
+  useEffect(() => {
+    if (!examMode) return;
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        toast.warn("You left the exam tab. Submitting your responses.");
+        handleExamSubmit();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [examMode]);
+
+
+  // Timer effect
+  useEffect(() => {
+    let timer;
+
+    if (timeRemaining > 0) {
+      timer = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            // handleSubmit(); // Auto-submit when time is up
+            return 0;
           }
-      };
-  
-      // Detect window resize to catch DevTools opening via resizing
-      const handleResize = () => {
-          if (window.outerWidth - window.innerWidth < 200 || window.outerHeight - window.innerHeight > 200) {
-              toast.error("DevTools detected. Please close them to continue the exam.");
-              handleExamSubmit(); // Auto-submit or take any other action
-          }
-      };
-  
-      // Handle tab change or page visibility
-      const handleVisibilityChange = () => {
-          if (document.hidden) {
-              toast.error("You left the exam tab. Submitting your responses.");
-              handleExamSubmit(); // Auto-submit when the user leaves the tab
-          }
-      };
-  
-      // Add event listeners
-      document.addEventListener('contextmenu', handleContextMenu);
-      document.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('resize', handleResize);
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-  
-      // Cleanup the event listeners on component unmount
-      return () => {
-          document.removeEventListener('contextmenu', handleContextMenu);
-          document.removeEventListener('keydown', handleKeyDown);
-          window.removeEventListener('resize', handleResize);
-          document.removeEventListener('visibilitychange', handleVisibilityChange);
-      };
-  }, []);
-  
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (timeRemaining === 0) {
+      handleExamSubmit();
+    }
 
-    // Timer effect
-    useEffect(() => {
-        let timer;
+    // Cleanup timer on component unmount
+    return () => clearInterval(timer);
+  }, [timeRemaining, isTimerActive]);
 
-        if (timeRemaining > 0) {
-            timer = setInterval(() => {
-                setTimeRemaining((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        // handleSubmit(); // Auto-submit when time is up
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000); // Update every second
-        } else if (timeRemaining === 0) {
-            handleExamSubmit(); // Auto-submit if time is zero
-        }
 
-        // Cleanup timer on component unmount
-        return () => clearInterval(timer);
-    }, [timeRemaining, isTimerActive]);
-
-    
   const enterFullScreen = () => {
     const docElm = document.documentElement;
     if (!document.fullscreenElement) {  // Only enter fullscreen if not already in it
@@ -126,21 +93,20 @@ const ExamPortallayout = ({ children }) => {
 
   const handleFullscreenChange = () => {
     if (!document.fullscreenElement && examMode) {
-      toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam otherwise exam end in 10sec");
-      
-      // Start 1 minute timer
+      toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam, otherwise, the exam will end in 10 seconds.");
+
       const timeoutId = setTimeout(() => {
-        // If user hasn't re-entered fullscreen, submit the test
-        toast.error("You didn't return to fullscreen in time.Submitting the exam.");
-        handleExamSubmit(); // Call the function to submit the test here
-      }, 10000); // 60 seconds
+        toast.warn("You didn't return to fullscreen in time. Submitting the exam.");
+        if (exitTimeout) handleExamSubmit();
+      }, 10000);
 
       setExitTimeout(timeoutId);
-    } else if (document.fullscreenElement && exitTimeout) {
-      // If the user re-enters fullscreen, clear the timeout
-      clearTimeout(exitTimeout);
-      setExitTimeout(null);
-      toast.success("You returned to fullscreen. Continue your exam.");
+    } else if (document.fullscreenElement) {
+      if (exitTimeout) {
+        clearTimeout(exitTimeout);
+        setExitTimeout(null);
+        toast.success("You returned to fullscreen. Continue your exam.");
+      }
     }
   };
 
@@ -154,56 +120,60 @@ const ExamPortallayout = ({ children }) => {
       if (examMode) {
         exitFullScreen();
         document.removeEventListener("fullscreenchange", handleFullscreenChange);
-        // Clear any leftover timeout when component unmounts
-        if (exitTimeout) clearTimeout(exitTimeout);
+        if (exitTimeout) {
+          clearTimeout(exitTimeout);
+        }
       }
     };
   }, [examMode]);
 
 
-    // Handle test submission
-    const handleExamSubmit = async() => {
-        try {
-            // Prepare the data to send
-            const submissionData = {
-              studentId: session.userId,  // Replace with actual student ID
-              examPaperId: examId,  // Replace with actual exam paper ID
-              examPaperType: "MCQExamPaper",  // Adjust if you have multiple types
-              responses: Object.entries(responses).map(([questionId, { selectedOption, answerType }]) => ({
-                questionId,
-                selectedOption,
-                answerType,
-              })),
-            };
-      
-            // Send the data to the backend
-            const { data } = await axios.post('/api/student-response', submissionData); // Adjust the endpoint as needed
-      
-            if (data.success) {
-              toast.success('Responses submitted successfully!');
-              router.push(`/ExamFeedback?&studentId=${session.userId}&examId=${examId}`)
-            } else {
-              toast.error('Failed to submit responses.');
-            }
-          } catch (error) {
-            console.error(error);
-            toast.error('Error submitting responses: ' + error.message);
-          }
-        setIsTimerActive(false); // Stop the timer
-    };
 
-    return (
-        <div>
-            <TimerContext.Provider value={{ timeRemaining, setTimeRemaining, responses, setResponses, handleExamSubmit }}>
-                <Suspense fallback={<div>Suspense Loading...</div>}>
-                    <div className="h-screen bg-gray-100 ">
-                        <div className="h-1/6 "><ExamHeader time={timeRemaining} /></div>
-                        <div className="h-5/6 bg-gray-100">{children}</div>
-                    </div>
-                </Suspense>
-            </TimerContext.Provider>
-        </div>
-    )
+  // Handle test submission
+  const handleExamSubmit = async () => {
+    try {
+      const submissionData = {
+        studentId: session?.userId,
+        examPaperId: examId,
+        examPaperType: examType + "ExamPaper",
+        responses: Object.entries(responses).map(([questionId, { selectedOption, answerType }]) => ({
+          questionId,
+          selectedOption,
+          answerType,
+        })),
+      };
+
+      setLoading(true)
+      const { data } = await axios.post('/api/student-response', submissionData);
+      setLoading(false)
+      if (data.success) {
+        toast.success('Responses submitted successfully!');
+        router.push(`/ExamFeedback?&studentId=${session?.userId}&examId=${examId}&examType=MCQ&responseId=${data.responseId}`)
+      } else {
+        toast.error('Failed to submit responses.');
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false)
+      toast.error('Error submitting responses: ' + error.message);
+    }
+    setIsTimerActive(false);
+  };
+
+  if (loading) return <div> <Loading /> <p className="mt-4 text-lg">Submiting Response...</p></div>
+
+  return (
+    <div>
+      <TimerContext.Provider value={{ timeRemaining, setTimeRemaining, responses, setResponses, handleExamSubmit }}>
+        <Suspense fallback={<div>Suspense Loading...</div>}>
+          <div className="h-screen bg-gray-100 ">
+            <div className="h-1/6 "><ExamHeader time={timeRemaining} /></div>
+            <div className="h-5/6 bg-gray-100">{children}</div>
+          </div>
+        </Suspense>
+      </TimerContext.Provider>
+    </div>
+  )
 }
 
 export default ExamPortallayout

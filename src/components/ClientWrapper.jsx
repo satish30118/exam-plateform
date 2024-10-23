@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 export default function ClientWrapper({ children }) {
@@ -52,9 +52,11 @@ export default function ClientWrapper({ children }) {
 
   return (
     <>
-      {!hideHeaderFooter && <Navbar />}
-      {children}
-      {!hideHeaderFooter && <Footer />}
+      <Suspense fallback={<div>Suspense Loading...</div>}>
+        {!hideHeaderFooter && <Navbar />}
+        {children}
+        {!hideHeaderFooter && <Footer />}
+      </Suspense>
     </>
   );
 }

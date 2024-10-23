@@ -11,12 +11,18 @@ const ThankYouMessage = () => {
         <p className="mt-4 text-gray-900">
           Your responses have been submitted successfully. We appreciate your participation!
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex justify-evenly">
           <button 
             onClick={()=> router.push("/")}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           >
             Home
+          </button>
+          <button 
+            onClick={()=> router.push("/")}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            View Result
           </button>
         </div>
       </div>

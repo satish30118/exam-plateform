@@ -137,7 +137,7 @@ const MCQPortal = () => {
     handleExamSubmit()
   };
 
-  if (loading) return <Loading />
+  if (loading) return <div> <Loading /> <p className="mt-4 text-lg">Submiting Response...</p></div>
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
