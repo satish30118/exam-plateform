@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-async function Mailer(email,subject, body) {
+export async function Mailer(email,subject, body) {
   try {
 
     const transporter = nodemailer.createTransport({
@@ -27,5 +27,3 @@ async function Mailer(email,subject, body) {
     return { success: false, message: error.message };
   }
 }
-
-Mailer("satishresearch369@gmail.com", "Hello", "test")

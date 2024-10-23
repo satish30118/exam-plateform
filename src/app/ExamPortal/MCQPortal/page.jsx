@@ -146,7 +146,7 @@ const MCQPortal = () => {
     handleExamSubmit()
   };
 
-  if (isPermission) return <div> <Loading text="Checking Permission..." /></div>
+  if (!isPermission) return <div> <Loading text="Checking Permission..." /></div>
   if (loading) return <div> <Loading text="Question Loading..." /></div>
 
   return (
