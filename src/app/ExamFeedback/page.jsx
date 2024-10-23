@@ -1,9 +1,12 @@
 "use client"
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 const ThankYouMessage = () => {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const responseId = searchParams.get('responseId');
+  
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg text-center">
@@ -12,14 +15,14 @@ const ThankYouMessage = () => {
           Your responses have been submitted successfully. We appreciate your participation!
         </p>
         <div className="mt-6 flex justify-evenly">
-          <button 
+          {/* <button 
             onClick={()=> router.push("/")}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           >
             Home
-          </button>
+          </button> */}
           <button 
-            onClick={()=> router.push("/")}
+            onClick={()=> router.push(`/ExamFeedback/ExamResult?responseId=${responseId}`)}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           >
             View Result

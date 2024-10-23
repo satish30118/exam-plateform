@@ -36,20 +36,11 @@ const Navbar = () => {
           <Link href="/exams/olevel" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-bold">O Level</p>
           </Link>
-          <Link href="/exams/alevel" passHref>
-            <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">A Level</p>
-          </Link>
-          <Link href="/exams/ccc" passHref>
-            <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-bold">CCC</p>
-          </Link>
           <Link href="/exams/adca" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">ADCA</p>
           </Link>
           <Link href="/exams/dca" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">DCA</p>
-          </Link>
-          <Link href="/exams/tally" passHref>
-            <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">Tally</p>
           </Link>
           <Link href="/exams/cuet" passHref>
             <p className="hover:bg-gray-700 px-3 py-2 rounded-md text-md font-semibold">CUET(UG)</p>
@@ -71,7 +62,7 @@ const Navbar = () => {
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
               Logout
             </button>
-            <Link href={`/dashboard/${session.role.toLowerCase()}`} passHref>
+            <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.user?.name}`} passHref>
             <img src={session?.image} alt="" title='Dashboard' className='h-11 w-11 rounded-full'/>
           </Link>
           </div>
@@ -121,7 +112,7 @@ const Navbar = () => {
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
                 Logout
               </button>
-               <Link href={`/dashboard/${session.role.toLowerCase()}`} passHref>
+               <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.name}`} passHref>
                <img src={session?.image} alt="" title='Dashboard' className='h-11 w-11 rounded-full'/>
              </Link>
              </div>

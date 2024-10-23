@@ -17,7 +17,7 @@ const ExamHeader = ({ time }) => {
           <FaDesktop className="text-3xl md:text-4xl lg:text-5xl text-blue-900" />
           <div>
             <h1 className="text-sm md:text-lg lg:text-xl font-bold text-blue-900">
-              System Name: <span className="text-orange-600">[C0001]</span>
+              System Name: <span className="text-orange-600">[C072]</span>
             </h1>
             <p className="text-xs md:text-base text-gray-600">Excellence in Assessment</p>
           </div>
@@ -40,7 +40,7 @@ const ExamHeader = ({ time }) => {
         {/* Right Section: Student Info (Visible on medium screens and up) */}
         <div className="hidden sm:flex items-center space-x-4 ">
           <div className="flex items-center border-2 p-1 border-blue-800 rounded">
-            {session ? <img src={session?.image} alt='user' className='h-9 lg:h-10 rounded' /> : <FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" />}
+            {<FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" />}
 
           </div>
           <div>

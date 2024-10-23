@@ -10,25 +10,25 @@ const AdminSidebar = () => {
       <nav>
         <ul>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <Link href="/dashboard/admin/users" className="flex items-center text-gray-200">
+            <Link href={`/dashboard/admin/users?userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
               <FaUsers className="mr-2" />
               <span>Manage Users</span>
             </Link>
           </li>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <Link href="/dashboard/admin/manage-exams" className="flex items-center text-gray-200">
+            <Link href={`/dashboard/admin/manage-exams?userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
               <FaBook className="mr-2" />
               <span>Manage Exams</span>
             </Link>
           </li>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <Link href="/dashboard/admin/manage-results" className="flex items-center text-gray-200">
+            <Link href={`/dashboard/admin/manage-results?userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
               <FaClipboardList className="mr-2" />
               <span>View Results</span>
             </Link>
           </li>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <Link href="/dashboard/admin/manage-exams/add-mcq-exam" className="flex items-center text-gray-200">
+            <Link href={`/dashboard/admin/manage-exams/add-mcq-exam?userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
               <FaPlusSquare className="mr-2" />
               <span>Add MCQ Exam</span>
             </Link>

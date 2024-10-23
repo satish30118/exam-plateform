@@ -160,7 +160,7 @@ const ExamPortallayout = ({ children }) => {
     setIsTimerActive(false);
   };
 
-  if (loading) return <div> <Loading /> <p className="mt-4 text-lg">Submiting Response...</p></div>
+  if (loading) return <div> <Loading text="Submiting Response..." /></div>
 
   return (
     <div>

@@ -2,21 +2,25 @@
 import Question from '@/components/ExamPortal/Question';
 import QuestionPalette from '@/components/ExamPortal/QuestionPalette';
 import React, { Suspense, useEffect, useState } from 'react';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import { useTimer } from '../layout';
 import axios from 'axios';
 import Loading from '@/components/Loader';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams,useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const MCQPortal = () => {
   const { setTimeRemaining, responses, setResponses, handleExamSubmit } = useTimer();
+  const [isPermission, setIsPermission] = useState(false)
   const [paperData, setPaperData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState("")
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0)
+  const {data:session} = useSession()
   const searchParams = useSearchParams()
-    const examId = searchParams.get('examId');
+  const router = useRouter()
+  const examId = searchParams.get('examId');
 
   const handleOptionSelect = (questionId, selectedOption) => {
     setResponses({
@@ -26,7 +30,6 @@ const MCQPortal = () => {
         answerType: "NotAnswered"
       }// Store the selected option for each question
     });
-    // console.log(responses);
   };
 
 
@@ -46,7 +49,7 @@ const MCQPortal = () => {
       }// Store the selected option for each question
     });
 
-    if(responses[selectedQuestion._id]?.answerType=="NotAnswered"){
+    if (responses[selectedQuestion._id]?.answerType == "NotAnswered") {
       setResponses({
         ...responses,
         [selectedQuestion._id]: {
@@ -55,7 +58,7 @@ const MCQPortal = () => {
         }// Store the selected option for each question
       });
     }
-    
+
   };
 
   const handleClearResponse = () => {
@@ -113,13 +116,19 @@ const MCQPortal = () => {
 
 
   useEffect(() => {
-    // Fetch paper data from backend
+    if (!session) {
+      toast.warn("Your are not permitted to this page, login first to access this")
+      router.push(`/ExamPortal/StudentLogin?examId=${examId}`)
+      return;
+    }
+    setIsPermission(true)
+
     const fetchPaperData = async () => {
       try {
         const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
         setPaperData(data.questions);
         setSelectedQuestion(data?.questions[0])
-        setTimeRemaining(data?.duration *60)
+        setTimeRemaining(data?.duration * 60)
       } catch (err) {
         console.error(err);
         setError('Failed to fetch paper data.');
@@ -137,7 +146,8 @@ const MCQPortal = () => {
     handleExamSubmit()
   };
 
-  if (loading) return <div> <Loading /> <p className="mt-4 text-lg">Submiting Response...</p></div>
+  if (isPermission) return <div> <Loading text="Checking Permission..." /></div>
+  if (loading) return <div> <Loading text="Question Loading..." /></div>
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -159,7 +169,7 @@ const MCQPortal = () => {
             <div className="p-4 flex justify-between text-xs lg:text-base">
               <button className="bg-green-600 text-white px-4 py-2 rounded" onClick={handleSubmit}>Submit</button>
               <div>
-                <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={()=>navigateQuestion(-1)}>&lt;&lt; Back</button>
+                <button className="bg-gray-200 text-black px-6 py-2 rounded" onClick={() => navigateQuestion(-1)}>&lt;&lt; Back</button>
                 <button className="bg-gray-500 text-white px-6 py-2 rounded" onClick={() => navigateQuestion(1)}> Next &gt;&gt; </button>
               </div>
             </div>

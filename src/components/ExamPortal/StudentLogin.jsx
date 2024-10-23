@@ -14,7 +14,7 @@ const StudentLogin = ({ handleLogin, userId, setUserId, password, setPassword })
             id="userId" 
             name='userId'
             className="bg-white mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            placeholder="Enter your username"
+            placeholder="Enter your student ID"
              onChange={(e) => setUserId(e.target.value)}
             required
           />
