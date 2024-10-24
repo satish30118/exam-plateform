@@ -7,6 +7,7 @@ const Question = ({ data, selectOption, index, chosenOption }) => {
   useEffect(() => {
     setSelectedOption(chosenOption); // Update the selected option when the chosen option changes
   }, [data, chosenOption]); // Also include chosenOption in dependency array
+  const formattedQuestionText = data?.questionText?.replace(/\n/g, '<br />');
 
   return (
     <div className="p-4 bg-white">
@@ -15,7 +16,7 @@ const Question = ({ data, selectOption, index, chosenOption }) => {
       <hr className="my-4" />
       <div className="ml-3 flex flex-col justify-between">
         <div>
-          <p className="text-base md:text-lg mb-4">{data?.questionText}</p> 
+        <p className="text-base md:text-lg mb-4" dangerouslySetInnerHTML={{ __html: formattedQuestionText }} />
           <div className="space-y-2">
             {data?.options?.map((opt, idx) => (
               <label className="block" key={idx}>

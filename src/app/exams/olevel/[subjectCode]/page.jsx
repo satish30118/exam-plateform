@@ -69,13 +69,13 @@ const OlevelPage = ({ params }) => {
                   <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
                     <div className="flex justify-center text-center pb-1">
                       <FaClipboardList className="text-blue-500 mt-1 text-2xl" />
-                      <h3 className="text-3xl text-center font-bold ml-2 text-yellow-600 pb-2">{test.syllabus} {test.title} </h3>
+                      <h3 className="text-xl text-center font-bold ml-2 text-yellow-600 pb-2">{test.syllabus} {test.title} </h3>
                     </div>
-                    <div>{test?.chapter && <div className='text-pink-600 text-lg font-bold pb-3'>Topic - {test.chapter}</div>}</div>
+                    <div>{test?.chapter && <div className='text-pink-600 text-sm font-bold pb-3'>Topic - {test.chapter}</div>}</div>
                     <div className='flex justify-around px-3 pb-3'>
-                      <div>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
-                      <div>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
-                      <div> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
+                      <div className='text-sm'>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
+                      <div  className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
+                      <div  className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                     </div>
 
                     <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
@@ -99,17 +99,17 @@ const OlevelPage = ({ params }) => {
                   <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
                     <div className="flex justify-center text-center pb-1">
                       <FaClipboardList className="text-blue-500 mt-1 text-2xl" />
-                      <h3 className="text-3xl text-center font-bold ml-2 text-yellow-600 pb-2">{test.syllabus} {test.title} </h3>
+                      <h3 className="text-xl  text-center font-bold ml-2 text-yellow-600 pb-2">{test.syllabus} {test.title} </h3>
                     </div>
-                    <div>{test?.chapter && <div className='text-pink-600 text-lg font-bold pb-3'>Topic - {test.chapter}</div>}</div>
+                    <div>{test?.chapter && <div className='text-pink-600 text-sm font-bold pb-3'>Topic - {test.chapter}</div>}</div>
                     <div className='flex justify-around px-3 pb-3'>
-                      <div>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
-                      <div>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
-                      <div> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
+                      <div  className='text-sm'>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
+                      <div  className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
+                      <div  className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                     </div>
 
                     <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=Practical&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                      Take Test
+                      Start Exam
                     </Link>
                   </div>
                 ))}

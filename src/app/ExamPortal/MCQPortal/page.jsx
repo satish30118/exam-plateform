@@ -113,7 +113,14 @@ const MCQPortal = () => {
     }
   }
 
-  const fetchPaperData = useCallback(async () => {
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    handleExamSubmit()
+  };
+
+
+  const fetchPaperData = async () => {
     try {
       const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
       setPaperData(data.questions);
@@ -126,7 +133,7 @@ const MCQPortal = () => {
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [setTimeRemaining, examId,])
+  }
 
   useEffect(() => {
     if (status == "loading") { return }
@@ -137,13 +144,8 @@ const MCQPortal = () => {
     }
     setIsPermission(true)
     fetchPaperData();
-  }, [status, examId, session, router, fetchPaperData]);
+  }, [status, examId, session, router]);
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    handleExamSubmit()
-  };
 
   if (!isPermission) return <div> <Loading text="Checking Permission..." /></div>
   if (loading) return <div> <Loading text="Question Loading..." /></div>

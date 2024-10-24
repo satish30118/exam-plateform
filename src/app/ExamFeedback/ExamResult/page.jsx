@@ -110,17 +110,19 @@ const ExamFeedbackPage = () => {
           <h1 className="text-3xl font-extrabold mb-4 text-green-600 text-center tracking-wide">Your Responses</h1>
           {examPaperId.questions.map((question, index) => {
             const studentResponse = responses.find(res => res.questionId == question._id.toString());
+            const formattedQuestionText = question?.questionText?.replace(/\n/g, '<br />');
 
             return (
               <div key={index} className="mb-4 p-3 border border-gray-600 rounded-lg hover:shadow-lg transition-shadow duration-300">
-                <p className="font-bold text-white">Q{index + 1}: {question.questionText}</p>
+                <div className='flex justify-between'>
+                  <p className="text-base md:text-lg mb-4" dangerouslySetInnerHTML={{ __html: formattedQuestionText }} /> <div className='font-bold flex space-x-2'><h3 className='text-green-500 font-bold'>+{question?.marks}</h3>, <h3 className='text-red-500'>-{question?.negative}</h3></div></div>
                 <div className="ml-4 mt-2 space-y-2">
                   {question.options.map((option, idx) => {
                     const isSelected = option == studentResponse?.selectedOption;
                     const isCorrect = option == question.correctAnswer;
                     return (
-                      <div key={idx} className={`p-2 rounded-lg border ${isSelected && isCorrect? 'border-green-500' : isSelected ? 'border-red-600' : "border-transparent"} transition duration-150`}>
-                        <p className={`${isCorrect ?  'text-green-400 font-semibold' : isSelected ? "text-red-500": 'text-gray-300'} flex items-center`}>
+                      <div key={idx} className={`p-2 rounded-lg border ${isSelected && isCorrect ? 'border-green-500' : isSelected ? 'border-red-600' : "border-transparent"} transition duration-150`}>
+                        <p className={`${isCorrect ? 'text-green-400 font-semibold' : isSelected ? "text-red-500" : 'text-gray-300'} flex items-center`}>
                           {String.fromCharCode(65 + idx)}. {option}
                           {isSelected && <span className="ml-2 text-yellow-300 text-sm font-medium">(Your Answer)</span>}
                           {isCorrect && <span className="ml-2 text-green-400 text-sm font-medium">(Correct Answer)</span>}

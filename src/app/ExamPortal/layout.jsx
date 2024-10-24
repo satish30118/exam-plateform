@@ -22,22 +22,57 @@ const ExamPortallayout = ({ children }) => {
   const examType = searchParams.get('examType');
   const { data: session, status } = useSession()
 
+  const handleExamSubmit = async () => {
+    try {
+      const res = responses
+      console.log(JSON.parse(localStorage.getItem('responses'))
+      )
+      const submissionData = {
+        studentId: session?.userId,
+        examPaperId: examId,
+        examPaperType: examType + "ExamPaper",
+        responses: Object.entries(res).map(([questionId, { selectedOption, answerType }]) => ({
+          questionId,
+          selectedOption,
+          answerType,
+        })),
+      }
+
+      setLoading(true)
+      const { data } = await axios.post('/api/student-response', submissionData);
+      if (data.success) {
+        router.push(`/ExamFeedback?&studentId=${session?.userId}&examId=${examId}&examType=MCQ&responseId=${data.responseId}`)
+        toast.success('Responses submitted successfully!');
+      } else {
+        toast.error('Failed to submit responses.');
+      }
+      setTimeout(() => {
+        setLoading(false)
+      }, 1500);
+
+    } catch (error) {
+      console.error(error);
+      setLoading(false)
+      toast.error('Error submitting responses: ' + error.message);
+    }
+    setIsTimerActive(false);
+  }
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      handleExamSubmit();
+      toast.warn("You left the exam tab. Submitting your responses.");
+    }
+  };
 
   useEffect(() => {
-    if (!examMode) return;
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        handleExamSubmit();
-        toast.warn("You left the exam tab. Submitting your responses.");
-      }
-    };
+    if (!examMode) { return };
+    localStorage.setItem('responses', JSON.stringify(responses))
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => {
-      if (document.hidden) {
-        document.removeEventListener('visibilitychange', handleVisibilityChange);
-      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [examMode, handleExamSubmit]);
+  }, [examMode]);
 
 
   // Timer effect
@@ -64,11 +99,11 @@ const ExamPortallayout = ({ children }) => {
   }, [timeRemaining, isTimerActive, handleExamSubmit]);
 
 
-  const enterFullScreen = () => {
+  const enterFullScreen = async () => {
     const docElm = document.documentElement;
     if (!document.fullscreenElement) {  // Only enter fullscreen if not already in it
       if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
+        await docElm.requestFullscreen();
       } else if (docElm.mozRequestFullScreen) { // For Firefox
         docElm.mozRequestFullScreen();
       } else if (docElm.webkitRequestFullscreen) { // For Chrome, Safari, and Opera
@@ -93,7 +128,7 @@ const ExamPortallayout = ({ children }) => {
     }
   };
 
-  const handleFullscreenChange = useCallback(() => {
+  const handleFullscreenChange = () => {
     if (!document.fullscreenElement && examMode) {
       toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam, otherwise, the exam will end in 10 seconds.");
 
@@ -110,7 +145,7 @@ const ExamPortallayout = ({ children }) => {
         toast.success("You returned to fullscreen. Continue your exam.");
       }
     }
-  },[examMode, exitTimeout, handleExamSubmit])
+  }
 
   useEffect(() => {
     if (examMode) {
@@ -127,40 +162,8 @@ const ExamPortallayout = ({ children }) => {
         }
       }
     };
-  }, [examMode, exitTimeout, handleFullscreenChange]);
+  }, [examMode, exitTimeout]);
 
-
-
-  // Handle test submission
-  const handleExamSubmit = useCallback(async () => {
-    try {
-      const submissionData = {
-        studentId: session?.userId,
-        examPaperId: examId,
-        examPaperType: examType + "ExamPaper",
-        responses: Object.entries(responses).map(([questionId, { selectedOption, answerType }]) => ({
-          questionId,
-          selectedOption,
-          answerType,
-        })),
-      }
-
-      setLoading(true)
-      const { data } = await axios.post('/api/student-response', submissionData);
-      if (data.success) {
-        router.push(`/ExamFeedback?&studentId=${session?.userId}&examId=${examId}&examType=MCQ&responseId=${data.responseId}`)
-        toast.success('Responses submitted successfully!');
-      } else {
-        toast.error('Failed to submit responses.');
-      }
-      setLoading(false)
-    } catch (error) {
-      console.error(error);
-      setLoading(false)
-      toast.error('Error submitting responses: ' + error.message);
-    }
-    setIsTimerActive(false);
-  },[session, examId, examType, responses, router])
 
   if (loading) return <div> <Loading text="Submiting Response..." /></div>
 
