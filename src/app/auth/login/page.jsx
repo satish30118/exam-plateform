@@ -11,14 +11,6 @@ export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    // Check if user is already logged in
-    if (session && session.user) {
-      // console.log('Session after login:', session);
-      router.push(`/dashboard/${session?.role?.toLowerCase() || 'student'}`);
-    }
-  }, [session, router]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await signIn('credentials', {

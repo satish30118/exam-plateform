@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -63,7 +63,7 @@ const Navbar = () => {
               Logout
             </button>
             <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.user?.name}`} passHref>
-            <img src={session?.image} alt="" title='Dashboard' className='h-11 w-11 rounded-full'/>
+            {<FaUserCircle className="text-2xl md:text-5xl lg:text-5xl" />}
           </Link>
           </div>
         )}
@@ -108,12 +108,14 @@ const Navbar = () => {
                 </p>
               </Link>
             ) : (
-              <div className="hidden md:flex items-center space-x-4">
+              <div className=" items-center justify-between space-x-4 flex pt-3">
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
                 Logout
               </button>
                <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.name}`} passHref>
-               <img src={session?.image} alt="" title='Dashboard' className='h-11 w-11 rounded-full'/>
+               <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                Dashboard
+              </button>
              </Link>
              </div>
             )}

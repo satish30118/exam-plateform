@@ -1,9 +1,11 @@
 // AdminSidebar.js
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 import { FaUserCircle, FaClipboardList, FaBook, FaSignOutAlt, FaUsers, FaPlusSquare } from 'react-icons/fa';
 
 const AdminSidebar = () => {
+  const {data:session} = useSession()
   return (
     <div className="w-64 bg-gray-900 shadow-md p-4">
       <h1 className="text-xl font-bold text-white mb-6">Admin Dashboard</h1>
