@@ -72,20 +72,20 @@ const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, tota
   return (`
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #e9ecef; border-radius: 10px;">
       <div style="background-color: #e9ecef; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h3 style="text-align: center; color: #007bff;">Welcome to <span style="color: #28a745;">Exam Point</span>!</h3>
-        <p style="font-size: 18px;">Dear ${name},</p>
-        <p style="font-size: 16px;">Congratulations! You have successfully completed the <strong style="color: #007bff;">${syllabus} ${testTitle}</strong> mock test for the <strong style="color: #007bff;">${course}</strong> course on the Exam Point platform.</p>
+        <h2 style="text-align: center; color: #007bff;">Welcome to <span style="color: #28a745;">Exam Point</span>!</h3>
+        <p style="font-size: 16px;">Dear ${name},</p>
+        <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong style="color: #007bff;">${syllabus} ${testTitle}</strong> mock test for the <strong style="color: #007bff;">${course}</strong> course on the Exam Point platform.</p>
         
         <h3 style="color: #007bff; border-bottom: 2px solid #28a745; padding-bottom: 5px;">Your Test Results</h3>
         <p><strong style="color: #28a745;">Score:</strong> ${totalScore} out of ${totalMarks}</p>
         <p><strong style="color: #28a745;">Percentage:</strong> ${(totalScore / totalMarks * 100).toFixed(2)}%</p>
         
-        <p style="font-size: 16px;">We hope you found the mock test beneficial for your exam preparation. Keep practicing to enhance your skills!</p>
+        <p style="font-size: 15px; border-top: 2px solid #28a745;">We hope you found the mock test beneficial for your exam preparation. Keep practicing to enhance your skills!</p>
         
-        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 5px;">Next Steps</h4>
-        <p style="font-size: 16px;">Review your answers and performance on your dashboard to identify areas for improvement.</p>
+        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 3px;">Next Steps</h4>
+        <p style="font-size: 15px;">Review your answers and performance on your dashboard to identify areas for improvement.</p>
         
-        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 5px;">View Your Results</h4>
+        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 3px;">View Your Results</h4>
         <p style="text-align: left;">
           <a href="https://exam.akriticomputer.xyz/ExamFeedback/ExamResult?responseId=${responseId}" style="display: inline-block; padding: 12px 24px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 12px; transition: background-color 0.3s;">
             View Result
