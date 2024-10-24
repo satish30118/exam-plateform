@@ -12,6 +12,7 @@ const StudentLogin = ({ handleLogin, userId, setUserId, password, setPassword })
           <input 
             type="number" 
             id="userId" 
+            value={userId}
             name='userId'
             className="bg-white mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
             placeholder="Enter your student ID"
@@ -25,6 +26,7 @@ const StudentLogin = ({ handleLogin, userId, setUserId, password, setPassword })
           <input 
             type="password" 
             id="password" 
+            value={password}
             name='password'
             className="bg-white mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
             placeholder="Enter your password"

@@ -4,7 +4,7 @@ import React from 'react';
 import { FaDesktop, FaUserCircle } from 'react-icons/fa';
 
 const ExamHeader = ({ time }) => {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const exam = searchParams.get('exam');
   const subjectCode = searchParams.get('subjectCode');
@@ -40,12 +40,12 @@ const ExamHeader = ({ time }) => {
         {/* Right Section: Student Info (Visible on medium screens and up) */}
         <div className="hidden sm:flex items-center space-x-4 ">
           <div className="flex items-center border-2 p-1 border-blue-800 rounded">
-            {<FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" />}
-
+            {!session ? <FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" /> :  <img src={status != "loading" && session && session.image} alt="" className='h-11 rounded-sm'/>}
+            
           </div>
           <div>
             <h1 className="text-sm md:text-base lg:text-lg font-bold text-blue-900">
-              Student Name: <span className="text-orange-600 lg:text-base">{session?.user?.name}</span>
+              Student Name: <span className="text-orange-600 lg:text-lg">{session?.user?.name}</span>
             </h1>
             <h1 className="text-sm md:text-base lg:text-lg font-bold text-blue-900">
               Course: <span className="text-orange-600 lg:text-base">{exam?.toUpperCase()} ({subjectCode?.toUpperCase()})</span>

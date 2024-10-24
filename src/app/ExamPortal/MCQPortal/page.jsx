@@ -1,12 +1,12 @@
 "use client";
 import Question from '@/components/ExamPortal/Question';
 import QuestionPalette from '@/components/ExamPortal/QuestionPalette';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useTimer } from '../layout';
 import axios from 'axios';
 import Loading from '@/components/Loader';
-import { useSearchParams,useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 const MCQPortal = () => {
@@ -17,7 +17,7 @@ const MCQPortal = () => {
   const [error, setError] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState("")
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0)
-  const {data:session} = useSession()
+  const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const router = useRouter()
   const examId = searchParams.get('examId');
@@ -113,36 +113,35 @@ const MCQPortal = () => {
     }
   }
 
-
+  const fetchPaperData = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
+      setPaperData(data.questions);
+      setSelectedQuestion(data?.questions[0])
+      setTimeRemaining(data?.duration * 60)
+    } catch (err) {
+      console.error(err);
+      setError('Failed to fetch paper data.');
+      toast.error('Failed to fetch paper data.');
+    } finally {
+      setLoading(false); // Set loading to false when done
+    }
+  }, [setTimeRemaining, examId,])
 
   useEffect(() => {
+    if (status == "loading") { return }
     if (!session) {
       toast.warn("Your are not permitted to this page, login first to access this")
       router.push(`/ExamPortal/StudentLogin?examId=${examId}`)
       return;
     }
     setIsPermission(true)
-
-    const fetchPaperData = async () => {
-      try {
-        const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
-        setPaperData(data.questions);
-        setSelectedQuestion(data?.questions[0])
-        setTimeRemaining(data?.duration * 60)
-      } catch (err) {
-        console.error(err);
-        setError('Failed to fetch paper data.');
-        toast.error('Failed to fetch paper data.');
-      } finally {
-        setLoading(false); // Set loading to false when done
-      }
-    };
-
     fetchPaperData();
-  }, [setTimeRemaining]);
+  }, [status, examId, session, router, fetchPaperData]);
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     handleExamSubmit()
   };
 

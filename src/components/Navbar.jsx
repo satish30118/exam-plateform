@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleNavToggle = () => {
@@ -16,8 +16,8 @@ const Navbar = () => {
   };
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false }); // Prevent automatic redirect
-    router.push('/'); // Manually redirect after sign out
+    await signOut({ redirect: false });
+    router.push('/');
   };
 
   return (
@@ -55,7 +55,7 @@ const Navbar = () => {
                 Login
               </p>
             </Link>
-            
+
           </div>
         ) : (
           <div className="hidden md:flex items-center space-x-4">
@@ -63,8 +63,10 @@ const Navbar = () => {
               Logout
             </button>
             <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.user?.name}`} passHref>
-            {<FaUserCircle className="text-2xl md:text-5xl lg:text-5xl" />}
-          </Link>
+              {/* {<FaUserCircle className="text-2xl md:text-5xl lg:text-5xl" />} */}
+              <img src={status != "loading" && session.image} alt="" className='h-11 w-11 rounded-full' />
+            </Link>
+
           </div>
         )}
 
@@ -109,15 +111,16 @@ const Navbar = () => {
               </Link>
             ) : (
               <div className=" items-center justify-between space-x-4 flex pt-3">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
-                Logout
-              </button>
-               <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.name}`} passHref>
-               <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" onClick={handleSignOut}>
+                  Logout
+                </button>
+                <Link href={`/dashboard/${session.role.toLowerCase()}?userId=${session?.userId}&name=${session?.name}`} passHref>
+                  {/* <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                 Dashboard
-              </button>
-             </Link>
-             </div>
+              </button> */}
+                  <img src={status != "loading" && session.image} alt="" className='h-11 w-11 rounded-full' />
+                </Link>
+              </div>
             )}
           </div>
         </div>

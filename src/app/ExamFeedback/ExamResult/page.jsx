@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const ExamFeedbackPage = () => {
   const [studentResponse, setStudentResponse] = useState(null);
@@ -11,10 +12,17 @@ const ExamFeedbackPage = () => {
   const [error, setError] = useState(null);
   const searchParams = useSearchParams();
   const responseId = searchParams.get('responseId');
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   // Fetch student response data from backend
   useEffect(() => {
+    // if(status == "loading"){
+    //   return;
+    // }
+    // if(!session){
+    //   return toast.warn("You have not authenticated for this page, login required for this page")
+    // }
+
     const fetchStudentResponse = async () => {
       try {
         const { data } = await axios.get(`/api/student-response/get-response?responseId=${responseId}`);
@@ -28,7 +36,7 @@ const ExamFeedbackPage = () => {
     };
 
     fetchStudentResponse();
-  }, []);
+  }, [responseId]);
 
   if (loading) return <div><Loading text="Result Loading..." /></div>;
   if (error) return <div className="text-red-500">{error}</div>;

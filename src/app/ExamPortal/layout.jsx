@@ -4,7 +4,7 @@ import Loading from '@/components/Loader';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { createContext, Suspense, useContext, useEffect, useState } from 'react'
+import React, { createContext, Suspense, useCallback, useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 const TimerContext = createContext();
 
@@ -20,22 +20,24 @@ const ExamPortallayout = ({ children }) => {
   const router = useRouter()
   const examId = searchParams.get('examId');
   const examType = searchParams.get('examType');
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
 
   useEffect(() => {
     if (!examMode) return;
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        toast.warn("You left the exam tab. Submitting your responses.");
         handleExamSubmit();
+        toast.warn("You left the exam tab. Submitting your responses.");
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (document.hidden) {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      }
     };
-  }, [examMode]);
+  }, [examMode, handleExamSubmit]);
 
 
   // Timer effect
@@ -59,7 +61,7 @@ const ExamPortallayout = ({ children }) => {
 
     // Cleanup timer on component unmount
     return () => clearInterval(timer);
-  }, [timeRemaining, isTimerActive]);
+  }, [timeRemaining, isTimerActive, handleExamSubmit]);
 
 
   const enterFullScreen = () => {
@@ -91,7 +93,7 @@ const ExamPortallayout = ({ children }) => {
     }
   };
 
-  const handleFullscreenChange = () => {
+  const handleFullscreenChange = useCallback(() => {
     if (!document.fullscreenElement && examMode) {
       toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam, otherwise, the exam will end in 10 seconds.");
 
@@ -108,7 +110,7 @@ const ExamPortallayout = ({ children }) => {
         toast.success("You returned to fullscreen. Continue your exam.");
       }
     }
-  };
+  },[examMode, exitTimeout, handleExamSubmit])
 
   useEffect(() => {
     if (examMode) {
@@ -125,12 +127,12 @@ const ExamPortallayout = ({ children }) => {
         }
       }
     };
-  }, [examMode]);
+  }, [examMode, exitTimeout, handleFullscreenChange]);
 
 
 
   // Handle test submission
-  const handleExamSubmit = async () => {
+  const handleExamSubmit = useCallback(async () => {
     try {
       const submissionData = {
         studentId: session?.userId,
@@ -141,24 +143,24 @@ const ExamPortallayout = ({ children }) => {
           selectedOption,
           answerType,
         })),
-      };
+      }
 
       setLoading(true)
       const { data } = await axios.post('/api/student-response', submissionData);
-      setLoading(false)
       if (data.success) {
-        toast.success('Responses submitted successfully!');
         router.push(`/ExamFeedback?&studentId=${session?.userId}&examId=${examId}&examType=MCQ&responseId=${data.responseId}`)
+        toast.success('Responses submitted successfully!');
       } else {
         toast.error('Failed to submit responses.');
       }
+      setLoading(false)
     } catch (error) {
       console.error(error);
       setLoading(false)
       toast.error('Error submitting responses: ' + error.message);
     }
     setIsTimerActive(false);
-  };
+  },[session, examId, examType, responses, router])
 
   if (loading) return <div> <Loading text="Submiting Response..." /></div>
 

@@ -32,7 +32,7 @@ const Results = () => {
     };
 
     fetchResults();
-  }, []);
+  }, [session?.userId]);
 
   if (loading) {
     return <Loading text="Loading results..." />;

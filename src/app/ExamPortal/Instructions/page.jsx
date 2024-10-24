@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 const Instructions = () => {
     const [isPermission, setIsPermission] = useState(false)
     const searchParams = useSearchParams();
-    const {data:session} = useSession()
+    const {data:session,status} = useSession()
     const router = useRouter()
     const examId = searchParams.get('examId');
     const examTitle = searchParams.get('examTitle');
@@ -21,6 +21,7 @@ const Instructions = () => {
 
 
     useEffect(()=>{
+        if(status=="loading"){return}
         if(!session){
             toast.warn("Your are not permitted to this page, login first to access this")
             router.push(`/ExamPortal/StudentLogin?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
@@ -28,7 +29,7 @@ const Instructions = () => {
             setIsPermission(true)
         }
 
-    },[])
+    },[status, examId, exam, examTitle, examType, router, session, subjectCode])
     const checkInstruction = (id) => {
         const checkbox = document.getElementById(`${id}_ch`);
         if (!checkbox.checked) {
@@ -39,7 +40,7 @@ const Instructions = () => {
         router.push(`/ExamPortal/${examType}Portal?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
     };
 
-    if(!isPermission) return <Loading text="Checking Access"/>
+    if (!isPermission) return <div> <Loading text="Checking Permission..." /></div>
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
