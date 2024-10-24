@@ -11,7 +11,13 @@ export async function GET(request) {
   await connectDB(); // Connect to MongoDB
 
   try {
-    let examPaper = await MCQExamPaper.find({course, subject }).select({questions:0}).sort({updatedAt: -1})
+    const querry = {
+      course, 
+    }
+    if(subject){
+      querry["subject"] = subject;
+    }
+    let examPaper = await MCQExamPaper.find(querry).select({questions:0}).sort({syallbus:-1})
     if (!examPaper) {
       return NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }

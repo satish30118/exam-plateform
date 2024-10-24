@@ -48,7 +48,7 @@ const ExamHeader = ({ time }) => {
               Student Name: <span className="text-orange-600 lg:text-lg">{session?.user?.name}</span>
             </h1>
             <h1 className="text-sm md:text-base lg:text-lg font-bold text-blue-900">
-              Course: <span className="text-orange-600 lg:text-base">{exam?.toUpperCase()} ({subjectCode?.toUpperCase()})</span>
+              Course: <span className="text-orange-600 lg:text-base">{exam?.toUpperCase()} { subjectCode =="" && (subjectCode?.toUpperCase())}</span>
             </h1>
           </div>
         </div>
