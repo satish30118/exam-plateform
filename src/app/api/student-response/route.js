@@ -73,7 +73,7 @@ const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, tota
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #e9ecef; border-radius: 10px;">
       <div style="background-color: #e9ecef; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
         <h2 style="text-align: center; color: #007bff;">Welcome to <span style="color: #28a745;">Exam Point</span>!</h3>
-        <p style="font-size: 16px;">Dear ${name},</p>
+        <p style="font-size: 16px; text-align:left">Dear ${name},</p>
         <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong style="color: #007bff;">${syllabus} ${testTitle}</strong> mock test for the <strong style="color: #007bff;">${course}</strong> course on the Exam Point platform.</p>
         
         <h3 style="color: #007bff; border-bottom: 2px solid #28a745; padding-bottom: 5px;">Your Test Results</h3>
