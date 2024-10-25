@@ -40,7 +40,7 @@ const ExamHeader = ({ time }) => {
         {/* Right Section: Student Info (Visible on medium screens and up) */}
         <div className="hidden sm:flex items-center space-x-4 ">
           <div className="flex items-center border-2 p-1 border-blue-800 rounded">
-            {!session ? <FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" /> :  <img src={status != "loading" && session && session.image} alt="" className='h-11 rounded-sm'/>}
+            {!session && status=="loading" ? <FaUserCircle className="text-lg md:text-3xl lg:text-5xl text-blue-900" /> :  <img src={status != "loading" && session && session.image} alt="" className='h-11 rounded-sm'/>}
             
           </div>
           <div>

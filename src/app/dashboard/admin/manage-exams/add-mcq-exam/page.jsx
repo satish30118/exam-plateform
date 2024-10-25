@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const AddExam = () => {
+    const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [syllabus, setSyllabus] = useState('Full Syllabus');
     const [course, setCourse] = useState('olevel');
@@ -36,7 +37,7 @@ const AddExam = () => {
         };
 
         try {
-            // Use Axios to send a POST request
+            setLoading(true)
             const response = await axios.post('/api/paper-data', examData, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +49,9 @@ const AddExam = () => {
             } else {
                 toast.warn('Failed to add exam.');
             }
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.error('Error adding exam:', error);
             toast.error('Failed to add exam. Please try again.');
         }
@@ -238,8 +241,9 @@ const AddExam = () => {
                 <button
                     type="submit"
                     className="bg-blue-600 float-right my-5 text-white py-2 px-4 rounded"
+                    disabled={loading}
                 >
-                    Create Exam
+                    {loading ? "Wait..."  : "Create Exam"}
                 </button>
             </form>
             <br />

@@ -6,7 +6,7 @@ import { signIn } from 'next-auth/react';
 import { Suspense, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const LoginContent = ({ handleLogin, userId, setUserId, password, setPassword }) => {
+const LoginContent = ({ loading, handleLogin, userId, setUserId, password, setPassword }) => {
   return (
     <div className="h-full bg-gray-100 flex flex-col">
       {/* Login Section */}
@@ -17,6 +17,7 @@ const LoginContent = ({ handleLogin, userId, setUserId, password, setPassword })
           setUserId={setUserId}
           password={password}
           setPassword={setPassword}
+          loading={loading} 
         />
       </div>
     </div>
@@ -24,6 +25,7 @@ const LoginContent = ({ handleLogin, userId, setUserId, password, setPassword })
 };
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const examId = searchParams.get('examId');
@@ -37,6 +39,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const result = await signIn('credentials', {
       userId,
       password,
@@ -54,6 +57,8 @@ export default function LoginPage() {
       }
       router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`);
     }
+    
+    setLoading(false)
   };
 
   return (
@@ -63,7 +68,8 @@ export default function LoginPage() {
         userId={userId} 
         setUserId={setUserId} 
         password={password} 
-        setPassword={setPassword} 
+        setPassword={setPassword}
+        loading={loading} 
       />
     </Suspense>
   );

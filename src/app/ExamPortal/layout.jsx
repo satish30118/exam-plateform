@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const TimerContext = createContext();
 
 const ExamPortallayout = ({ children }) => {
-  const [timeRemaining, setTimeRemaining] = useState(-1); // Total time in seconds
+  const [timeRemaining, setTimeRemaining] = useState(-1);
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [loading, setLoading] = useState(false);
   const [responses, setResponses] = useState({});
