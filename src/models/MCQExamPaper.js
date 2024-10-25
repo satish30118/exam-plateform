@@ -55,6 +55,9 @@ const examPaperSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  adminEmail:{
+    type:String,
+  }
   }, {timestamps:true});
 
 const MCQExamPaper = mongoose.models.MCQExamPaper || mongoose.model('MCQExamPaper', examPaperSchema);

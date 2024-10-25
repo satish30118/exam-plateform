@@ -1,5 +1,6 @@
 "use client"
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -12,6 +13,7 @@ const AddExam = () => {
     const [questions, setQuestions] = useState([]);
     const [duration, setDuration] = useState();
     const [totalMarks, setTotalMarks] = useState();
+    const {data:session } = useSession()
 
     const handleAddQuestion = () => {
         setQuestions([...questions, { questionText: '', options: ['', ''], correctAnswer: '', marks: 1 }]);
@@ -29,7 +31,8 @@ const AddExam = () => {
             questions,
             duration,
             totalMarks,
-            course
+            course,
+            adminEmail : session?.user?.email
         };
 
         try {
