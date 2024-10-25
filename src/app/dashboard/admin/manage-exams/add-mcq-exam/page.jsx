@@ -1,20 +1,22 @@
 "use client"
+import Loading from '@/components/Loader';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const AddExam = () => {
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
-    const [syllabus, setSyllabus] = useState('Full Syllabus');
-    const [course, setCourse] = useState('olevel');
-    const [subject, setSubject] = useState('m1');
+    const [syllabus, setSyllabus] = useState('');
+    const [course, setCourse] = useState('');
+    const [subject, setSubject] = useState('');
     const [chapter, setChapter] = useState('');
     const [questions, setQuestions] = useState([]);
     const [duration, setDuration] = useState();
-    const [totalMarks, setTotalMarks] = useState();
-    const {data:session } = useSession()
+    const { data: session } = useSession()
+    const router = useRouter()
 
     const handleAddQuestion = () => {
         setQuestions([...questions, { questionText: '', options: ['', ''], correctAnswer: '', marks: 1 }]);
@@ -31,9 +33,8 @@ const AddExam = () => {
             chapter,
             questions,
             duration,
-            totalMarks,
             course,
-            adminEmail : session?.user?.email
+            adminEmail: session?.user?.email
         };
 
         try {
@@ -46,6 +47,7 @@ const AddExam = () => {
 
             if (response.status === 201) {
                 toast.success('Exam added successfully!');
+                router.push(`/dashboard/admin/manage-exams?course=${response.data.course}&subject=${response.data.subject}`)
             } else {
                 toast.warn('Failed to add exam.');
             }
@@ -57,6 +59,7 @@ const AddExam = () => {
         }
     };
 
+    if(loading) return <Loading text = "Creating Exam Paper"/>
     return (
         <div className="container mx-auto p-6 bg-gray-800 text-gray-200">
             <h2 className="text-2xl font-bold mb-4">Add MCQ Exam</h2>
@@ -71,7 +74,7 @@ const AddExam = () => {
                             className="p-2 w-full rounded bg-gray-700 text-gray-200"
                             placeholder='eg: Test-1 or Test-2'
                             required
-                            
+
                         />
                     </div>
                     <div>
@@ -82,6 +85,7 @@ const AddExam = () => {
                             className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
                         >
+                            <option value="">-- Select Syllabus --</option>
                             <option value="Full Syllabus">Full Syllabus</option>
                             <option value="Chapter Wise">Chapter Wise</option>
 
@@ -94,7 +98,7 @@ const AddExam = () => {
                             onChange={(e) => setCourse(e.target.value)}
                             className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
-                        >
+                        ><option value="">-- Select Course --</option>
                             <option value="olevel">O Level</option>
                             <option value="alevel">A Level</option>
                             <option value="ccc">CCC</option>
@@ -112,7 +116,7 @@ const AddExam = () => {
                             onChange={(e) => setSubject(e.target.value)}
                             className="p-3 w-full rounded bg-gray-700 text-gray-200"
                             required
-                        >
+                        ><option value="">-- Select Subject --</option>
                             <option value="m2">Web Design</option>
                             <option value="m3">Python</option>
                             <option value="m4">IoT</option>
@@ -132,26 +136,16 @@ const AddExam = () => {
                             value={chapter}
                             onChange={(e) => setChapter(e.target.value)}
                             className="p-2 w-full rounded bg-gray-700 text-gray-200"
-                            
+
                         />
                     </div>
-                    
+
                     <div>
                         <label className="block mb-1">Duration (minutes):</label>
                         <input
                             type="number"
                             value={duration}
                             onChange={(e) => setDuration(Number(e.target.value))}
-                            className="p-2 w-full rounded bg-gray-700 text-gray-200"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block mb-1">Total Marks:</label>
-                        <input
-                            type="number"
-                            value={totalMarks}
-                            onChange={(e) => setTotalMarks(Number(e.target.value))}
                             className="p-2 w-full rounded bg-gray-700 text-gray-200"
                             required
                         />
@@ -243,7 +237,7 @@ const AddExam = () => {
                     className="bg-blue-600 float-right my-5 text-white py-2 px-4 rounded"
                     disabled={loading}
                 >
-                    {loading ? "Wait..."  : "Create Exam"}
+                    {loading ? "Wait..." : "Create Exam"}
                 </button>
             </form>
             <br />

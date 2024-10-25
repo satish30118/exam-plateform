@@ -45,11 +45,11 @@ const TallyPage = ({ params }) => {
                 <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
                   <div className="flex justify-center text-center pb-1">
                     <FaClipboardList className="text-blue-500 mt-1 text-xl" />
-                    <h3 className="text-3xl text-center font-bold ml-2 text-yellow-600 pb-2">{test.title}</h3>
+                    <h3 className="text-3xl text-center font-bold ml-2 text-yellow-600 pb-2 capitalize">{test.title}</h3>
                   </div>
                   <div className='flex justify-around px-3'>
                     <div>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
-                    <div>  <p className="text-gray-400">Topics</p><p className=" text-pink-600">{test.chapter}</p></div>
+                    <div>  <p className="text-gray-400">Topics</p><p className=" text-pink-600 capitalize">{test.chapter}</p></div>
                     <div> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                   </div>
 

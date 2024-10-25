@@ -17,7 +17,7 @@ export async function GET(request) {
     if(subject){
       querry["subject"] = subject;
     }
-    let examPaper = await MCQExamPaper.find(querry).select({questions:0}).sort({syallbus:-1})
+    let examPaper = await MCQExamPaper.find(querry).select({questions:0}).sort({updatedAt: -1})
     if (!examPaper) {
       return NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }

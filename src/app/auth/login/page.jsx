@@ -4,8 +4,10 @@ import { signIn, useSession, getSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import Loading from '@/components/Loader';
 
 export default function Login() {
+  const [loading, SetLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { data: session, status } = useSession();
@@ -13,25 +15,32 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
-    
-    if (result.error) {
-      toast.error("Invalid credentials");
-    } else {
-      toast.success('Login successful!');
+    SetLoading(true)
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
 
-      // Fetch the updated session
-      const updatedSession = await getSession();
-      router.push(`/dashboard/${updatedSession?.role?.toLowerCase() || 'student'}`);
+      if (result.error) {
+        toast.error("Invalid credentials");
+      } else {
+        toast.success('Login successful!');
+        const updatedSession = await getSession();
+        router.push(`/dashboard/${updatedSession?.role?.toLowerCase() || 'student'}`);
+      }
+      SetLoading(false)
+    } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong, try again after some time!!")
+      SetLoading(false)
     }
+
   };
 
   const handleSignIn = async () => {
-    const result = await signIn('google', { redirect: false });    
+    const result = await signIn('google', { redirect: false });
     if (result?.ok) {
       // Fetch updated session after successful Google login
       const updatedSession = await getSession();
@@ -39,6 +48,8 @@ export default function Login() {
       router.push(`/dashboard/${updatedSession?.role?.toLowerCase() || 'student'}`);
     }
   };
+
+  // if(loading) return <Loading text="Loging Please Wait..."/>
 
   return (
     <div className='bg-gray-800 min-h-screen flex justify-center items-center pb-7 pt-4'>
@@ -77,7 +88,7 @@ export default function Login() {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
             >
-              LOGIN
+              {loading ? "Wait..." : "LOGIN"}
             </button>
           </form>
 

@@ -18,7 +18,7 @@ const AdminSidebar = () => {
             </Link>
           </li>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
-            <Link href={`/dashboard/admin/manage-exams?userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
+            <Link href={`/dashboard/admin/manage-exams?course=adca&subject=other&userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
               <FaBook className="mr-2" />
               <span>Manage Exams</span>
             </Link>
