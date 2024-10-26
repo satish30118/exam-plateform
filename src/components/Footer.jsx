@@ -18,7 +18,7 @@ const Footer = () => {
           {/* Important Links */}
           <div className="ml-6 ">
             <h4 className="text-xl font-semibold text-white">Important Links</h4>
-            <ul className="mt-4 text-gray-400">
+            <ul className="mt-4 text-gray-400 space-y-1">
               <li>
                 <Link href="/exams/olevel" className="hover:text-white">
                   O Level Mock Tests
@@ -94,7 +94,7 @@ const Footer = () => {
 
         <div className="mt-8 border-t border-gray-700 pt-6 text-center">
           <p className="text-gray-300">
-            © {new Date().getFullYear()} Mock-App. All Rights Reserved.
+            © {new Date().getFullYear()} Exam Point. All Rights Reserved.
           </p>
         </div>
       </div>

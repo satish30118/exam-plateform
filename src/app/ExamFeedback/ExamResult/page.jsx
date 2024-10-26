@@ -16,13 +16,6 @@ const ExamFeedbackPage = () => {
 
   // Fetch student response data from backend
   useEffect(() => {
-    // if(status == "loading"){
-    //   return;
-    // }
-    // if(!session){
-    //   return toast.warn("You have not authenticated for this page, login required for this page")
-    // }
-
     const fetchStudentResponse = async () => {
       try {
         const { data } = await axios.get(`/api/student-response/get-response?responseId=${responseId}`);
@@ -43,18 +36,17 @@ const ExamFeedbackPage = () => {
 
   const { studentId, examPaperId, responses, score } = studentResponse;
 
-
   return (
     <div className='bg-gray-800 text-gray-100'>
-      <div className="container mx-auto max-w-5xl p-4">
+      <div className="container mx-auto max-w-5xl p-2 sm:p-4">
         {/* Top section: Student and Exam Details */}
-        <div className="bg-gray-900 p-6 rounded-lg shadow-2xl mb-8">
+        <div className="bg-gray-900 p-4 sm:p-6 rounded-lg shadow-2xl mb-8">
           <h1 className="text-3xl font-extrabold mb-4 text-green-600 text-center tracking-wide">Exam Result</h1>
 
-          <div >
+          <div>
             <div className="flex gap-4 justify-evenly flex-wrap">
               {/* Student Name */}
-              <div className="flex  flex-col gap-0 justify-center items-center">
+              <div className="flex flex-col gap-0 justify-center items-center">
                 <strong className="text-lg text-blue-400">Student Name:</strong>
                 <span className="text-base text-pink-600">{session?.user?.name}</span>
               </div>
@@ -66,7 +58,7 @@ const ExamFeedbackPage = () => {
               </div>
 
               {/* Obtained Marks */}
-              <div className="flex flex-col flex-coljustify-between items-center">
+              <div className="flex flex-col justify-between items-center">
                 <strong className="text-lg text-blue-400">Obtained Marks:</strong>
                 <span className="text-base text-pink-600">{score} / {examPaperId?.totalMarks}</span>
               </div>
@@ -89,7 +81,7 @@ const ExamFeedbackPage = () => {
                 <span className="text-sm text-pink-600">{examPaperId?.course.toUpperCase()}</span>
               </div>
               {examPaperId?.topic && (
-                <div className="flex  flex-col justify-between items-center">
+                <div className="flex flex-col justify-between items-center">
                   <strong className="text-blue-400">Topic:</strong>
                   <span className="text-base text-pink-600">{examPaperId?.topic}</span>
                 </div>
@@ -106,7 +98,7 @@ const ExamFeedbackPage = () => {
         </div>
 
         {/* Main section: Questions and Feedback */}
-        <div className="bg-gray-900 px-8 py-5 shadow-lg rounded-lg">
+        <div className="bg-gray-900 px-4 sm:px-8 py-5 shadow-lg rounded-lg">
           <h1 className="text-3xl font-extrabold mb-4 text-green-600 text-center tracking-wide">Your Responses</h1>
           {examPaperId.questions.map((question, index) => {
             const studentResponse = responses.find(res => res.questionId == question._id.toString());
@@ -115,7 +107,12 @@ const ExamFeedbackPage = () => {
             return (
               <div key={index} className="mb-4 p-3 border border-gray-600 rounded-lg hover:shadow-lg transition-shadow duration-300">
                 <div className='flex justify-between'>
-                  <p className="text-base md:text-lg mb-4" dangerouslySetInnerHTML={{ __html: formattedQuestionText }} /> <div className='font-bold flex space-x-2'><h3 className='text-green-500 font-bold'>+{question?.marks}</h3>, <h3 className='text-red-500'>-{question?.negative}</h3></div></div>
+                  <p className="text-base md:text-lg mb-4" dangerouslySetInnerHTML={{ __html: formattedQuestionText }} />
+                  <div className='font-bold flex space-x-2'>
+                    <h3 className='text-green-500 font-bold'>+{question?.marks}</h3>, 
+                    <h3 className='text-red-500'>-{question?.negative}</h3>
+                  </div>
+                </div>
                 <div className="ml-4 mt-2 space-y-2">
                   {question.options.map((option, idx) => {
                     const isSelected = option == studentResponse?.selectedOption;
@@ -135,9 +132,6 @@ const ExamFeedbackPage = () => {
                   <p className="mt-2 text-gray-300 ">
                     <strong className="text-blue-400">Your Response:</strong> <span className="text-pink-600">{studentResponse?.selectedOption || "Not Answered"}</span>
                   </p>
-                  {/* <p className="text-green-400">
-                    <strong className="text-blue-400">Correct Answer:</strong> <span className="text-pink-600">{question.correctAnswer}</span>
-                  </p> */}
                 </div>
               </div>
             );

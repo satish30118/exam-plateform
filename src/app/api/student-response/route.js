@@ -70,35 +70,33 @@ export async function POST(request) {
 }
 const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, totalMarks, responseId) => {
   return (`
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #e9ecef; border-radius: 10px;">
-      <div style="background-color: #e9ecef; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h2 style="text-align: center; color: #007bff;">Welcome to <span style="color: #28a745;">Exam Point</span>!</h3>
-        <p style="font-size: 16px; text-align:left">Dear ${name},</p>
-        <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong style="color: #007bff;">${syllabus} ${testTitle}</strong> mock test for the <strong style="color: #007bff;">${course}</strong> course on the Exam Point platform.</p>
-        
-        <h3 style="color: #007bff; border-bottom: 2px solid #28a745; padding-bottom: 5px;">Your Test Results</h3>
-        <p><strong style="color: #28a745;">Score:</strong> ${totalScore} out of ${totalMarks}</p>
-        <p><strong style="color: #28a745;">Percentage:</strong> ${(totalScore / totalMarks * 100).toFixed(2)}%</p>
-        
-        <p style="font-size: 15px; border-top: 2px solid #28a745;">We hope you found the mock test beneficial for your exam preparation. Keep practicing to enhance your skills!</p>
-        
-        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 3px;">Next Steps</h4>
-        <p style="font-size: 15px;">Review your answers and performance on your dashboard to identify areas for improvement.</p>
-        
-        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 3px;">View Your Results</h4>
-        <p style="text-align: left;">
-          <a href="https://exam.akriticomputer.xyz/ExamFeedback/ExamResult?responseId=${responseId}" style="display: inline-block; padding: 12px 24px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 12px; transition: background-color 0.3s;">
-            View Result
-          </a>
-        </p>
-        
-        <h4 style="color: #007bff; border-bottom: 1px solid #e9ecef; padding-bottom: 5px;">Need Help?</h4>
-        <p style="font-size: 16px;">If you have any questions or need assistance, feel free to reach out to our support team at <a href="mailto:akriticomputercenter.official@gmail.com" style="color: #007bff; text-decoration: underline;">akriticomputercenter.official@gmail.com</a>.</p>
-        
-        <p style="font-size: 16px;">Best wishes for your future exams!</p>
-        <p style="font-size: 16px;">Best regards,</p>
-        <p style="font-size: 16px; font-weight: bold;">The <span style="color: #28a745;">Exam Point</span> Team</p>
-      </div>
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+      <h2 style="text-align: center; color: #333;">Exam Completion Notification</h2>
+      <p style="font-size: 16px;">Dear ${name},</p>
+      <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong>${syllabus} ${testTitle}</strong> mock test for the <strong>${course.toUpperCase()}</strong> course on the Exam Point platform.</p>
+      
+      <h3 style="color: #333;">Your Test Results</h3>
+      <p><strong>Score:</strong> ${totalScore} out of ${totalMarks}</p>
+      <p><strong>Percentage:</strong> ${(totalScore / totalMarks * 100).toFixed(2)}%</p>
+      
+      <p style="font-size: 15px; border-top: 1px solid #ccc; padding-top: 10px;">We hope you found the mock test beneficial for your exam preparation. Keep practicing to enhance your skills!</p>
+      
+      <h4 style="color: #333;">Next Steps</h4>
+      <p style="font-size: 15px;">Review your answers and performance on your dashboard to identify areas for improvement.</p>
+      
+      <h4 style="color: #333;">View Your Results</h4>
+      <p style="text-align: left;">
+        <a href="https://exam.akriticomputer.xyz/ExamFeedback/ExamResult?responseId=${responseId}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;">
+          View Result
+        </a>
+      </p>
+      
+      <h4 style="color: #333;">Need Help?</h4>
+      <p style="font-size: 16px;">If you have any questions or need assistance, feel free to reach out to our support team at <a href="mailto:akriticomputercenter.official@gmail.com" style="color: #007bff; text-decoration: underline;">akriticomputercenter.official@gmail.com</a>.</p>
+      
+      <p style="font-size: 16px;">Best wishes for your future exams!</p>
+      <p style="font-size: 16px;">Best regards,</p>
+      <p style="font-size: 16px; font-weight: bold;">The Exam Point Team</p>
     </div>
   `);
 };
