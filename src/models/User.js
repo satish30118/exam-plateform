@@ -8,9 +8,10 @@ const UserSchema = new mongoose.Schema({
   userId: { type: String, unique: true },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String }, // Optional for Google users
-  image: { type: String }, // URL to the user's image
-  role: { type: String, default:"Student" }, // URL to the user's image
+  password: { type: String }, 
+  image: { type: String }, 
+  mobile : {type: Number},
+  role: { type: String, default:"Student" },
 
 });
 

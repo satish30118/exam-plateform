@@ -14,7 +14,7 @@ const AdminSidebar = () => {
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
             <Link href={`/dashboard/admin/users?userId=${session?.userId}&name=${session?.user?.name}`} className="flex items-center text-gray-200">
               <FaUsers className="mr-2" />
-              <span>Manage Users</span>
+              <span>Manage Students</span>
             </Link>
           </li>
           <li className="flex items-center p-2 hover:bg-gray-700 rounded">
