@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://exam.akriticomputer.xyz/</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/olevel</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/adca</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/dca</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/cuet</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/auth/login</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/ccc</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/tally</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/alevel</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/olevel/m1?sub=(M1-R5)%20Information%20Technology%20Tools%20and%20Network%20Basics</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/olevel/m2?sub=(M2-R5)%20Web%20Designing%20and%20Publishing</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/olevel/m3?sub=(M3-R5)%20Programming%20and%20Problem%20Solving%20through%20Python</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://exam.akriticomputer.xyz/exams/olevel/m4?sub=(M4-R5)%20Internet%20of%20Things%20and%20its%20Applications</loc>
+  <lastmod>2024-10-27T06:48:46+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
