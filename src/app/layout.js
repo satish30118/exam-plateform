@@ -7,7 +7,7 @@ import ClientWrapper from "@/components/ClientWrapper";
 
 export const metadata = {
   title: "Exam Point - Mock Test Platform",
-  description: "Exam Point offers a comprehensive mock test platform for O Level, A Level, CCC, ADCA, DCA, CUET, and Tally courses. Practice with real exam simulations, complete with timers to enhance your exam readiness.",
+  description: "Exam Point offers a comprehensive mock test for O Level, A Level, CCC, ADCA, DCA, CUET, and Tally courses. Practice with real exam simulations, complete with timers to enhance your exam readiness.",
   keywords: "mock tests, test, exam, exam akriti computer, O Level, A Level, CCC, ADCA, DCA, CUET, Tally, exam practice, online exams, real exam simulation, timed tests, Exam Point",
   author: "Satish Maurya",
   "og:title": "Exam Point - Mock Test Platform",
