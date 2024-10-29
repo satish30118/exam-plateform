@@ -1,4 +1,3 @@
-import Loading from "@/components/Loader";
 import Image from "next/image";
 
 const OtherExamsPage = () => {
