@@ -6,11 +6,11 @@ import axios from 'axios'; // Import Axios
 import { useSearchParams } from 'next/navigation';
 
 const ManageExamPage = () => {
-  const [tests, setTests] = useState([]); 
-  const [loading, setLoading] = useState(true); 
+  const [tests, setTests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
   const params = useSearchParams()
-  const course = params.get("course")
-
+  const [course, setCourse] = useState(params.get("course"));
 
   // Fetch the test data when the component mounts
   useEffect(() => {
@@ -31,14 +31,30 @@ const ManageExamPage = () => {
   return (
     <div className="bg-gray-800 min-h-screen p-6">
       <h1 className="text-4xl font-bold text-pink-600 text-center">{course?.toUpperCase()} Papers Management</h1>
-
+      <div className='max-w-3xl mt-8 mx-auto text-center '>
+        <select
+          value={course}
+          onChange={(e) => setCourse(e.target.value)}
+          className="p-3 w-full rounded bg-gray-700 text-gray-200"
+          required
+        >
+          <option value="">-- Select Course --</option>
+          <option value="olevel">O Level</option>
+          <option value="alevel">A Level</option>
+          <option value="dca">DCA</option>
+          <option value="adca">ADCA</option>
+          <option value="tally">Tally</option>
+          <option value="ccc">CCC</option>
+          <option value="cuet">CUET(UG)</option>
+        </select>
+      </div>
       {/* Loading State */}
       {loading ? (
         <p className="text-white text-center mt-6">Loading tests...</p>
       ) : (
         <div className="mt-6">
           <div>
-           
+
             <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
               {tests.map((test, index) => (
                 <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
@@ -52,7 +68,7 @@ const ManageExamPage = () => {
                     <div className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
                     <div className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                   </div>
-                  
+
                 </div>
               ))}
             </div>
