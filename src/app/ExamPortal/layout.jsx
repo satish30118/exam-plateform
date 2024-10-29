@@ -165,7 +165,7 @@ const ExamPortallayout = ({ children }) => {
   }, [examMode, exitTimeout]);
 
 
-  if (loading) return <div> <Loading text="Submiting Response..." /></div>
+  if (loading) return <div> <Loading text="Wait, Submiting your Response, Don't do anything..." /></div>
 
   return (
     <div>

@@ -1,7 +1,20 @@
-import Link from "next/link";
+"use client"
+import Loading from "@/components/Loader";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FaClipboardList, FaLaptopCode, FaBookOpen, FaGraduationCap, FaFileAlt, FaChalkboardTeacher, FaUniversity } from "react-icons/fa";
 
 const Home = () => {
+  const [isStarted, setIsStarted] = useState(false)
+
+  const router = useRouter()
+  const handleRedirect = (route) => {
+    setIsStarted(true)
+    setTimeout(() => {
+      router.push(route)
+    }, 1500)
+  }
+  if(isStarted) return <Loading text="Wait, Redirecting to test page..."/>
   return (
     <div className="bg-gray-800 min-h-screen flex flex-col">
       {/* Hero Section */}
@@ -23,63 +36,63 @@ const Home = () => {
             <FaClipboardList className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">O Level Mock Tests</h3>
             <p className="mt-2 text-gray-400">Get access to a variety of mock tests to prepare for your O Level exams.</p>
-            <Link href="/exams/olevel" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/olevel")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
 
           <div className="bg-gray-900 rounded-lg p-6 shadow-md transition transform hover:scale-105">
             <FaLaptopCode className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">CCC Mock Tests</h3>
             <p className="mt-2 text-gray-400">Enhance your knowledge and skills with our CCC mock tests.</p>
-            <Link href="/exams/ccc" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/ccc")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
 
           <div className="bg-gray-900 rounded-lg p-6 shadow-md transition transform hover:scale-105">
             <FaFileAlt className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">ADCA Mock Tests</h3>
             <p className="mt-2 text-gray-400">Prepare for ADCA exams with our comprehensive mock tests.</p>
-            <Link href="/exams/adca" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/adca")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
 
           <div className="bg-gray-900 rounded-lg p-6 shadow-md transition transform hover:scale-105">
             <FaBookOpen className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">DCA Mock Tests</h3>
             <p className="mt-2 text-gray-400">Prepare for DCA exams with our comprehensive mock tests.</p>
-            <Link href="/exams/dca" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/dca")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
 
           <div className="bg-gray-900 rounded-lg p-6 shadow-md transition transform hover:scale-105">
             <FaChalkboardTeacher className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">Tally Mock Tests</h3>
             <p className="mt-2 text-gray-400">Practice for Tally exams with our mock tests.</p>
-            <Link href="/exams/tally" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/tally")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
 
           <div className="bg-gray-900 rounded-lg p-6 shadow-md transition transform hover:scale-105">
             <FaLaptopCode className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">CUET(UG) Mock Tests</h3>
             <p className="mt-2 text-gray-400">Prepare for CUET(UG) exams with our detailed mock tests.</p>
-            <Link href="/exams/cuet" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/cuet")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
 
           <div className="bg-gray-900 rounded-lg p-6 shadow-md transition transform hover:scale-105">
             <FaUniversity className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-white">A Level Mock Tests</h3>
             <p className="mt-2 text-gray-400">Access a range of mock tests designed for A Level preparation.</p>
-            <Link href="/exams/alevel" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            <button onClick={() => handleRedirect("/exams/alevel")} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
               Start Now
-            </Link>
+            </button>
           </div>
         </div>
       </main>

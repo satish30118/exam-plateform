@@ -2,29 +2,39 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { FaClipboardList, FaCode, FaBook } from 'react-icons/fa';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
+import Loading from '@/components/Loader';
+import { useRouter } from 'next/navigation';
+
 
 const ADCAPage = ({ params }) => {
-  const [tests, setTests] = useState([]); // State to hold test data
-  const [loading, setLoading] = useState(true); // Loading state
+  const [tests, setTests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isStarted, setIsStarted] = useState(false)
 
-
-
-  // Fetch the test data when the component mounts
+  const router = useRouter()
+  const handleRedirect = (route) => {
+    setIsStarted(true)
+    setTimeout(() => {
+      router.push(route)
+    }, 1500)
+  }
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get(`/api/paper-data/getpapers?course=adca`); 
+        const response = await axios.get(`/api/paper-data/getpapers?course=adca`);
         setTests(response.data);
-        setLoading(false); 
+        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch test data:', error);
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchTests();
   }, []);
+
+  if (isStarted) return <Loading text={"Wait, Redirecting to exam portal..."} />
 
   return (
     <div className="bg-gray-800 min-h-screen p-6">
@@ -53,9 +63,9 @@ const ADCAPage = ({ params }) => {
                     <div className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
                     <div className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                   </div>
-                  <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=adca&examType=MCQ&subjectCode=""`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                  <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=adca&examType=MCQ&subjectCode="AD1"`)} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                     Start Exam
-                  </Link>
+                  </button>
                 </div>
               ))}
             </div>

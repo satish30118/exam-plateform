@@ -80,7 +80,7 @@ const Navbar = () => {
 
       {/* Mobile Nav */}
       {navOpen && (
-        <div className="md:hidden bg-background">
+        <div className="md:hidden bg-background ">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link href="/exams/olevel" passHref>
               <p className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">O-Level</p>

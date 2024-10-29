@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Suspense, useState } from 'react';
 import { toast } from 'react-toastify';
+import Loading from '@/components/Loader';
 
 const LoginContent = ({ loading, handleLogin, userId, setUserId, password, setPassword }) => {
   return (
@@ -17,7 +18,7 @@ const LoginContent = ({ loading, handleLogin, userId, setUserId, password, setPa
           setUserId={setUserId}
           password={password}
           setPassword={setPassword}
-          loading={loading} 
+          loading={loading}
         />
       </div>
     </div>
@@ -26,6 +27,7 @@ const LoginContent = ({ loading, handleLogin, userId, setUserId, password, setPa
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const [isStarted, setIsStarted] = useState(false)
   const searchParams = useSearchParams();
   const router = useRouter();
   const examId = searchParams.get('examId');
@@ -49,27 +51,28 @@ export default function LoginPage() {
     if (result.error) {
       toast.error("Invalid credentials, If you have not register with us then register first!");
     } else {
-      // Check for Google Password Manager warnings
-      const breachWarning = result?.warning;
+      toast.success("Login success")
+      setIsStarted(true)
+      setTimeout(() => {
+        router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`);
+      }, 1500);
 
-      if (breachWarning) {
-        toast.warning("The password you just used has been found in a data breach. Please consider changing it.");
-      }
-      router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`);
     }
-    
+
     setLoading(false)
   };
 
+  if (isStarted) return <Loading text="Wait, Redirecting to Instructions Page..." />
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <LoginContent 
-        handleLogin={handleLogin} 
-        userId={userId} 
-        setUserId={setUserId} 
-        password={password} 
+      <LoginContent
+        handleLogin={handleLogin}
+        userId={userId}
+        setUserId={setUserId}
+        password={password}
         setPassword={setPassword}
-        loading={loading} 
+        loading={loading}
       />
     </Suspense>
   );
