@@ -41,16 +41,22 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if(!userId || !password){
+      toast.warn("Enter your credentials!");
+      return;
+    }
     setLoading(true)
     const result = await signIn('credentials', {
       userId,
       password,
       redirect: false,
     });
-
+ 
     if (result.error) {
+      setLoading(false)
       toast.error("Invalid credentials, If you have not register with us then register first!");
     } else {
+      setLoading(false)
       toast.success("Login success")
       setIsStarted(true)
       setTimeout(() => {
