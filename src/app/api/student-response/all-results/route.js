@@ -9,8 +9,8 @@ export async function GET(request) {
     try {
         let results = await StudentResponse.find({}).populate({
             path: "examPaperId",
-            select: "totalMarks title course"
-        }).select("-responses").sort({studentId : 1});
+            select: "totalMarks title course subject syllabus"
+        }).select("-responses").sort({updatedAt : -1});
         return NextResponse.json({ success: true, results });
     } catch (error) {
         console.log(error);

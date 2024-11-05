@@ -31,10 +31,12 @@ const ManageResults = () => {
               <tr className="bg-gray-700 text-white text-center">
                 <th className="px-4 py-3">Student ID</th>
                 <th className="px-4 py-3">Exam Title</th>
+                <th className="px-4 py-3">Exam Syllabus</th>
+                <th className="px-4 py-3">Exam Subject</th>
                 <th className="px-4 py-3">Course</th>
                 <th className="px-4 py-3">Score</th>
                 <th className="px-4 py-3">Total Marks</th>
-                <th className="px-4 py-3">Score Percentage</th>
+                <th className="px-4 py-3">Percentage</th>
                 <th className="px-4 py-3">Exam Date</th>
 
               </tr>
@@ -44,6 +46,8 @@ const ManageResults = () => {
                 <tr key={result._id} className="hover:bg-gray-600 transition duration-300 text-gray-200 border-b border-gray-700">
                   <td className="px-4 py-3">{result?.studentId}</td>
                   <td className="px-4 py-3">{result?.examPaperId?.title}</td>
+                  <td className="px-4 py-3">{result?.examPaperId?.syllabus}</td>
+                  <td className="px-4 py-3">{result?.examPaperId?.subject}</td>
                   <td className="px-4 py-3">{result?.examPaperId?.course.toUpperCase()}</td>
                   <td className="px-4 py-3">{result?.score}</td>
                   <td className="px-4 py-3">{result?.examPaperId?.totalMarks}</td>

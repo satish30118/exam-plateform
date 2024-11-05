@@ -63,7 +63,7 @@ const ADCAPage = ({ params }) => {
                     <div className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
                     <div className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                   </div>
-                  <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=adca&examType=MCQ&subjectCode="AD1"`)} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                  <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=adca&examType=MCQ&subjectCode=AD1`)} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                     Start Exam
                   </button>
                 </div>

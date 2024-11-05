@@ -62,7 +62,7 @@ const DcaPage = ({ params }) => {
                     <div className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
                   </div>
 
-                  <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=dca&examType=MCQ&subjectCode="D1"`)} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                  <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=dca&examType=MCQ&subjectCode=D1`)} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                     Start Exam
                   </button>
                 </div>
