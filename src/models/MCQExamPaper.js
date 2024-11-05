@@ -19,6 +19,9 @@ const examPaperSchema = new mongoose.Schema({
   chapter: {
     type: String,
   },
+  topic: {
+    type: String,
+  },
   questions: [
     {
       questionText: {
@@ -44,8 +47,8 @@ const examPaperSchema = new mongoose.Schema({
       },
     }
   ],
-  duration:{
-    type:Number
+  duration: {
+    type: Number,
   },
   totalMarks: {
     type: Number,
@@ -55,10 +58,19 @@ const examPaperSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  adminEmail:{
-    type:String,
+  adminEmail: {
+    type: String,
+  },
+  examDate: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },  
+  isActive: {
+    type: Boolean,
+    default: true
   }
-  }, {timestamps:true});
+}, { timestamps: true });
 
 const MCQExamPaper = mongoose.models.MCQExamPaper || mongoose.model('MCQExamPaper', examPaperSchema);
 

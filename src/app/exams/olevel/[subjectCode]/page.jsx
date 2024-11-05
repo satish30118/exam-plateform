@@ -5,6 +5,7 @@ import { FaClipboardList, FaCode, FaBook } from 'react-icons/fa';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Loading from '@/components/Loader';
+import { ExamCard } from '@/components/ExamCard';
 
 const OlevelPage = ({ params }) => {
   const [selectedSection, setSelectedSection] = useState('theory');
@@ -18,7 +19,7 @@ const OlevelPage = ({ params }) => {
 
   const router = useRouter()
   const handleRedirect = (route) => {
-  setIsStarted(true)
+    setIsStarted(true)
     setTimeout(() => {
       router.push(route)
     }, 1500)
@@ -62,6 +63,8 @@ const OlevelPage = ({ params }) => {
 
         </div>
       </div>
+      <br />
+      <hr />
 
       {/* Loading State */}
       {loading ? (
@@ -70,29 +73,65 @@ const OlevelPage = ({ params }) => {
         <div className="mt-6">
           {selectedSection === 'theory' && (
             <div>
-              <h2 className="text-2xl font-semibold text-white">Theoretical Tests</h2>
-              <p className="mt-2 text-gray-400">
-                Choose from the following mock tests to enhance your theoretical knowledge.
-              </p>
-              <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-                {tests.map((test, index) => (
-                  <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
-                    <div className="flex justify-center text-center pb-1">
-                      <FaClipboardList className="text-blue-500 mt-1 text-2xl" />
-                      <h3 className="text-xl text-center font-bold ml-2 text-yellow-600 pb-2 capitalize">{test.syllabus?.toUpperCase()} {test.title?.toUpperCase()} </h3>
+              <div>
+                <h2 className="text-2xl font-semibold text-white text-center">Topic Wise Test</h2>
+                <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+                  {tests.filter((test) => test.syllabus === "Topic Wise").map((test, index) => (
+                    <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
+                      <ExamCard data={test} />
+                      <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}` } disabled={!test.isActive}>
+                        {isStarted
+                          ? "Wait Starting..."
+                          : new Date(test.examDate) <= new Date() && test.isActive
+                            ? "Start Exam"
+                            : new Date(test.examDate) <= new Date() && !test.isActive
+                              ? "Exam Expired"
+                              : "Exam Not Started"}
+                      </button>
                     </div>
-                    <div>{test?.chapter && <div className='text-pink-600 text-sm font-bold pb-3 capitalize'>Topic - {test.chapter}</div>}</div>
-                    <div className='flex justify-around px-3 pb-3'>
-                      <div className='text-sm'>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
-                      <div className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
-                      <div className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
+                  ))}
+                </div>
+              </div>
+              <br /> <hr /><br />
+              <div>
+                <h2 className="text-2xl font-semibold text-white text-center">Chapter Wise Test</h2>
+                <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+                  {tests.filter((test) => test.syllabus === "Chapter Wise").map((test, index) => (
+                    <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
+                      <ExamCard data={test} />
+                      <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}`} disabled={!test.isActive}>
+                        {isStarted
+                          ? "Wait Starting..."
+                          : new Date(test.examDate) <= new Date() && test.isActive
+                            ? "Start Exam"
+                            : new Date(test.examDate) <= new Date() && !test.isActive
+                              ? "Exam Expired"
+                              : "Exam Not Started"}
+                      </button>
                     </div>
-
-                    <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                      {isStarted ? "Wait Starting...." : "Start Exam"}
-                    </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+              <br />
+              <hr /> <br />
+              <div>
+                <h2 className="text-2xl font-semibold text-white text-center">Full Syllabus Test</h2>
+                <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+                  {tests.filter((test) => test.syllabus === "Full Syllabus").map((test, index) => (
+                    <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
+                      <ExamCard data={test} />
+                      <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}`} disabled={!test.isActive}>
+                        {isStarted
+                          ? "Wait Starting..."
+                          : new Date(test.examDate) <= new Date() && test.isActive
+                            ? "Start Exam"
+                            : new Date(test.examDate) <= new Date() && !test.isActive
+                              ? "Exam Expired"
+                              : "Exam Not Started"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -100,29 +139,8 @@ const OlevelPage = ({ params }) => {
           {selectedSection === 'practical' && (
             <div>
               <h2 className="text-2xl font-semibold text-white">Practical Tests</h2>
-              <p className="mt-2 text-gray-400">
-                The Practical Exam includes creating a web page using HTML, CSS, and JavaScript.
-                Students will be required to demonstrate their skills through coding.
-              </p>
               <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-                {tests.map((test, index) => (
-                  <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
-                    <div className="flex justify-center text-center pb-1">
-                      <FaClipboardList className="text-blue-500 mt-1 text-2xl" />
-                      <h3 className="text-xl  text-center font-bold ml-2 text-yellow-600 pb-2 capitalize">{test.syllabus} {test.title} </h3>
-                    </div>
-                    <div>{test?.chapter && <div className='text-pink-600 text-sm font-bold pb-3 capitalize'>Topic - {test.chapter}</div>}</div>
-                    <div className='flex justify-around px-3 pb-3'>
-                      <div className='text-sm'>  <p className="text-gray-400">{test.totalMarks}</p><p className="text-gray-400">Marks</p></div>
-                      <div className='text-sm'>  <p className="text-gray-400">{test.totalQuestions}</p><p className=" text-gray-400">Questions</p></div>
-                      <div className='text-sm'> <p className="text-gray-400">{test.duration}</p> <p className="text-gray-400">Minutes</p></div>
-                    </div>
-
-                    <Link href={`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=Practical&subjectCode=${test.subject}`} className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                      Start Exam
-                    </Link>
-                  </div>
-                ))}
+                Comming soon....
               </div>
             </div>
           )}

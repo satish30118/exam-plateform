@@ -8,7 +8,7 @@ export async function GET(request) {
   const course = searchParams.get('course');
   const subject = searchParams.get('subject');
 
-  await connectDB(); // Connect to MongoDB
+  await connectDB(); 
 
   try {
     const querry = {
@@ -17,13 +17,12 @@ export async function GET(request) {
     if(subject){
       querry["subject"] = subject;
     }
-    let examPaper = await MCQExamPaper.find(querry).select({questions:0}).sort({updatedAt: -1})
+    let examPaper = await MCQExamPaper.find(querry).select({questions:0}).sort({title:1})
     if (!examPaper) {
       return NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }
-    return NextResponse.json(examPaper); // Use NextResponse.json for consistent responses
+    return NextResponse.json(examPaper); 
   } catch (error) {
     console.log(error)
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 }); // Use NextResponse.json for consistent responses
-  }
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });   }
 }
