@@ -11,18 +11,25 @@ export async function GET(request) {
   await connectDB(); 
 
   try {
-    const querry = {
-      course, 
+    const query = { course };
+    if (subject) {
+      query.subject = subject;
     }
-    if(subject){
-      querry["subject"] = subject;
-    }
-    let examPaper = await MCQExamPaper.find(querry).select({questions:0}).sort({title:1})
-    if (!examPaper) {
+
+    // Add MongoDB date comparison with `$lte`
+    query.examDate = { $lte: new Date() };
+
+    let examPapers = await MCQExamPaper.find(query)
+      .select({ questions: 0 }) 
+      .sort({ title: 1 });
+
+    if (!examPapers || examPapers.length === 0) {
       return NextResponse.json({ success: false, message: 'Exam paper not found' }, { status: 404 });
     }
-    return NextResponse.json(examPaper); 
+
+    return NextResponse.json(examPapers);
   } catch (error) {
-    console.log(error)
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });   }
+    console.log(error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
 }

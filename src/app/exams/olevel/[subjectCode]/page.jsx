@@ -79,12 +79,12 @@ const OlevelPage = ({ params }) => {
                   {tests.filter((test) => test.syllabus === "Topic Wise").map((test, index) => (
                     <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
                       <ExamCard data={test} />
-                      <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}` } disabled={!test.isActive}>
+                      <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}`} disabled={!test.isActive}>
                         {isStarted
                           ? "Wait Starting..."
-                          : new Date(toString(test.examDate)) <= new Date() && test.isActive
+                          : new Date(test.examDate) <= new Date() && test.isActive
                             ? "Start Exam"
-                            : new Date(toString(test.examDate)) <= new Date() && !test.isActive
+                            : new Date(test.examDate) <= new Date() && !test.isActive
                               ? "Exam Expired"
                               : "Exam Not Started"}
                       </button>
@@ -102,9 +102,9 @@ const OlevelPage = ({ params }) => {
                       <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=MCQ&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}`} disabled={!test.isActive}>
                         {isStarted
                           ? "Wait Starting..."
-                          :  test.isActive
+                          : new Date(test.examDate) <= new Date() && test.isActive
                             ? "Start Exam"
-                            : !test.isActive
+                            : new Date(test.examDate) <= new Date() && !test.isActive
                               ? "Exam Expired"
                               : "Exam Not Started"}
                       </button>
