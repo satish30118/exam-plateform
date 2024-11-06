@@ -17,7 +17,16 @@ export async function POST(request) {
     const exam = new MCQExamPaper({ ...body, totalQuestions, totalMarks });
     await exam.save();
 
-    return NextResponse.json({ message: 'Exam added successfully!', course:exam.course, subject: exam.subject, }, { status: 201 });
+    const res = {
+      course:exam.course,
+      subject: exam.subject,
+      topic : exam.topic,
+      totalMarks : exam.totalMarks,
+      totalQuestions : exam.totalQuestions,
+      examDate : exam.examDate,
+    }
+
+    return NextResponse.json({ message: 'Exam added successfully!',res  }, { status: 201 });
   } catch (error) {
     console.log(error)
     return NextResponse.json({ error: error.message }, { status: 400 });
