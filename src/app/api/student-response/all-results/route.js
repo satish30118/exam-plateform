@@ -9,7 +9,7 @@ export async function GET(request) {
     try {
         let results = await StudentResponse.find({}).populate({
             path: "examPaperId",
-            select: "totalMarks title course subject syllabus"
+            select: "totalMarks title course subject chapter syllabus topic"
         }).select("-responses").sort({updatedAt : -1});
         return NextResponse.json({ success: true, results });
     } catch (error) {

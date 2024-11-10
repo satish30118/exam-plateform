@@ -60,7 +60,7 @@ export async function POST(request) {
 
     // Mail sending
     const user = await User.findOne({ userId: studentId })
-    Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, totalScore, examPaper.totalMarks, newResponse._id))
+    Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, examPaper.chapter, examPaper.topic, totalScore, examPaper.totalMarks, newResponse._id))
 
     return new NextResponse(JSON.stringify({ success: true, responseId: newResponse._id }), { status: 201 });
   } catch (error) {
@@ -68,12 +68,15 @@ export async function POST(request) {
     return new NextResponse(JSON.stringify({ success: false, error: error.message }), { status: 500 });
   }
 }
-const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, totalMarks, responseId) => {
+
+
+
+const examCompletionEmail = (name, syllabus, testTitle, course,chapter,topic, totalScore, totalMarks, responseId) => {
   return (`
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="text-align: center; color: #333;">Exam Completion Notification</h2>
       <p style="font-size: 16px;">Dear ${name},</p>
-      <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong>${syllabus} ${testTitle}</strong> mock test for the <strong>${course.toUpperCase()}</strong> course on the Exam Point platform.</p>
+      <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong>${syllabus} ${testTitle} </strong> mock test for the <strong>${course.toUpperCase()}</strong> course on the Exam Point platform.</p>
       
       <h3 style="color: #333;">Your Test Results</h3>
       <p><strong>Score:</strong> ${totalScore} out of ${totalMarks}</p>
@@ -96,7 +99,7 @@ const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, tota
       
       <p style="font-size: 16px;">Best wishes for your future exams!</p>
       <p style="font-size: 16px;">Best regards,</p>
-      <p style="font-size: 16px; font-weight: bold;">The Exam Point Team</p>
+      <p style="font-size: 16px; font-weight: bold;">Team Exam Point</p>
     </div>
   `);
 };

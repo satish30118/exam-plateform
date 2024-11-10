@@ -2,6 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { FaEnvelope } from 'react-icons/fa';
 
 const ManageResults = () => {
   const [results, setResults] = useState([]);
@@ -20,6 +21,11 @@ const ManageResults = () => {
     getReults();
   }, []);
 
+  const handleSendEmail = async(result)=>{
+    const { data } = await axios.post("/api/student-response/send-result",{result});
+    toast.success(data?.message)
+  }
+
   return (
     <div className="text-white">
       <h2 className="text-2xl font-bold mb-4 text-center">Students Results</h2>
@@ -29,6 +35,7 @@ const ManageResults = () => {
           <table className="w-full table-auto bg-gray-800 rounded-lg text-center">
             <thead>
               <tr className="bg-gray-700 text-white text-center">
+                <th className="px-4 py-3 w-10">Result</th>
                 <th className="px-4 py-3">Student ID</th>
                 <th className="px-4 py-3">Exam Title</th>
                 <th className="px-4 py-3">Exam Syllabus</th>
@@ -44,6 +51,7 @@ const ManageResults = () => {
             <tbody>
               {results.map((result) => (
                 <tr key={result._id} className="hover:bg-gray-600 transition duration-300 text-gray-200 border-b border-gray-700">
+                  <td className="px-4 py-3 flex justify-center items-center"><FaEnvelope onClick={()=>handleSendEmail(result)} className='cursor-pointer' title='Send Result'/></td>
                   <td className="px-4 py-3">{result?.studentId}</td>
                   <td className="px-4 py-3">{result?.examPaperId?.title}</td>
                   <td className="px-4 py-3">{result?.examPaperId?.syllabus}</td>
