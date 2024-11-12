@@ -71,7 +71,7 @@ export async function POST(request) {
 
 
 
-const examCompletionEmail = (name, syllabus, testTitle, course,chapter,topic, totalScore, totalMarks, responseId) => {
+const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, totalMarks, responseId) => {
   return (`
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="text-align: center; color: #333;">Exam Completion Notification</h2>
