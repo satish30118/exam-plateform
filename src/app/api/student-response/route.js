@@ -76,7 +76,7 @@ const examCompletionEmail = (name, syllabus, testTitle, course, totalScore, tota
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
       <h2 style="text-align: center; color: #333;">Exam Completion Notification</h2>
       <p style="font-size: 16px;">Dear ${name},</p>
-      <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong>${syllabus} ${testTitle} </strong> mock test for the <strong>${course.toUpperCase()}</strong> course on the Exam Point platform.</p>
+      <p style="font-size: 15px;">Congratulations! You have successfully completed the <strong>${syllabus} ${testTitle} </strong> for the <strong>${course.toUpperCase()}</strong> course on the Exam Point platform.</p>
       
       <h3 style="color: #333;">Your Test Results</h3>
       <p><strong>Score:</strong> ${totalScore} out of ${totalMarks}</p>
