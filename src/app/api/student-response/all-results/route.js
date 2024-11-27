@@ -5,9 +5,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
     await connectDB();
+    const { searchParams } = request.nextUrl;
+    const studentId = searchParams.get('studentId');
 
     try {
-        let results = await StudentResponse.find({}).populate({
+        let results = await StudentResponse.find({studentId}).populate({
             path: "examPaperId",
             select: "totalMarks title course subject chapter syllabus topic"
         }).select("-responses").sort({updatedAt : -1});

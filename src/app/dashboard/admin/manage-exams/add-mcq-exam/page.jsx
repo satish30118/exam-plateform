@@ -39,7 +39,7 @@ const AddExam = () => {
 
         try {
             setLoading(true)
-            const response = await axios.post('/api/paper-data', examData, {
+            const response = await axios.post('/api/paper-data/add-practical-paper', examData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

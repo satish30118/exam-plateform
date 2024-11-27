@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import { Mailer } from '@/utils/Mailer';
 import User from '@/models/User';
+import PracticalExamPaper from '@/models/PracticalExamPaper';
 
 export async function POST(request) {
   const { studentId, examPaperId, examPaperType, responses } = await request.json();
@@ -14,7 +15,7 @@ export async function POST(request) {
     if (examPaperType == "MCQExamPaper") {
       examPaper = await MCQExamPaper.findById(examPaperId);
     } else {
-      // examPaper = await PracticalExamPaper.findById(examPaperId);
+      examPaper = await PracticalExamPaper.findById(examPaperId);
     }
 
     if (!examPaper) {
@@ -24,17 +25,19 @@ export async function POST(request) {
     // Initialize the score
     let totalScore = 0;
 
-    responses.forEach(response => {
-      const questionId = new mongoose.Types.ObjectId(response.questionId);
-      const question = examPaper.questions.id(response.questionId);
-      if (question) {
-        if (response.selectedOption === question.correctAnswer) {
-          totalScore += question.marks;
-        } else {
-          totalScore -= question.negative;
+    if (examPaperType == "MCQ") {
+      responses.forEach(response => {
+        const questionId = new mongoose.Types.ObjectId(response.questionId);
+        const question = examPaper.questions.id(response.questionId);
+        if (question) {
+          if (response.selectedOption === question.correctAnswer) {
+            totalScore += question.marks;
+          } else {
+            totalScore -= question.negative;
+          }
         }
-      }
-    });
+      });
+    }
 
 
     let existingResponse = await StudentResponse.findOne({ studentId, examPaperId, examPaperType });
@@ -44,9 +47,12 @@ export async function POST(request) {
       const updatedResponse = await existingResponse.save();
       // Mail sending
       const user = await User.findOne({ userId: studentId })
-      Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, totalScore, examPaper.totalMarks, updatedResponse._id))
+      if (examPaperType == "MCQ") {
+        Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, totalScore, examPaper.totalMarks, updatedResponse._id))
+      }
       return new NextResponse(JSON.stringify({ success: true, responseId: updatedResponse._id }), { status: 200 });
     }
+
 
     // Create a new student response document
     const newResponse = new StudentResponse({
@@ -60,8 +66,10 @@ export async function POST(request) {
 
     // Mail sending
     const user = await User.findOne({ userId: studentId })
-    Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course,  totalScore, examPaper.totalMarks, newResponse._id))
 
+    if (examPaperType == "MCQ") {
+      Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, totalScore, examPaper.totalMarks, newResponse._id))
+    }
     return new NextResponse(JSON.stringify({ success: true, responseId: newResponse._id }), { status: 201 });
   } catch (error) {
     console.log(error)

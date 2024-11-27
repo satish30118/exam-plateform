@@ -37,7 +37,7 @@ const Instructions = () => {
             return;
         }
         // Proceed to the next step
-        router.push(`/ExamPortal/${examType}Portal?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
+        router.push(`/ExamPortal/${examType}Portal/${subjectCode}?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
     };
 
     if (!isPermission) return <div> <Loading text="Checking Permission..." /></div>

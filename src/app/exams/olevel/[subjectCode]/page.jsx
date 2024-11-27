@@ -10,6 +10,7 @@ import { ExamCard } from '@/components/ExamCard';
 const OlevelPage = ({ params }) => {
   const [selectedSection, setSelectedSection] = useState('theory');
   const [tests, setTests] = useState([]);
+  const [PracticalPapers, setPracticalPaper] = useState([])
   const [loading, setLoading] = useState(true);
   const [isStarted, setIsStarted] = useState(false)
 
@@ -27,8 +28,11 @@ const OlevelPage = ({ params }) => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get(`/api/paper-data/getpapers?course=olevel&subject=${subjectCode}`); // Fetch test data from the API
+        const response = await axios.get(`/api/paper-data/getpapers?course=olevel&subject=${subjectCode}`);
         setTests(response.data);
+        const {data} = await axios.get(`/api/paper-data/getPracticalPapers?course=olevel&subject=${subjectCode}`);
+        console.log(data)
+        setPracticalPaper(data || [])
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch test data:', error);
@@ -141,7 +145,20 @@ const OlevelPage = ({ params }) => {
             <div>
               <h2 className="text-2xl font-semibold text-white">Practical Tests</h2>
               <div className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-                Comming soon....
+              {PracticalPapers?.map((test, index) => (
+                    <div key={index} className="bg-gray-900 p-3 py-7 rounded-lg shadow-md">
+                      <ExamCard data={test} />
+                      <button onClick={() => handleRedirect(`/ExamPortal/StudentLogin?examId=${test._id}&examTitle=${test.title}&exam=olevel&examType=Practical&subjectCode=${test.subject}`)} className={`mt-4 inline-block bg-${!test.isActive ? "gray-800" : "green-700"} text-white py-2 px-4 rounded hover:bg-blue-700  cursor-${!test.isActive && "not-allowed"}`} disabled={!test.isActive}>
+                        {isStarted
+                          ? "Wait Starting..."
+                          : new Date(test.examDate) <= new Date() && test.isActive
+                            ? "Start Exam"
+                            : new Date(test.examDate) <= new Date() && !test.isActive
+                              ? "Exam Expired"
+                              : "Exam Not Started"}
+                      </button>
+                    </div>
+                  ))}
               </div>
             </div>
           )}

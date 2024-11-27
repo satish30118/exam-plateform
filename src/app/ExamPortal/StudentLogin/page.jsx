@@ -57,7 +57,7 @@ export default function LoginPage() {
       toast.error("Invalid credentials, If you have not register with us then register first!");
     } else {
       setLoading(false)
-      toast.success("Login success")
+      // toast.success("Login success")
       setIsStarted(true)
       setTimeout(() => {
         router.push(`/ExamPortal/Instructions?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`);
