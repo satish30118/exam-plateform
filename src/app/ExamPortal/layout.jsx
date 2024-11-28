@@ -76,7 +76,7 @@ const ExamPortallayout = ({ children }) => {
 
   const handleVisibilityChange = () => {
     if (document.hidden) {
-      handleExamSubmit();
+      handleModalConfirm();
       toast.warn("You left the exam tab. Submitting your responses.");
     }
   };
@@ -107,12 +107,12 @@ const ExamPortallayout = ({ children }) => {
         });
       }, 1000);
     } else if (timeRemaining === 0) {
-      handleExamSubmit();
+      handleModalConfirm();
     }
 
     // Cleanup timer on component unmount
     return () => clearInterval(timer);
-  }, [timeRemaining, isTimerActive, handleExamSubmit]);
+  }, [timeRemaining, isTimerActive, handleModalConfirm]);
 
 
   const enterFullScreen = async () => {
@@ -150,7 +150,7 @@ const ExamPortallayout = ({ children }) => {
 
       const timeoutId = setTimeout(() => {
         toast.warn("You didn't return to fullscreen in time. Submitting the exam.");
-        if (exitTimeout) handleExamSubmit();
+        if (exitTimeout) handleModalConfirm();
       }, 10000);
 
       setExitTimeout(timeoutId);
