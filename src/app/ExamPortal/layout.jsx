@@ -22,13 +22,14 @@ const ExamPortallayout = ({ children }) => {
   const examId = searchParams.get('examId');
   const examType = searchParams.get('examType');
   const { data: session, status } = useSession();
+  const [exitTimeout, setExitTimeout] = useState(null);
+  const examMode = pathname.startsWith("/ExamPortal/MCQPortal") || pathname.startsWith("/ExamPortal/PracticalPortal");
 
   // Function to open the confirmation modal
   const handleExamSubmit = async () => {
-    setIsModalOpen(true);  // Open modal to confirm before submitting
+    setIsModalOpen(true); 
   };
 
-  // Function that is called when user confirms submission
   const handleModalConfirm = async () => {
     try {
       const res = responses;
@@ -73,7 +74,114 @@ const ExamPortallayout = ({ children }) => {
     setIsModalOpen(false);  // Close modal if user cancels
   };
 
-  // The rest of your code for timer, fullscreen, etc.
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      handleExamSubmit();
+      toast.warn("You left the exam tab. Submitting your responses.");
+    }
+  };
+
+  useEffect(() => {
+    if (!examMode) { return };
+    localStorage.setItem('responses', JSON.stringify(responses))
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [examMode]);
+
+
+  // Timer effect
+  useEffect(() => {
+    let timer;
+
+    if (timeRemaining > 0) {
+      timer = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            // handleSubmit(); // Auto-submit when time is up
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (timeRemaining === 0) {
+      handleExamSubmit();
+    }
+
+    // Cleanup timer on component unmount
+    return () => clearInterval(timer);
+  }, [timeRemaining, isTimerActive, handleExamSubmit]);
+
+
+  const enterFullScreen = async () => {
+    const docElm = document.documentElement;
+    if (!document.fullscreenElement) {  // Only enter fullscreen if not already in it
+      if (docElm.requestFullscreen) {
+        await docElm.requestFullscreen();
+      } else if (docElm.mozRequestFullScreen) { // For Firefox
+        docElm.mozRequestFullScreen();
+      } else if (docElm.webkitRequestFullscreen) { // For Chrome, Safari, and Opera
+        docElm.webkitRequestFullscreen();
+      } else if (docElm.msRequestFullscreen) { // For IE/Edge
+        docElm.msRequestFullscreen();
+      }
+    }
+  };
+
+  const exitFullScreen = () => {
+    if (document.fullscreenElement) { // Only exit fullscreen if currently in fullscreen mode
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { // For Firefox
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { // For Chrome, Safari, and Opera
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { // For IE/Edge
+        document.msExitFullscreen();
+      }
+    }
+  };
+
+  const handleFullscreenChange = () => {
+    if (!document.fullscreenElement && examMode) {
+      toast.warn("You exited fullscreen mode. Please stay in fullscreen for the exam, otherwise, the exam will end in 10 seconds.");
+
+      const timeoutId = setTimeout(() => {
+        toast.warn("You didn't return to fullscreen in time. Submitting the exam.");
+        if (exitTimeout) handleExamSubmit();
+      }, 10000);
+
+      setExitTimeout(timeoutId);
+    } else if (document.fullscreenElement) {
+      if (exitTimeout) {
+        clearTimeout(exitTimeout);
+        setExitTimeout(null);
+        toast.success("You returned to fullscreen. Continue your exam.");
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (examMode) {
+      enterFullScreen();
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+    }
+
+    return () => {
+      if (examMode) {
+        exitFullScreen();
+        document.removeEventListener("fullscreenchange", handleFullscreenChange);
+        if (exitTimeout) {
+          clearTimeout(exitTimeout);
+        }
+      }
+    };
+  }, [examMode, exitTimeout]);
+
+
+
 
   if (loading) return <div> <Loading text="Wait, Submitting your Response, Don't do anything..." /></div>
 
@@ -89,10 +197,10 @@ const ExamPortallayout = ({ children }) => {
       </TimerContext.Provider>
 
       {/* Confirmation Modal */}
-      <ConfirmationModal 
-        isOpen={isModalOpen} 
-        onConfirm={handleModalConfirm} 
-        onCancel={handleModalCancel} 
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onConfirm={handleModalConfirm}
+        onCancel={handleModalCancel}
       />
     </div>
   );

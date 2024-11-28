@@ -115,7 +115,6 @@ const PracticalPortal = () => {
 
 useEffect(()=>{
     setCode(responses[selectedQuestion._id]?.selectedOption ||`
-        <!-- Write HTML, CSS, and JS here -->
         <!DOCTYPE html>
         <html>
           <head>
@@ -125,7 +124,7 @@ useEffect(()=>{
             </style>
           </head>
           <body>
-           // HTML CODE HERE....
+           <!-- HTML Code here.. -->
             <script>
               // Add your JavaScript here
               

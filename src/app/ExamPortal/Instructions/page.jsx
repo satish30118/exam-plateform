@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 const Instructions = () => {
     const [isPermission, setIsPermission] = useState(false)
     const searchParams = useSearchParams();
-    const {data:session,status} = useSession()
+    const { data: session, status } = useSession()
     const router = useRouter()
     const examId = searchParams.get('examId');
     const examTitle = searchParams.get('examTitle');
@@ -20,16 +20,16 @@ const Instructions = () => {
     const examType = searchParams.get('examType');
 
 
-    useEffect(()=>{
-        if(status=="loading"){return}
-        if(!session){
+    useEffect(() => {
+        if (status == "loading") { return }
+        if (!session) {
             toast.warn("Your are not permitted to this page, login first to access this")
             router.push(`/ExamPortal/StudentLogin?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
-        }else{
+        } else {
             setIsPermission(true)
         }
 
-    },[status, examId, exam, examTitle, examType, router, session, subjectCode])
+    }, [status, examId, exam, examTitle, examType, router, session, subjectCode])
     const checkInstruction = (id) => {
         const checkbox = document.getElementById(`${id}_ch`);
         if (!checkbox.checked) {
@@ -37,7 +37,12 @@ const Instructions = () => {
             return;
         }
         // Proceed to the next step
-        router.push(`/ExamPortal/${examType}Portal/${subjectCode}?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
+        if (examType == "MCQ") {
+            router.push(`/ExamPortal/${examType}Portal?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
+
+        } else {
+            router.push(`/ExamPortal/${examType}Portal/${subjectCode}?examId=${examId}&examTitle=${examTitle}&exam=${exam}&examType=${examType}&subjectCode=${subjectCode}`)
+        }
     };
 
     if (!isPermission) return <div> <Loading text="Checking Permission..." /></div>

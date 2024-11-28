@@ -21,6 +21,8 @@ const MCQPortal = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const examId = searchParams.get('examId');
+  const examType = searchParams.get('examType');
+
 
   const handleOptionSelect = (questionId, selectedOption) => {
     setResponses({
@@ -122,10 +124,10 @@ const MCQPortal = () => {
 
   const fetchPaperData = async () => {
     try {
-      const { data } = await axios.get(`/api/paper-data/${examId}`); // Adjust the endpoint as needed
+      const { data } = await axios.get(`/api/paper-data/${examId}?examType=${examType}`); // Adjust the endpoint as needed
       setPaperData(data.questions);
       setSelectedQuestion(data?.questions[0])
-      setTimeRemaining(data?.duration * 60)
+      setTimeRemaining(data?.duration*60)
     } catch (err) {
       console.error(err);
       setError('Failed to fetch paper data.');

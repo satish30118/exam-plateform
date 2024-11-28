@@ -27,6 +27,8 @@ const PracticalPortal = () => {
     const [output, setOutput] = useState("")
     const [outputErr, setOutputErr] = useState(false)
     const [codeRunning, setCodeRunning] = useState(false)
+    const [userInput, setUserInput] = useState("");
+
 
 
     // Move to the next or previous question
@@ -122,21 +124,28 @@ const PracticalPortal = () => {
     }, [selectedQuestion])
 
     async function getOutput(code) {
-        setCodeRunning(true)
-        const {data} = await axios.post('https://emkc.org/api/v1/piston/execute', {
-            language: 'python3',
-            source: code
-        });
-        setCodeRunning(false)
-        if(data.stderr){
-            setOutputErr(true)
-        }else{
-            setOutputErr(false)
+        setCodeRunning(true);
+        try {
+            const { data } = await axios.post('https://emkc.org/api/v1/piston/execute', {
+                language: 'python3',
+                source: code,
+                stdin: userInput, 
+            });
+            setCodeRunning(false);
+            if (data.stderr) {
+                setOutputErr(true);
+                setOutput(data.stderr); 
+            } else {
+                setOutputErr(false);
+                setOutput(data.output);
+            }
+        } catch (err) {
+            setCodeRunning(false);
+            setOutputErr(true);
+            setOutput("Error executing code: " + err.message);
         }
-        setOutput(data.output)
-        // console.log(data)
-
     }
+
 
     const formattedQuestionText = selectedQuestion?.questionText?.replace(/\n/g, '<br />');
 
@@ -196,8 +205,14 @@ const PracticalPortal = () => {
 
 
             {/* Python EDITOR */}
-            <div className='p-4'>
-                <button disabled={codeRunning} className="bg-blue-600 text-white px-4 py-2 rounded items-end" onClick={() => getOutput(code)} >{codeRunning ? "Running..." : "Run Code"}</button>
+            <div className="p-4">
+                <button
+                    disabled={codeRunning}
+                    className="bg-blue-600 text-white px-4 py-2 rounded items-end"
+                    onClick={() => getOutput(code)}
+                >
+                    {codeRunning ? "Running..." : "Run Code"}
+                </button>
                 <div style={{ display: "flex", height: "75vh", padding: "20px", margin: "auto" }} className="space-x-4">
                     {/* Code Editor */}
                     <div style={{ flex: 1, border: "2px solid lightblue" }}>
@@ -210,10 +225,17 @@ const PracticalPortal = () => {
                         />
                     </div>
 
-                    {/* Output Preview */}
-
-
+                    {/* Input and Output Section */}
                     <div style={{ flex: 1, border: "2px solid lightblue" }}>
+                        <div>
+                            <h3 className='text-black text-center p-2 font-bold'>Code Input:</h3>
+                            <textarea
+                                className="w-full h-32 p-2 border text-black "
+                                placeholder="Enter input data here..."
+                                value={userInput}
+                                onChange={(e) => setUserInput(e.target.value)}
+                            ></textarea>
+                        </div>
                         <div>
                             <h3 className='text-black text-center p-2 font-bold'>Code Output:</h3>
                             <hr />
@@ -222,6 +244,7 @@ const PracticalPortal = () => {
                     </div>
                 </div>
             </div>
+
         </Suspense>
     );
 };
