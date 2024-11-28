@@ -121,16 +121,14 @@ useEffect(()=>{
           <head>
             <style>
               /* Add your CSS here */
-              body {
-                font-family: Arial, sans-serif;
-              }
+             
             </style>
           </head>
           <body>
-            <h1>Hello, World!</h1>
+           // HTML CODE HERE....
             <script>
               // Add your JavaScript here
-              console.log("Hello from JavaScript!");
+              
             </script>
           </body>
         </html>
@@ -207,7 +205,8 @@ useEffect(()=>{
                                     ...responses,
                                     [selectedQuestion._id]: {
                                         selectedOption: value,
-                                    }, answerType :"NotAnswer"
+                                        answerType :"NotAnswered"
+                                    }, 
                                 });
                             }}
                             options={{ fontSize: 14 }}

@@ -114,7 +114,7 @@ const ExamFeedbackPage = () => {
                   </div>
                 </div>
                 <div className="ml-4 mt-2 space-y-2">
-                  {question.options.map((option, idx) => {
+                  {question?.options?.map((option, idx) => {
                     const isSelected = option == studentResponse?.selectedOption;
                     const isCorrect = option == question.correctAnswer;
                     return (
