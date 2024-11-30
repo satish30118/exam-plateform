@@ -10,6 +10,7 @@ import PracticalExamPaper from '@/models/PracticalExamPaper';
 export async function POST(request) {
   const { studentId, examPaperId, examPaperType, responses } = await request.json();
   await connectDB();
+  console.log(studentId, examPaperId, examPaperType, responses)
   try {
     let examPaper;
     if (examPaperType == "MCQExamPaper") {
@@ -25,7 +26,7 @@ export async function POST(request) {
     // Initialize the score
     let totalScore = 0;
 
-    if (examPaperType == "MCQ") {
+    if (examPaperType == "MCQExamPaper") {
       responses.forEach(response => {
         const questionId = new mongoose.Types.ObjectId(response.questionId);
         const question = examPaper.questions.id(response.questionId);
@@ -47,7 +48,7 @@ export async function POST(request) {
       const updatedResponse = await existingResponse.save();
       // Mail sending
       const user = await User.findOne({ userId: studentId })
-      if (examPaperType == "MCQ") {
+      if (examPaperType == "MCQExamPaper") {
         Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, totalScore, examPaper.totalMarks, updatedResponse._id))
       }
       return new NextResponse(JSON.stringify({ success: true, responseId: updatedResponse._id }), { status: 200 });
@@ -67,7 +68,7 @@ export async function POST(request) {
     // Mail sending
     const user = await User.findOne({ userId: studentId })
 
-    if (examPaperType == "MCQ") {
+    if (examPaperType == "MCQExamPaper") {
       Mailer(user.email, "Congratulations on Completing Your Mock Test!", examCompletionEmail(user.name, examPaper.syllabus, examPaper.title, examPaper.course, totalScore, examPaper.totalMarks, newResponse._id))
     }
     return new NextResponse(JSON.stringify({ success: true, responseId: newResponse._id }), { status: 201 });
