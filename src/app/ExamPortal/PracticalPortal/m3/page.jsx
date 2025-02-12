@@ -220,7 +220,15 @@ const PracticalPortal = () => {
                             height="100%"
                             defaultLanguage="python"
                             value={code}
-                            onChange={(value) => setCode(value)}
+                            onChange={(value) => {
+                                setCode(value); setResponses({
+                                    ...responses,
+                                    [selectedQuestion._id]: {
+                                        selectedOption: value,
+                                        answerType :"NotAnswered"
+                                    }, 
+                                });
+                            }}
                             options={{ fontSize: 14 }}
                         />
                     </div>
